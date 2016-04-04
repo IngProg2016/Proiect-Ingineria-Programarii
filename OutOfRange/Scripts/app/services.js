@@ -1,9 +1,9 @@
 ﻿(function () {
     'use strict';
 
-    var services = angular.module('app', []);//.factory('services', services);
+    var OutOfRangeApp = angular.module('OutOfRangeApp');
 
-    services.factory('Auth', ['$resource', function ($resource) {
+    OutOfRangeApp.factory('Auth', ['$resource', function ($resource) {
         var Register = $resource('api/account/register');
         return {
             register: function (user) {

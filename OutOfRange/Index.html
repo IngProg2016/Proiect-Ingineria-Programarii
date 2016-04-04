@@ -44,6 +44,8 @@
     <script src="Scripts/respond.min.js">
     </script>
     <![endif]-->
+
+    <base href="/" />
 </head>
 
 <body ng-controller="MainCtrl">
@@ -342,14 +344,17 @@
     <script src="Scripts/angular.min.js"></script>
     <script src="Scripts/angular-route.js"></script>
     <script src="Scripts/angular-resource.js"></script>
+
     <script src="Scripts/app/app.js"></script>
+    <script src="Scripts/app/routes.js"></script>
     <script src="Scripts/app/services.js"></script>
     <script src="Scripts/app/controllers.js"></script>
+
     <script src="Scripts/bootstrap.min.js"></script>
-    <script type="Scripts/javascript" src="Scripts/hover-dropdown.js"></script>
+    <script type="text/javascript" src="Scripts/hover-dropdown.js"></script>
     <script defer src="Scripts/jquery.flexslider.js"></script>
 
-    <script type="Scripts/javascript" src="Scripts/jquery.parallax-1.1.3.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.parallax-1.1.3.js"></script>
     <script src="Scripts/wow.min.js"></script>
     <script src="assets/owlcarousel/owl.carousel.js"></script>
 
@@ -358,14 +363,14 @@
     <script src="Scripts/superfish.js"></script>
     <script type="text/javascript" src="Scripts/parallax-slider/jquery.cslider.js"></script>
     <script type="text/javascript">
-      $(function() {
+        $(function () {
 
-        $('#da-slider').cslider({
-          autoplay    : true,
-          bgincrement : 100
+            $('#da-slider').cslider({
+                autoplay: true,
+                bgincrement: 100
+            });
+
         });
-
-      });
     </script>
 
 
@@ -376,32 +381,32 @@
 
 
     <script>
-      $('a.info').tooltip();
+        $('a.info').tooltip();
 
-      $(window).load(function() {
-        $('.flexslider').flexslider({
-          animation: "slide",
-          start: function(slider) {
-            $('body').removeClass('loading');
-          }
-        });
-      });
-
-      $(document).ready(function() {
-
-        $("#owl-demo").owlCarousel({
-
-          items : 4
-
+        $(window).load(function () {
+            $('.flexslider').flexslider({
+                animation: "slide",
+                start: function (slider) {
+                    $('body').removeClass('loading');
+                }
+            });
         });
 
-      });
+        $(document).ready(function () {
 
-      jQuery(document).ready(function(){
-        jQuery('ul.superfish').superfish();
-      });
+            $("#owl-demo").owlCarousel({
 
-      new WOW().init();
+                items: 4
+
+            });
+
+        });
+
+        jQuery(document).ready(function () {
+            jQuery('ul.superfish').superfish();
+        });
+
+        new WOW().init();
 
 
     </script>

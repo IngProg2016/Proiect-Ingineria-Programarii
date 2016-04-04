@@ -1,21 +1,19 @@
 ﻿(function () {
     'use strict';
 
-    var controllers = angular
-        .module('OutOfRangeApp',[]);
-        //.controller('controllers', controllers);
+    var OutOfRangeApp = angular.module('OutOfRangeApp');
 
-    controllers.controller('MainCtrl', ['$scope', function ($scope) {
+    OutOfRangeApp.controller('MainCtrl', ['$scope', function ($scope) {
         
     }]);
 
-    controllers.controller('RegisterCtrl', ['$scope', 'Auth', function ($scope, Auth) {
+    OutOfRangeApp.controller('RegisterCtrl', ['$scope', 'Auth', function ($scope, Auth) {
         $scope.user = {
-            Email: "radu.niculcea@gmail.com",
-            Password: "PENSETA1",
-            ConfirmPassword: "PENSETA1"
-        }
-        ;
+            email: "test.user@gmail.com",
+            password: "testP@ss1",
+            confirmPassword: "testP@ss1"
+        };
+
         $scope.register = function () {
             Auth.register($scope.user);
         };

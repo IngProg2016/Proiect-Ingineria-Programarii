@@ -440,6 +440,7 @@
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\controllers.js" />
+    <Content Include="Scripts\app\routes.js" />
     <Content Include="Scripts\app\services.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

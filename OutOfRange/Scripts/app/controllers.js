@@ -9,9 +9,9 @@
 
     OutOfRangeApp.controller('RegisterCtrl', ['$scope', 'Auth', function ($scope, Auth) {
         $scope.user = {
-            email: "radu.niculcea@gmail.com",
-            password: "PENSETA1",
-            confirmPassword: "PENSETA1"
+            email: "test.user@gmail.com",
+            password: "testP@ss1",
+            confirmPassword: "testP@ss1"
         };
 
         $scope.register = function () {

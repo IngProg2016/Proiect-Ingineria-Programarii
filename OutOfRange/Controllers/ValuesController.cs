@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using OutOfRange.Models;
 
 namespace OutOfRange.Controllers
 {
@@ -25,6 +26,14 @@ namespace OutOfRange.Controllers
         // POST api/values
         public void Post([FromBody]string value)
         {
+            OutOfRangeEntities db = new OutOfRangeEntities();
+            db.Tags.Add(new Tag()
+            {
+               Description = value,
+               Name = value,
+               
+            });
+            db.SaveChanges();
         }
 
         // PUT api/values/5

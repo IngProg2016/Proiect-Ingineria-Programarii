@@ -63,8 +63,16 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
-                    <li><a href="/login">Log In</a></li>
-                    <li><a href="/register">Register</a></li>
+                    <li><a ng-hide="isAuthenticated()" href="/login">Log In</a></li>
+                    <li><a ng-hide="isAuthenticated()" href="/register">Register</a></li>
+                    <li ng-show="isAuthenticated()" class="dropdown">
+                        <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover="dropdown" data-toggle="dropdown" href="#">{{userName()}} <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/user">Profile</a></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
+                    </li>
                     <li><input class="form-control search" placeholder=" Search" type="text"></li>
                 </ul>
             </div>

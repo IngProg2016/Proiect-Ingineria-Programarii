@@ -3,8 +3,13 @@
 
     var OutOfRangeApp = angular.module('OutOfRangeApp');
 
-    OutOfRangeApp.controller('MainCtrl', ['$scope', function ($scope) {
-        
+    OutOfRangeApp.controller('MainCtrl', ['$scope', 'authService', function ($scope, authService) {
+        $scope.isAuthenticated = function () {
+            return authService.getAuthentificationInfo().isAuth;
+        };
+        $scope.userName = function () {
+            return authService.getAuthentificationInfo().userName;
+        };
     }]);
 
     OutOfRangeApp.controller('HomeCtrl', ['$scope', function ($scope) {
@@ -30,7 +35,6 @@
         };
 
         $scope.login = function () {
-            debugger;
             authService.login($scope.user);
         };
     }]);
@@ -40,6 +44,10 @@
             authService.logout();
             $location.path('/');
         })();
+    }]);
+
+    OutOfRangeApp.controller('UserCtrl', ['$location', 'authService', function ($location, authService) {
+        
     }]);
 
 })();

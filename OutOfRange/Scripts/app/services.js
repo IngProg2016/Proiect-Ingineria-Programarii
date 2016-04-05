@@ -22,13 +22,13 @@
 
         function _register(user) {
             var _user = new Register(user);
-            _user.$save();
+            return _user.$save();
         };
 
         function _login(user) {
             user.grant_type = 'password';
             var _user = new Login(user);
-            _user.$save()
+            return _user.$save()
                 .then(function (data, headers) {
                     debugger;
                     $localStorage.authData = {
@@ -36,8 +36,10 @@
                         token: data.access_token,
                         _expiration: new Date(data['.expires'])
                     }
-                    
-                    $location.path($routeParams.returnUrl || '/');
+
+                    var returnUrl = $routeParams.returnUrl ? decodeURIComponent($routeParams.returnUrl) : '/';
+                    $location.path(returnUrl);
+                    $location.search('returnUrl', null);
                     return {
                         isAuth: $localStorage.authData && true,
                         userName: $localStorage.authData.userName,
@@ -58,7 +60,7 @@
             register: _register,
             login: _login,
             logout: _logout,
-            getAuthenticationInfo: function () {
+            getAuthentificationInfo: function () {
                 if ($localStorage.authData && (new Date($localStorage.authData._expiration) < Date.now()))
                     delete $localStorage.authData;
 
@@ -89,8 +91,10 @@
         };
 
         function _responseError(rejection) {
-            if (rejection.status === 401)
-                $location.path('/login').search('returnUrl', encodeURIComponent($location.absUrl()))
+            if (rejection.status === 401) {
+                var oldUrl = $location.path()
+                $location.path('/login').search('returnUrl', encodeURIComponent(oldUrl))
+            }
             return $q.reject(rejection);
         }
 

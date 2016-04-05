@@ -6,8 +6,11 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
+using Newtonsoft.Json;
 using OutOfRange.Models;
 
 namespace OutOfRange.Controllers
@@ -17,9 +20,26 @@ namespace OutOfRange.Controllers
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
         // GET: api/Questions
-        public IQueryable<Question> GetQuestions()
+        public JsonResult<List<Question>> GetQuestions()
         {
-            return db.Questions;
+            JsonSerializerSettings settings=new JsonSerializerSettings();
+            settings.ReferenceLoopHandling=ReferenceLoopHandling.Ignore;
+            List<Question> questions=new List<Question>();
+            foreach (var question in db.Questions)
+            {
+                questions.Add(new Question()
+                {
+                    Added = question.Added,
+                    CategoryID = question.CategoryID,
+                    Description = question.Description,
+                    ID = question.ID,
+                    Modified = question.Modified,
+                    Title = question.Title,
+                    UserID = question.UserID,
+                    Tags = question.Tags.Select(tag => new Tag() {Name = tag.Name}).ToList()
+                });
+            }
+            return Json(questions,settings);
         }
 
         // GET: api/Questions/5

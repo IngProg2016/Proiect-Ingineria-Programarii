@@ -9,14 +9,26 @@
 
     OutOfRangeApp.controller('RegisterCtrl', ['$scope', 'Auth', function ($scope, Auth) {
         $scope.user = {
-            email: "test.user@gmail.com",
-            password: "testP@ss1",
-            confirmPassword: "testP@ss1"
+            Email: "",
+            Password: "",
+            ConfirmPassword: ""
         };
 
         $scope.register = function () {
+            alert();
             Auth.register($scope.user);
         };
-    }])
+    }]);
+
+    OutOfRangeApp.controller('LoginCtrl', ['$scope', 'Auth', function ($scope, Auth) {
+        $scope.user = {
+            Email: "",
+            Password: ""
+        };
+
+        $scope.login = function () {
+            Auth.login($scope.user);
+        };
+    }]);
 
 })();

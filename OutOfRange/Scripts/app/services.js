@@ -3,7 +3,7 @@
 
     var OutOfRangeApp = angular.module('OutOfRangeApp');
 
-    OutOfRangeApp.factory('Auth', ['$resource', '$localStorage', function ($resource, $localStorage) {
+    OutOfRangeApp.factory('authService', ['$resource', '$localStorage', '$location', '$routeParams', function ($resource, $localStorage, $location, $routeParams) {
         var Register = $resource('/api/account/register');
         var Login = $resource('/token', null, {
             save: {
@@ -20,13 +20,6 @@
             }
         });
 
-        var _authentication = {
-            isAuth: false,
-            userName: '',
-            token: '',
-            _expiration: 0
-        };
-
         function _register(user) {
             var _user = new Register(user);
             _user.$save();
@@ -35,50 +28,80 @@
         function _login(user) {
             user.grant_type = 'password';
             var _user = new Login(user);
-            _user.$save().then(function (data, headers) {
+            _user.$save()
+                .then(function (data, headers) {
+                    debugger;
+                    $localStorage.authData = {
+                        userName: data.userName,
+                        token: data.access_token,
+                        _expiration: new Date(data['.expires'])
+                    }
+                    
+                    $location.path($routeParams.returnUrl || '/');
+                    return {
+                        isAuth: $localStorage.authData && true,
+                        userName: $localStorage.authData.userName,
+                    };
+                })
+            .catch(function (err) {
                 debugger;
-                $localStorage.authData = {
-                    userName: data.userName,
-                    token: data.access_token,
-                    _expiration: new Date(data['.expires'])
-                }
-                _fillAuthData();
-                return _authentication;
+                console.error(err.data.error_description);
+                delete $localStorage.authData;
             });
         };
 
         function _logout() {
-            _authentication = { isAuth: false };
+            delete $localStorage.authData;
         }
-
-        function _fillAuthData() {
-            var authData = $localStorage.authData;
-            debugger;
-            if (authData) {
-                _authentication.isAuth = true;
-                _authentication.userName = authData.userName;
-                _authentication.token = authData.token;
-                _authentication._expiration = authData._expiration;
-            }
-        };
 
         return {
             register: _register,
             login: _login,
             logout: _logout,
             getAuthenticationInfo: function () {
+                if ($localStorage.authData && (new Date($localStorage.authData._expiration) < Date.now()))
+                    delete $localStorage.authData;
+
                 return {
-                    isAuth: _authentication.isAuth,
-                    userName: _authentication.userName,
+                    isAuth: $localStorage.authData && true,
+                    userName: $localStorage.authData ? $localStorage.authData.userName : null
                 };
-            },
-            fillAuthData: _fillAuthData
+            }
         }
     }]);
 
+    OutOfRangeApp.factory('authInterceptorService', ['$q', '$location', '$localStorage', function ($q, $location, $localStorage) {
 
-    OutOfRangeApp.run(['Auth', function (Auth) {
-        Auth.fillAuthData();
+        function _request(config) {
+            config.headers = config.headers || {};
+
+            if (config.url === '/token')
+                return config;
+
+            if ($localStorage.authData && (new Date($localStorage.authData._expiration) < Date.now()))
+                delete $localStorage.authData;
+
+            var authData = $localStorage.authData;
+            if (authData) {
+                config.headers.Authorization = 'Bearer ' + authData.token;
+            }
+            return config;
+        };
+
+        function _responseError(rejection) {
+            if (rejection.status === 401)
+                $location.path('/login').search('returnUrl', encodeURIComponent($location.absUrl()))
+            return $q.reject(rejection);
+        }
+
+        return {
+            request: _request,
+            responseError: _responseError
+        }
+    }]);
+
+    OutOfRangeApp.config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptorService');
     }]);
 
 })();

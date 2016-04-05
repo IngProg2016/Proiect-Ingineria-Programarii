@@ -7,26 +7,30 @@
         
     }]);
 
+    OutOfRangeApp.controller('HomeCtrl', ['$scope', function ($scope) {
+
+    }]);
+
     OutOfRangeApp.controller('RegisterCtrl', ['$scope', 'Auth', function ($scope, Auth) {
         $scope.user = {
-            Email: "",
-            Password: "",
-            ConfirmPassword: ""
+            email: "",
+            password: "",
+            confirmPassword: ""
         };
 
         $scope.register = function () {
-            alert();
             Auth.register($scope.user);
         };
     }]);
 
     OutOfRangeApp.controller('LoginCtrl', ['$scope', 'Auth', function ($scope, Auth) {
         $scope.user = {
-            Email: "",
-            Password: ""
+            username: "",
+            password: ""
         };
 
         $scope.login = function () {
+            debugger;
             Auth.login($scope.user);
         };
     }]);

@@ -6,7 +6,7 @@
         $routeProvider
             .when('/', {
                 templateUrl: '/templates/front-page.html',
-                controller: 'MainCtrl'
+                controller: 'HomeCtrl'
             })
             .when('/register', {
                 templateUrl: '/templates/Auth/register.html',

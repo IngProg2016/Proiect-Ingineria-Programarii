@@ -2,7 +2,7 @@
 <div class="registration-bg">
     <div class="container">
 
-        <form class="form-signin wow fadeInUp" action="">
+        <form class="form-signin wow fadeInUp">
             <h2 class="form-signin-heading">Register now</h2>
             <div class="login-wrap">
                 <p> Enter account details below {{user.email}}</p>
@@ -13,7 +13,7 @@
                     <input type="checkbox" value="agree this condition"> I agree to the Terms of Service and Privacy Policy
                 </label>
                 <button class="btn btn-lg btn-login btn-block" type="submit" ng-click="register()">Submit</button>
-
+                <div ng-show="error" class="text-danger"><i class="fa fa-chevron-right"></i> {{error}}</div>
                 <div class="registration">
                     Already Registered ?
                     <a class="" href="/login">

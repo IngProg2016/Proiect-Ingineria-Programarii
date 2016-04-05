@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('OutOfRangeApp')
-    .config(['$routeProvider', '$locationProvider', '$localStorageProvider', function ($routeProvider, $locationProvider, $localStorageProvider) {
+    .config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: '/templates/front-page.html',
@@ -11,20 +11,12 @@
             .when('/register', {
                 templateUrl: '/templates/Auth/register.html',
                 controller: 'RegisterCtrl',
-                redirectTo: function (params, path, search) {
-
-                    if ($localStorageProvider.get('authData'))
-                        return params.redirectUrl ? decodeURIComponent(params.redirectUrl) : '/';
-                }
+                guestOnly: true
             })
             .when('/login', {
                 templateUrl: '/templates/Auth/login.html',
                 controller: 'LoginCtrl',
-                redirectTo: function (params, path, search) {
-
-                    if ($localStorageProvider.get('authData'))
-                        return params.redirectUrl ? decodeURIComponent(params.redirectUrl) : '/';
-                }
+                guestOnly: true
             })
             .when('/logout', {
                 controller: 'LogoutCtrl',

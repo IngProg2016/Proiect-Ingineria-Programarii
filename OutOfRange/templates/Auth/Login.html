@@ -15,6 +15,7 @@
                         </span>
                     </label>
                     <button class="btn btn-lg btn-login btn-block" type="button" ng-click="login()">Sign in</button>
+                    <div ng-show="error" class="text-danger"><i class="fa fa-chevron-right"></i> {{error}}</div>
                     <div class="registration">
                         Don't have an account yet?
                         <a class="" href="/register">

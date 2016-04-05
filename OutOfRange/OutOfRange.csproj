@@ -286,9 +286,6 @@
     <Compile Include="Models\Question.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\QuestionTag.cs">
-      <DependentUpon>Models.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Tag.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>

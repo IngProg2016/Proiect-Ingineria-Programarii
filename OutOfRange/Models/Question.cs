@@ -14,6 +14,12 @@ namespace OutOfRange.Models
     
     public partial class Question
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Question()
+        {
+            this.Tags = new HashSet<Tag>();
+        }
+    
         public System.Guid ID { get; set; }
         public string UserID { get; set; }
         public System.Guid CategoryID { get; set; }
@@ -21,5 +27,8 @@ namespace OutOfRange.Models
         public string Description { get; set; }
         public System.DateTime Added { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tag> Tags { get; set; }
     }
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="OutOfRangeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="OutOfRangeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Answers">
           <Key>
             <PropertyRef Name="ID" />
@@ -213,6 +213,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QuestionTags_Question">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+          <End Role="QuestionTags" Type="Self.QuestionTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestionTags">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionTags_Tag">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1" />
+          <End Role="QuestionTags" Type="Self.QuestionTags" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestionTags">
+              <PropertyRef Name="TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="OutOfRangeModelStoreContainer">
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -248,9 +272,16 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
+          <AssociationSet Name="FK_QuestionTags_Question" Association="Self.FK_QuestionTags_Question">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="QuestionTags" EntitySet="QuestionTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionTags_Tag" Association="Self.FK_QuestionTags_Tag">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="QuestionTags" EntitySet="QuestionTags" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="OutOfRangeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -356,14 +387,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="QuestionTag">
-          <Key>
-            <PropertyRef Name="QuestionID" />
-            <PropertyRef Name="TagID" />
-          </Key>
-          <Property Name="QuestionID" Type="Guid" Nullable="false" />
-          <Property Name="TagID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Tags" Relationship="OutOfRangeModel.QuestionTags" FromRole="Question" ToRole="Tag" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -372,6 +396,7 @@
           <Property Name="ID" Type="Guid" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Questions" Relationship="OutOfRangeModel.QuestionTags" FromRole="Tag" ToRole="Question" />
         </EntityType>
         <EntityType Name="UserBadge">
           <Key>
@@ -448,7 +473,6 @@
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="Comments" EntityType="Self.Comment" />
           <EntitySet Name="Questions" EntityType="Self.Question" />
-          <EntitySet Name="QuestionTags" EntityType="Self.QuestionTag" />
           <EntitySet Name="Tags" EntityType="Self.Tag" />
           <EntitySet Name="UserBadges" EntityType="Self.UserBadge" />
           <EntitySet Name="UserLevels" EntityType="Self.UserLevel" />
@@ -468,7 +492,15 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <AssociationSet Name="QuestionTags1" Association="OutOfRangeModel.QuestionTags">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Tag" EntitySet="Tags" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="QuestionTags">
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="*" />
+          <End Type="OutOfRangeModel.Tag" Role="Tag" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -577,14 +609,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="QuestionTags">
-            <EntityTypeMapping TypeName="OutOfRangeModel.QuestionTag">
-              <MappingFragment StoreEntitySet="QuestionTags">
-                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="TagID" ColumnName="TagID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Tags">
             <EntityTypeMapping TypeName="OutOfRangeModel.Tag">
               <MappingFragment StoreEntitySet="Tags">
@@ -619,6 +643,14 @@
             </EndProperty>
             <EndProperty Name="AspNetUsers">
               <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="QuestionTags1" TypeName="OutOfRangeModel.QuestionTags" StoreEntitySet="QuestionTags">
+            <EndProperty Name="Tag">
+              <ScalarProperty Name="ID" ColumnName="TagID" />
+            </EndProperty>
+            <EndProperty Name="Question">
+              <ScalarProperty Name="ID" ColumnName="QuestionID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

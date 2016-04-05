@@ -49,6 +49,7 @@ namespace OutOfRange.Controllers
                 return BadRequest();
             }
 
+            
             db.Entry(question).State = EntityState.Modified;
 
             try
@@ -71,6 +72,13 @@ namespace OutOfRange.Controllers
         }
 
         // POST: api/Questions
+        /* Model Json
+        {"Title":"Intrebarea no1","Description":"Ceva text",
+"Tags":
+[ {"Name":"c#","description":"ceva cu c#"},{"name":"valoare","description":"ceva valoros"}
+]
+}
+        */
         [ResponseType(typeof(Question))]
         public IHttpActionResult PostQuestion(Question question)
         {
@@ -78,6 +86,46 @@ namespace OutOfRange.Controllers
             {
                 return BadRequest(ModelState);
             }
+            List<Tag> removingTags=new List<Tag>();
+            List<Tag> addingTags=new List<Tag>();
+            foreach (var tag in question.Tags)
+            {
+                var currentTag = db.Tags.SingleOrDefault(x => x.Name.ToLower() == tag.Name.ToLower());
+                if (currentTag==null)
+                {
+
+                    tag.ID = Guid.NewGuid();
+
+                    //Tag newTag = new Tag()
+                    //{
+                    //    Name = tag.Name.ToLower(),
+                    //    Description = tag.Description,
+                    //    ID = Guid.NewGuid()
+                    //};
+                    //db.Tags.Add(newTag);
+                }
+                else
+                {
+                    removingTags.Add(tag);
+                    addingTags.Add(currentTag);
+                }
+            }
+            foreach (var removingTag in removingTags)
+            {
+                question.Tags.Remove(removingTag);
+            }
+            foreach (var addingTag in addingTags)
+            {
+                question.Tags.Add(addingTag);
+            }
+            
+
+            question.ID=Guid.NewGuid();
+            //guid hardcodat al unui user
+            question.UserID = "9e03ab56-d1c8-460a-ad48-fa7c6e69bf18";
+            question.Added=DateTime.Now;
+            //Category ca sa mearga (bine ca nu's puse FK inca)
+            question.CategoryID = Guid.Empty;
             
             db.Questions.Add(question);
 
@@ -85,7 +133,7 @@ namespace OutOfRange.Controllers
             {
                 db.SaveChanges();
             }
-            catch (DbUpdateException)
+            catch (DbUpdateException e)
             {
                 if (QuestionExists(question.ID))
                 {
@@ -93,7 +141,7 @@ namespace OutOfRange.Controllers
                 }
                 else
                 {
-                    throw;
+                    throw e;
                 }
             }
 

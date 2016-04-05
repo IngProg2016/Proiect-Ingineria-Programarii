@@ -12,16 +12,16 @@
         <EntityTypeShape EntityType="OutOfRangeModel.AspNetUser" Width="1.5" PointX="3" PointY="1.375" IsExpanded="true" />
         <EntityTypeShape EntityType="OutOfRangeModel.Badge" Width="1.5" PointX="3" PointY="6.875" IsExpanded="true" />
         <EntityTypeShape EntityType="OutOfRangeModel.Category" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="OutOfRangeModel.Comment" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OutOfRangeModel.Question" Width="1.5" PointX="7.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OutOfRangeModel.QuestionTag" Width="1.5" PointX="7.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OutOfRangeModel.Tag" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OutOfRangeModel.UserBadge" Width="1.5" PointX="9.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="OutOfRangeModel.UserLevel" Width="1.5" PointX="9.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OutOfRangeModel.Comment" Width="1.5" PointX="8.375" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OutOfRangeModel.Question" Width="1.5" PointX="7.375" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OutOfRangeModel.Tag" Width="1.5" PointX="12.625" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="OutOfRangeModel.UserBadge" Width="1.5" PointX="12.5" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="OutOfRangeModel.UserLevel" Width="1.5" PointX="13.625" PointY="7.875" IsExpanded="true" />
         <AssociationConnector Association="OutOfRangeModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="OutOfRangeModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
         <AssociationConnector Association="OutOfRangeModel.FK_Badges_Category" ManuallyRouted="false" />
         <AssociationConnector Association="OutOfRangeModel.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="OutOfRangeModel.QuestionTags" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

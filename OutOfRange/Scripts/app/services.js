@@ -3,7 +3,7 @@
 
     var OutOfRangeApp = angular.module('OutOfRangeApp');
 
-    OutOfRangeApp.factory('authService', ['$resource', '$localStorage', '$location', '$routeParams', function ($resource, $localStorage, $location, $routeParams) {
+    OutOfRangeApp.factory('authService', ['$q', '$resource', '$localStorage', '$location', '$routeParams', function ($q, $resource, $localStorage, $location, $routeParams) {
         var Register = $resource('/api/account/register');
         var Login = $resource('/token', null, {
             save: {
@@ -22,7 +22,11 @@
 
         function _register(user) {
             var _user = new Register(user);
-            return _user.$save();
+            return _user.$save()
+            .catch(function (err) {
+                console.error(err.data);
+                return $q.reject(err.data);
+            });
         };
 
         function _login(user) {
@@ -35,20 +39,19 @@
                         userName: data.userName,
                         token: data.access_token,
                         _expiration: new Date(data['.expires'])
-                    }
+                    };
 
                     var returnUrl = $routeParams.returnUrl ? decodeURIComponent($routeParams.returnUrl) : '/';
-                    $location.path(returnUrl);
-                    $location.search('returnUrl', null);
-                    return {
+                    $location.path(returnUrl).search('returnUrl', null);
+                    return $q.resolve({
                         isAuth: $localStorage.authData && true,
                         userName: $localStorage.authData.userName,
-                    };
+                    });
                 })
             .catch(function (err) {
-                debugger;
                 console.error(err.data.error_description);
                 delete $localStorage.authData;
+                return $q.reject(err.data);
             });
         };
 

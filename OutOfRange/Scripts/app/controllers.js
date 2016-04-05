@@ -18,24 +18,34 @@
 
     OutOfRangeApp.controller('RegisterCtrl', ['$scope', 'authService', function ($scope, authService) {
         $scope.user = {
-            email: "",
-            password: "",
-            confirmPassword: ""
+            email: '',
+            password: '',
+            confirmPassword: ''
         };
 
+        $scope.error = null;
+
         $scope.register = function () {
-            authService.register($scope.user);
+            authService.register($scope.user)
+            .catch(function (err) {
+                $scope.error = err;
+            });
         };
     }]);
 
     OutOfRangeApp.controller('LoginCtrl', ['$scope', 'authService', function ($scope, authService) {
         $scope.user = {
-            username: "",
-            password: ""
+            username: '',
+            password: ''
         };
 
+        $scope.error = null;
+
         $scope.login = function () {
-            authService.login($scope.user);
+            authService.login($scope.user)
+            .catch(function (err) {
+                $scope.error = err.error_description;
+            });
         };
     }]);
 
@@ -47,7 +57,7 @@
     }]);
 
     OutOfRangeApp.controller('UserCtrl', ['$location', 'authService', function ($location, authService) {
-        
+
     }]);
 
 })();

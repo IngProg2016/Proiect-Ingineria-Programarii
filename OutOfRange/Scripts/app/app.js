@@ -1,5 +1,5 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('OutOfRangeApp', ['ngRoute', 'ngResource']);
+    angular.module('OutOfRangeApp', ['ngRoute', 'ngResource', 'ngStorage']);
 })();

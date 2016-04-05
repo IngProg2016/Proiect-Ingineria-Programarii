@@ -234,4 +234,4 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-OutOfRange/Web.config
+[Ww]eb.config

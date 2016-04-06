@@ -14,6 +14,12 @@ namespace OutOfRange.Models
     
     public partial class Badge
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Badge()
+        {
+            this.UserBadges = new HashSet<UserBadge>();
+        }
+    
         public System.Guid ID { get; set; }
         public System.Guid CategoryID { get; set; }
         public string Name { get; set; }
@@ -21,5 +27,7 @@ namespace OutOfRange.Models
         public byte[] Image { get; set; }
     
         public virtual Category Category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserBadge> UserBadges { get; set; }
     }
 }

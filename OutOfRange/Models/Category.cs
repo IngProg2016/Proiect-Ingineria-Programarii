@@ -18,6 +18,8 @@ namespace OutOfRange.Models
         public Category()
         {
             this.Badges = new HashSet<Badge>();
+            this.Questions = new HashSet<Question>();
+            this.UserLevels = new HashSet<UserLevel>();
         }
     
         public System.Guid ID { get; set; }
@@ -26,5 +28,9 @@ namespace OutOfRange.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Badge> Badges { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Question> Questions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserLevel> UserLevels { get; set; }
     }
 }

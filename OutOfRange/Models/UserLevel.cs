@@ -18,5 +18,8 @@ namespace OutOfRange.Models
         public System.Guid CategoryID { get; set; }
         public int Level { get; set; }
         public System.DateTime Obtained { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

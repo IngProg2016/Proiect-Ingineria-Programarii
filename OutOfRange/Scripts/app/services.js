@@ -111,4 +111,13 @@
         $httpProvider.interceptors.push('authInterceptorService');
     }]);
 
+    OutOfRangeApp.factory('qaService', ['$resource', '$location', function ($resource, $location) {
+        var Questions = $resource('/api/questions');
+        return {
+            getQuestions: function () {
+                return new Questions().$query()
+            }
+        }
+    }]);
+
 })();

@@ -604,6 +604,7 @@
     <Content Include="templates\Auth\register.html" />
     <Content Include="templates\front-page.html" />
     <Content Include="templates\404.html" />
+    <Content Include="templates\Questions\questionAll.html" />
     <Content Include="templates\User\user.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

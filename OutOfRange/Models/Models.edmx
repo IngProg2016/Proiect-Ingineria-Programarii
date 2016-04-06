@@ -143,6 +143,32 @@
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="Obtained" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Answers_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answers_Questions">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Answers" Type="Self.Answers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answers">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Badges_Category">
           <End Role="Category" Type="Self.Category" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -154,6 +180,32 @@
             </Principal>
             <Dependent Role="Badges">
               <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Answers">
+          <End Role="Answers" Type="Self.Answers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comments">
+              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -213,8 +265,36 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_QuestionTags_Question">
-          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
+        <Association Name="FK_Questions_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="Questions" Type="Self.Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questions_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Questions" Type="Self.Questions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Questions">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionTags_Questions">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="QuestionTags" Type="Self.QuestionTags" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Questions">
@@ -225,8 +305,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_QuestionTags_Tag">
-          <End Role="Tags" Type="Self.Tags" Multiplicity="1" />
+        <Association Name="FK_QuestionTags_Tags">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="QuestionTags" Type="Self.QuestionTags" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Tags">
@@ -234,6 +316,58 @@
             </Principal>
             <Dependent Role="QuestionTags">
               <PropertyRef Name="TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserBadges_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="UserBadges" Type="Self.UserBadges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBadges">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserBadges_Badges">
+          <End Role="Badges" Type="Self.Badges" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserBadges" Type="Self.UserBadges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Badges">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserBadges">
+              <PropertyRef Name="BadgeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLevel_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="UserLevel" Type="Self.UserLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLevel">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLevel_Category">
+          <End Role="Category" Type="Self.Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLevel" Type="Self.UserLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserLevel">
+              <PropertyRef Name="CategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -252,9 +386,25 @@
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserBadges" EntityType="Self.UserBadges" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLevel" EntityType="Self.UserLevel" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Answers_AspNetUsers" Association="Self.FK_Answers_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answers_Questions" Association="Self.FK_Answers_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="Answers" EntitySet="Answers" />
+          </AssociationSet>
           <AssociationSet Name="FK_Badges_Category" Association="Self.FK_Badges_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Badges" EntitySet="Badges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Answers" Association="Self.FK_Comments_Answers">
+            <End Role="Answers" EntitySet="Answers" />
+            <End Role="Comments" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_AspNetUsers" Association="Self.FK_Comments_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -272,13 +422,37 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
           </AssociationSet>
-          <AssociationSet Name="FK_QuestionTags_Question" Association="Self.FK_QuestionTags_Question">
+          <AssociationSet Name="FK_Questions_AspNetUsers" Association="Self.FK_Questions_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Questions" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questions_Category" Association="Self.FK_Questions_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="Questions" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionTags_Questions" Association="Self.FK_QuestionTags_Questions">
             <End Role="Questions" EntitySet="Questions" />
             <End Role="QuestionTags" EntitySet="QuestionTags" />
           </AssociationSet>
-          <AssociationSet Name="FK_QuestionTags_Tag" Association="Self.FK_QuestionTags_Tag">
+          <AssociationSet Name="FK_QuestionTags_Tags" Association="Self.FK_QuestionTags_Tags">
             <End Role="Tags" EntitySet="Tags" />
             <End Role="QuestionTags" EntitySet="QuestionTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserBadges_AspNetUsers" Association="Self.FK_UserBadges_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserBadges" EntitySet="UserBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserBadges_Badges" Association="Self.FK_UserBadges_Badges">
+            <End Role="Badges" EntitySet="Badges" />
+            <End Role="UserBadges" EntitySet="UserBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLevel_AspNetUsers" Association="Self.FK_UserLevel_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserLevel" EntitySet="UserLevel" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLevel_Category" Association="Self.FK_UserLevel_Category">
+            <End Role="Category" EntitySet="Category" />
+            <End Role="UserLevel" EntitySet="UserLevel" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -295,6 +469,9 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Score" Type="Int32" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Answers_AspNetUsers" FromRole="Answer" ToRole="AspNetUser" />
+          <NavigationProperty Name="Question" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Answer" ToRole="Question" />
+          <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.FK_Comments_Answers" FromRole="Answer" ToRole="Comment" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -344,6 +521,11 @@
           <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+          <NavigationProperty Name="Answers" Relationship="OutOfRangeModel.FK_Answers_AspNetUsers" FromRole="AspNetUser" ToRole="Answer" />
+          <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.FK_Comments_AspNetUsers" FromRole="AspNetUser" ToRole="Comment" />
+          <NavigationProperty Name="Questions" Relationship="OutOfRangeModel.FK_Questions_AspNetUsers" FromRole="AspNetUser" ToRole="Question" />
+          <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_AspNetUsers" FromRole="AspNetUser" ToRole="UserBadge" />
+          <NavigationProperty Name="UserLevels" Relationship="OutOfRangeModel.FK_UserLevel_AspNetUsers" FromRole="AspNetUser" ToRole="UserLevel" />
         </EntityType>
         <EntityType Name="Badge">
           <Key>
@@ -355,6 +537,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Badges_Category" FromRole="Badges" ToRole="Category" />
+          <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="Badge" ToRole="UserBadge" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -364,6 +547,8 @@
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Badges" Relationship="Self.FK_Badges_Category" FromRole="Category" ToRole="Badges" />
+          <NavigationProperty Name="Questions" Relationship="OutOfRangeModel.FK_Questions_Category" FromRole="Category" ToRole="Question" />
+          <NavigationProperty Name="UserLevels" Relationship="OutOfRangeModel.FK_UserLevel_Category" FromRole="Category" ToRole="UserLevel" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
@@ -375,6 +560,8 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Answer" Relationship="OutOfRangeModel.FK_Comments_Answers" FromRole="Comment" ToRole="Answer" />
+          <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Comments_AspNetUsers" FromRole="Comment" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -388,6 +575,9 @@
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Tags" Relationship="OutOfRangeModel.QuestionTags" FromRole="Question" ToRole="Tag" />
+          <NavigationProperty Name="Answers" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Question" ToRole="Answer" />
+          <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Questions_AspNetUsers" FromRole="Question" ToRole="AspNetUser" />
+          <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_Questions_Category" FromRole="Question" ToRole="Category" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -406,6 +596,8 @@
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="BadgeID" Type="Guid" Nullable="false" />
           <Property Name="Obtained" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_UserBadges_AspNetUsers" FromRole="UserBadge" ToRole="AspNetUser" />
+          <NavigationProperty Name="Badge" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="UserBadge" ToRole="Badge" />
         </EntityType>
         <EntityType Name="UserLevel">
           <Key>
@@ -416,6 +608,8 @@
           <Property Name="CategoryID" Type="Guid" Nullable="false" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <Property Name="Obtained" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_UserLevel_AspNetUsers" FromRole="UserLevel" ToRole="AspNetUser" />
+          <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_UserLevel_Category" FromRole="UserLevel" ToRole="Category" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -496,10 +690,180 @@
             <End Role="Question" EntitySet="Questions" />
             <End Role="Tag" EntitySet="Tags" />
           </AssociationSet>
+          <AssociationSet Name="FK_Answers_AspNetUsers" Association="OutOfRangeModel.FK_Answers_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Answers_Questions" Association="OutOfRangeModel.FK_Answers_Questions">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Answer" EntitySet="Answers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_Answers" Association="OutOfRangeModel.FK_Comments_Answers">
+            <End Role="Answer" EntitySet="Answers" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comments_AspNetUsers" Association="OutOfRangeModel.FK_Comments_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questions_AspNetUsers" Association="OutOfRangeModel.FK_Questions_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserBadges_AspNetUsers" Association="OutOfRangeModel.FK_UserBadges_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="UserBadge" EntitySet="UserBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLevel_AspNetUsers" Association="OutOfRangeModel.FK_UserLevel_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="UserLevel" EntitySet="UserLevels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserBadges_Badges" Association="OutOfRangeModel.FK_UserBadges_Badges">
+            <End Role="Badge" EntitySet="Badges" />
+            <End Role="UserBadge" EntitySet="UserBadges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Questions_Category" Association="OutOfRangeModel.FK_Questions_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Question" EntitySet="Questions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserLevel_Category" Association="OutOfRangeModel.FK_UserLevel_Category">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="UserLevel" EntitySet="UserLevels" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="QuestionTags">
           <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="*" />
           <End Type="OutOfRangeModel.Tag" Role="Tag" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Answers_AspNetUsers">
+          <End Type="OutOfRangeModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="OutOfRangeModel.Answer" Role="Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Answers_Questions">
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OutOfRangeModel.Answer" Role="Answer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Answer">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_Answers">
+          <End Type="OutOfRangeModel.Answer" Role="Answer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OutOfRangeModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comments_AspNetUsers">
+          <End Type="OutOfRangeModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="OutOfRangeModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questions_AspNetUsers">
+          <End Type="OutOfRangeModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserBadges_AspNetUsers">
+          <End Type="OutOfRangeModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="OutOfRangeModel.UserBadge" Role="UserBadge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserBadge">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLevel_AspNetUsers">
+          <End Type="OutOfRangeModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="OutOfRangeModel.UserLevel" Role="UserLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserLevel">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserBadges_Badges">
+          <End Type="OutOfRangeModel.Badge" Role="Badge" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OutOfRangeModel.UserBadge" Role="UserBadge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Badge">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserBadge">
+              <PropertyRef Name="BadgeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Questions_Category">
+          <End Type="OutOfRangeModel.Category" Role="Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Question">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserLevel_Category">
+          <End Type="OutOfRangeModel.Category" Role="Category" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OutOfRangeModel.UserLevel" Role="UserLevel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Category">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserLevel">
+              <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>

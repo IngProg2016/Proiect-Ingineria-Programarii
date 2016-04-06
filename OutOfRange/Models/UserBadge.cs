@@ -17,5 +17,8 @@ namespace OutOfRange.Models
         public string UserID { get; set; }
         public System.Guid BadgeID { get; set; }
         public Nullable<System.DateTime> Obtained { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Badge Badge { get; set; }
     }
 }

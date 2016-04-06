@@ -18,6 +18,7 @@ namespace OutOfRange.Models
         public Question()
         {
             this.Tags = new HashSet<Tag>();
+            this.Answers = new HashSet<Answer>();
         }
     
         public System.Guid ID { get; set; }
@@ -30,5 +31,9 @@ namespace OutOfRange.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tag> Tags { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Answer> Answers { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

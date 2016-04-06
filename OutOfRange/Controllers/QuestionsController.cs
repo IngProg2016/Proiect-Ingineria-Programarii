@@ -10,6 +10,7 @@ using System.Web.Helpers;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Results;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using OutOfRange.Models;
 
@@ -108,12 +109,12 @@ namespace OutOfRange.Controllers
             }
             List<Tag> removingTags=new List<Tag>();
             List<Tag> addingTags=new List<Tag>();
+            
             foreach (var tag in question.Tags)
             {
                 var currentTag = db.Tags.SingleOrDefault(x => x.Name.ToLower() == tag.Name.ToLower());
                 if (currentTag==null)
                 {
-
                     tag.ID = Guid.NewGuid();
 
                     //Tag newTag = new Tag()
@@ -142,7 +143,10 @@ namespace OutOfRange.Controllers
 
             question.ID=Guid.NewGuid();
             //guid hardcodat al unui user
-            question.UserID = "9e03ab56-d1c8-460a-ad48-fa7c6e69bf18";
+            if (User.Identity.IsAuthenticated)
+                question.UserID = User.Identity.GetUserId();
+            else
+                question.UserID = "9e03ab56-d1c8-460a-ad48-fa7c6e69bf18";
             question.Added=DateTime.Now;
             //Category ca sa mearga (bine ca nu's puse FK inca)
             question.CategoryID = Guid.Empty;

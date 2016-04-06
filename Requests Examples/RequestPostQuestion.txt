@@ -1,0 +1,11 @@
+POST http://localhost:6701/api/Questions HTTP/1.1
+User-Agent: Fiddler
+Host: localhost:6701
+Content-Length: 167
+Content-Type: application/json
+
+        {"Title":"Intrebarea no1","Description":"Ceva text",
+"Tags":
+[ {"Name":"c#","description":"ceva cu c#"},{"name":"valoare","description":"ceva valoros"}
+]
+}

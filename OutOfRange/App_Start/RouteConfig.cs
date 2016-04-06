@@ -14,7 +14,6 @@ namespace OutOfRange
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("api/{*any}");
 
-
             routes.MapRoute(
                 name: "Default",
                 url: "{*any}",

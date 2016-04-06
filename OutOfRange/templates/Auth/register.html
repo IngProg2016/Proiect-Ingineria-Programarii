@@ -2,18 +2,25 @@
 <div class="registration-bg">
     <div class="container">
 
-        <form class="form-signin wow fadeInUp">
+        <form name="registerForm" class="form-signin wow fadeInUp">
             <h2 class="form-signin-heading">Register now</h2>
             <div class="login-wrap">
-                <p> Enter account details below {{user.email}}</p>
-                <input ng-model="user.email" type="text" class="form-control" placeholder="Email" autofocus="">
-                <input ng-model="user.password" type="password" class="form-control" placeholder="Password">
-                <input ng-model="user.confirmPassword" type="password" class="form-control" placeholder="Re-type Password">
+                <p> Enter account details below</p>
+                <div class="form-group" ng-class="{'has-error': registerForm.email.$error.required && registerForm.email.$dirty, 'has-warning': registerForm.email.$error.email} ">
+                    <input ng-model="user.email" type="email" name="email" class="form-control" placeholder="Email" autofocus required>
+                </div>
+                <div class="form-group" ng-class="{'has-error': registerForm.password.$error.required && registerForm.password.$dirty, 'has-warning': registerForm.password.$error.minlength} ">
+                    <input ng-model="user.password" type="password" name="password" class="form-control" placeholder="Password" ng-minlength="6" required>
+                </div>
+                <div class="form-group" ng-class="{'has-error': registerForm.cpassword.$error.required && registerForm.cpassword.$dirty, 'has-warning': registerForm.cpassword.$error.minlength && (password == confirmPassword)} ">
+                    <input ng-model="user.confirmPassword" type="password" name="cpassword" class="form-control"  placeholder="Re-type Password" ng-minlength="6" required>
+                </div>
+                
                 <label class="checkbox">
                     <input type="checkbox" value="agree this condition"> I agree to the Terms of Service and Privacy Policy
                 </label>
-                <button class="btn btn-lg btn-login btn-block" type="submit" ng-click="register()">Submit</button>
-                <div ng-show="error" class="text-danger"><i class="fa fa-chevron-right"></i> {{error}}</div>
+                <button class="btn btn-lg btn-login btn-block" type="submit"  ng-disabled="registerForm.email.$invalid || registerForm.password.$invalid || oginForm.Cpassword.$invalid" ng-click="register()">Submit</button>
+                <div ng-show="error" class="text-danger" ng-repeat="err in error.ModelState"><i class="fa fa-chevron-right"></i> {{err[0]}} </div>
                 <div class="registration">
                     Already Registered ?
                     <a class="" href="/login">

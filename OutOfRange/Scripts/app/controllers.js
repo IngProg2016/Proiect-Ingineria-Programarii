@@ -31,6 +31,7 @@
                 $scope.error = err;
             });
         };
+
     }]);
 
     OutOfRangeApp.controller('LoginCtrl', ['$scope', 'authService', function ($scope, authService) {

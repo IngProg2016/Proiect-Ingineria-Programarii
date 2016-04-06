@@ -41,9 +41,10 @@
         };
 
         $scope.error = null;
+        $scope.rememberMe = false;
 
         $scope.login = function () {
-            authService.login($scope.user)
+            authService.login($scope.user, $scope.rememberMe)
             .catch(function (err) {
                 $scope.error = err.error_description;
             });
@@ -63,7 +64,9 @@
 
     OutOfRangeApp.controller('QuestionsCtrl', ['$scope', 'qaService', function ($scope, qaService) {
         (function init() {
-            qaService.getQuestions().then(function (data) { debugger; $scope.data = data.data });
+            qaService.getQuestions().then(function (data) {
+                $scope.data = data.data || [];
+            });
         })();
     }]);
 

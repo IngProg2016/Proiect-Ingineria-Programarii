@@ -17,9 +17,9 @@
                 </div>
                 
                 <label class="checkbox">
-                    <input type="checkbox" value="agree this condition"> I agree to the Terms of Service and Privacy Policy
+                    <input ng-model="tsppAgree" type="checkbox" value="agree this condition" required> I agree to the Terms of Service and Privacy Policy
                 </label>
-                <button class="btn btn-lg btn-login btn-block" type="submit"  ng-disabled="registerForm.email.$invalid || registerForm.password.$invalid || oginForm.Cpassword.$invalid" ng-click="register()">Submit</button>
+                <button class="btn btn-lg btn-login btn-block" type="submit"  ng-disabled="registerForm.email.$invalid || registerForm.password.$invalid || registerForm.cpassword.$invalid|| !tsppAgree" ng-click="register()">Submit</button>
                 <div ng-show="error" class="text-danger" ng-repeat="err in error.ModelState"><i class="fa fa-chevron-right"></i> {{err[0]}} </div>
                 <div class="registration">
                     Already Registered ?

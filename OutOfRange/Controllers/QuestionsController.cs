@@ -21,7 +21,7 @@ namespace OutOfRange.Controllers
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
         // GET: api/Questions
-        public JsonResult<List<QuestionDTO>> GetQuestions()
+        public JsonResult<IEnumerable<QuestionDTO>> GetQuestions()
         {
             //List<Question> questions=new List<Question>();
             //foreach (var question in db.Questions)
@@ -40,7 +40,7 @@ namespace OutOfRange.Controllers
             //        Tags = question.Tags.Select(tag => new Tag() {Name = tag.Name}).ToList()
             //    });
             //}
-            return Json(db.Questions.Select(QuestionDTO.FromEntity).ToList());
+            return Json(db.Questions.ToList().Select(QuestionDTO.FromEntity));
         }
 
         // GET: api/Questions/5

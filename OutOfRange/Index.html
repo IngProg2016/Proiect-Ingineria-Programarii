@@ -32,6 +32,7 @@
     <link href="/Content/style-responsive.css" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="/Content/parallax-slider/parallax-slider.css" />
+    <link rel="stylesheet" type="text/css" href="/Content/Site.css" />
     <script type="text/javascript" src="/Scripts/parallax-slider/modernizr.custom.28468.js">
     </script>
 
@@ -73,7 +74,7 @@
                             <li><a href="/logout">Logout</a></li>
                         </ul>
                     </li>
-                    <li><input class="form-control search" placeholder=" Search" type="text"></li>
+                    <li><input class="form-control search" placeholder="Search" type="text"></li>
                 </ul>
             </div>
         </div>
@@ -82,7 +83,8 @@
     <div ng-view>
         <div style="text-align:center;width:100%;">
             <h3>Loading...</h3>
-            <img style="width:70px;padding-top:10px;padding-bottom:30px;" src="Content/images/loading.gif">
+            <i class="fa fa-4x fa-spin fa-spinner" style="width:70px;padding-top:10px;padding-bottom:30px;"></i>
+            <!--<img style="width:70px;padding-top:10px;padding-bottom:30px;" src="/Content/images/loading.gif">-->
         </div>
     </div>
 

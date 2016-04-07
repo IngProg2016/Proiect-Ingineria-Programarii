@@ -342,6 +342,7 @@
     <Content Include="Content\images\clients\newlogo6.png" />
     <Content Include="Content\images\ipadwhite.png" />
     <Content Include="Content\images\link-icon.png" />
+    <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\mob1.png" />
     <Content Include="Content\images\nbg.jpg" />
     <Content Include="Content\images\parallax-slider\images\1.png" />

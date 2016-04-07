@@ -31,6 +31,11 @@
                 controller: 'QuestionsCtrl',
                 templateUrl: '/templates/Questions/questionAll.html'
             })
+            .when('/questions/add', {
+                controller: 'QuestionAddCtrl',
+                templateUrl: '/templates/Questions/questionAdd.html',
+                requiresLogin: true
+            })
             .otherwise({
                 templateUrl: '/templates/404.html'
             });

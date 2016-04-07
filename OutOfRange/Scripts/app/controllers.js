@@ -70,4 +70,21 @@
         })();
     }]);
 
+    OutOfRangeApp.controller('QuestionAddCtrl', ['$scope', 'qaService', function ($scope, qaService) {
+        $scope.question = {
+            title: "",
+            tescription:"",
+            tags:""
+        };
+        $scope.addQuestion = function () {
+            debugger;
+            var taglist = $scope.question.tags.split(/ |,/);
+            $scope.question.tags = []
+            for (var tag in taglist) {
+                $scope.question.tags.push({ name: taglist[tag] });
+            }
+            qaService.addQuestion($scope.question);
+        };
+    }]);
+
 })();

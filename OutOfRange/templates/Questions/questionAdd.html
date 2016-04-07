@@ -1,0 +1,25 @@
+﻿<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-sm-8">
+                <h1>
+                    Add Questions
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <form name="qFrom" class="wow fadeInUp">
+        <div class="form-group">
+            <input ng-model="question.title" type="text" name="title" class="form-control" placeholder="Question Title" autofocus required>
+        </div>
+        <div class="form-group">
+            <textarea ng-model="question.description" name="description" class="form-control" rows="5" placeholder="Question Title" required ng-minlength="5"></textarea>
+        </div>
+        <div class="form-group">
+            <input ng-model="question.tags" type="text" name="tags" class="form-control" placeholder="Tags" autofocus required>
+        </div>
+        <button ng-click="addQuestion()" class="btn btn-lg btn-success" type="button">Add Question</button>
+    </form>
+</div>

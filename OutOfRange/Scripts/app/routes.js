@@ -29,8 +29,7 @@
             })
             .when('/questions', {
                 controller: 'QuestionsCtrl',
-                templateUrl: '/templates/Questions/questionAll.html',
-                requiresLogin: true
+                templateUrl: '/templates/Questions/questionAll.html'
             })
             .otherwise({
                 templateUrl: '/templates/404.html'

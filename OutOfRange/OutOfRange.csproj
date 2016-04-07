@@ -238,6 +238,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\QuestionsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="db\Refresh.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -246,6 +247,7 @@
     <Compile Include="Models\Answer.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AnswerDTO.cs" />
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -255,6 +257,7 @@
     <Compile Include="Models\AspNetUserClaim.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AspNetUserDTO.cs" />
     <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -264,9 +267,11 @@
     <Compile Include="Models\Category.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CategoryDTO.cs" />
     <Compile Include="Models\Comment.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CommentDTO.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Models.Context.cs">
       <AutoGen>True</AutoGen>
@@ -286,15 +291,19 @@
     <Compile Include="Models\Question.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\QuestionDTO.cs" />
     <Compile Include="Models\Tag.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TagDTO.cs" />
     <Compile Include="Models\UserBadge.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserBadgeDTO.cs" />
     <Compile Include="Models\UserLevel.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserLevelDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
@@ -342,6 +351,7 @@
     <Content Include="Content\images\clients\newlogo6.png" />
     <Content Include="Content\images\ipadwhite.png" />
     <Content Include="Content\images\link-icon.png" />
+    <Content Include="Content\images\loading.gif" />
     <Content Include="Content\images\mob1.png" />
     <Content Include="Content\images\nbg.jpg" />
     <Content Include="Content\images\parallax-slider\images\1.png" />

@@ -21,26 +21,26 @@ namespace OutOfRange.Controllers
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
         // GET: api/Questions
-        public JsonResult<List<Question>> GetQuestions()
+        public JsonResult<List<QuestionDTO>> GetQuestions()
         {
-            JsonSerializerSettings settings=new JsonSerializerSettings();
-            settings.ReferenceLoopHandling=ReferenceLoopHandling.Ignore;
-            List<Question> questions=new List<Question>();
-            foreach (var question in db.Questions)
-            {
-                questions.Add(new Question()
-                {
-                    Added = question.Added,
-                    CategoryID = question.CategoryID,
-                    Description = question.Description,
-                    ID = question.ID,
-                    Modified = question.Modified,
-                    Title = question.Title,
-                    UserID = question.UserID,
-                    Tags = question.Tags.Select(tag => new Tag() {Name = tag.Name}).ToList()
-                });
-            }
-            return Json(questions,settings);
+            //List<Question> questions=new List<Question>();
+            //foreach (var question in db.Questions)
+            //{
+            //    questions.Add(new Question()
+            //    {
+            //        Added = question.Added,
+            //        CategoryID = question.CategoryID,
+            //        Category = question.Category,
+            //        AspNetUser = question.AspNetUser,
+            //        Description = question.Description,
+            //        ID = question.ID,
+            //        Modified = question.Modified,
+            //        Title = question.Title,
+            //        UserID = question.UserID,
+            //        Tags = question.Tags.Select(tag => new Tag() {Name = tag.Name}).ToList()
+            //    });
+            //}
+            return Json(db.Questions.Select(QuestionDTO.FromEntity).ToList());
         }
 
         // GET: api/Questions/5
@@ -100,7 +100,7 @@ namespace OutOfRange.Controllers
 ]
 }
         */
-        [ResponseType(typeof(Question))]
+        [ResponseType(typeof(QuestionDTO))]
         public IHttpActionResult PostQuestion(Question question)
         {
             if (!ModelState.IsValid)
@@ -150,7 +150,6 @@ namespace OutOfRange.Controllers
             question.Added=DateTime.Now;
             //Category ca sa mearga (bine ca nu's puse FK inca)
             question.CategoryID = Guid.Empty;
-            
             db.Questions.Add(question);
 
             try
@@ -168,8 +167,9 @@ namespace OutOfRange.Controllers
                     throw e;
                 }
             }
-
-            return CreatedAtRoute("DefaultApi", new { id = question.ID }, question);
+            db=new OutOfRangeEntities();
+            question = db.Questions.Find(question.ID);
+            return CreatedAtRoute("DefaultApi", new { id = question.ID }, QuestionDTO.FromEntity(question));
         }
 
         // DELETE: api/Questions/5
@@ -181,7 +181,6 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
-
             db.Questions.Remove(question);
             db.SaveChanges();
 

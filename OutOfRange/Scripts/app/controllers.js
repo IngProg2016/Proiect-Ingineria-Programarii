@@ -65,7 +65,7 @@
     OutOfRangeApp.controller('QuestionsCtrl', ['$scope', 'qaService', function ($scope, qaService) {
         (function init() {
             qaService.getQuestions().then(function (data) {
-                $scope.data = data.data || [];
+                $scope.data = data || [];
             });
         })();
     }]);

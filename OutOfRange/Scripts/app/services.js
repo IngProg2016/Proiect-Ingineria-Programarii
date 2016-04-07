@@ -23,10 +23,14 @@
         function _register(user) {
             var _user = new Register(user);
             return _user.$save()
-            .catch(function (err) {
-                console.error(err.data);
-                return $q.reject(err.data);
-            });
+                .then(function (data) {
+                    $location.path('/login');
+                    return $q.resolve(data);
+                })
+                .catch(function (err) {
+                    console.error(err.data);
+                    return $q.reject(err.data);
+                });
         };
 
         function _login(user, rememberMe) {
@@ -143,7 +147,7 @@
         var Questions = $resource('/api/questions');
         return {
             getQuestions: function () {
-                return new Questions().$query();
+                return Questions.query().$promise;
             }
         }
     }]);

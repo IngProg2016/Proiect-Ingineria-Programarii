@@ -98,10 +98,32 @@
     OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', 'qaService', function ($scope, qaService) {
         $scope.question = {
             title: "",
-            tescription: "",
+            description: "",
             tags: ""
         };
+
+        function _getQuestion() {
+            qaService.viewQuestion().then(function (data) {
+                $scope.question = data || [];
+            })
+        }
+
+        (function init() {
+            _getQuestion();
+        })();
+
+        $scope.answer = {
+            description: "",
+            questionID: ""
+        }
         
+        $scope.addAnswer = function () {
+            $scope.answer.questionID = $scope.question.ID;
+            qaService.addAnswer($scope.answer).then(function (_data) {
+                _getQuestion();
+                $scope.answer.description = "";
+            })
+        }
     }]);
 
 })();

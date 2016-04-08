@@ -95,4 +95,13 @@
         };
     }]);
 
+    OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', 'qaService', function ($scope, qaService) {
+        $scope.question = {
+            title: "",
+            tescription: "",
+            tags: ""
+        };
+        
+    }]);
+
 })();

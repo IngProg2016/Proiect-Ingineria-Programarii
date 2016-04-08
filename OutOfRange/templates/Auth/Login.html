@@ -18,7 +18,12 @@
 
                         </span>
                     </label>
-                    <button class="btn btn-lg btn-login btn-block" type="button" ng-disabled="loginForm.email.$invalid || loginForm.password.$invalid" ng-click="login()">Sign in</button>
+                    <button class="btn btn-lg btn-login btn-block" type="button" ng-hide="loading" ng-disabled="loginForm.email.$invalid || loginForm.password.$invalid" ng-click="login()">Sign in</button>
+                    <div style="text-align:center;width:100%;" ng-show="loading">
+                        <h3>Loading...</h3>
+                        <i class="fa fa-4x fa-spin fa-spinner" style="width:70px;padding-top:10px;padding-bottom:30px;"></i>
+                        <!--<img style="width:70px;padding-top:10px;padding-bottom:30px;" src="/Content/images/loading.gif">-->
+                    </div>
                     <div ng-show="error" class="text-danger"><i class="fa fa-chevron-right"></i> {{error}}</div>
                     <div class="registration">
                         Don't have an account yet?

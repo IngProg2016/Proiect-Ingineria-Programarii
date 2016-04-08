@@ -25,9 +25,13 @@
 
         $scope.error = null;
 
+        $scope.loading = false;
+
         $scope.register = function () {
+            $scope.loading = true;
             authService.register($scope.user)
             .catch(function (err) {
+                $scope.loading = false;
                 $scope.error = err;
             });
         };
@@ -43,9 +47,13 @@
         $scope.error = null;
         $scope.rememberMe = false;
 
+        $scope.loading = false;
+
         $scope.login = function () {
+            $scope.loading = true;
             authService.login($scope.user, $scope.rememberMe)
             .catch(function (err) {
+                $scope.loading = false;
                 $scope.error = err.error_description;
             });
         };
@@ -68,6 +76,23 @@
                 $scope.data = data || [];
             });
         })();
+    }]);
+
+    OutOfRangeApp.controller('QuestionAddCtrl', ['$scope', 'qaService', function ($scope, qaService) {
+        $scope.question = {
+            title: "",
+            tescription:"",
+            tags:""
+        };
+        $scope.addQuestion = function () {
+            debugger;
+            var taglist = $scope.question.tags.split(/ |,/);
+            $scope.question.tags = []
+            for (var tag in taglist) {
+                $scope.question.tags.push({ name: taglist[tag] });
+            }
+            qaService.addQuestion($scope.question);
+        };
     }]);
 
 })();

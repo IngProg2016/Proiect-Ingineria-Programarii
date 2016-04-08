@@ -23,28 +23,11 @@ namespace OutOfRange.Controllers
         // GET: api/Questions
         public JsonResult<IEnumerable<QuestionDTO>> GetQuestions()
         {
-            //List<Question> questions=new List<Question>();
-            //foreach (var question in db.Questions)
-            //{
-            //    questions.Add(new Question()
-            //    {
-            //        Added = question.Added,
-            //        CategoryID = question.CategoryID,
-            //        Category = question.Category,
-            //        AspNetUser = question.AspNetUser,
-            //        Description = question.Description,
-            //        ID = question.ID,
-            //        Modified = question.Modified,
-            //        Title = question.Title,
-            //        UserID = question.UserID,
-            //        Tags = question.Tags.Select(tag => new Tag() {Name = tag.Name}).ToList()
-            //    });
-            //}
             return Json(db.Questions.ToList().Select(QuestionDTO.FromEntity));
         }
 
         // GET: api/Questions/5
-        [ResponseType(typeof(Question))]
+        [ResponseType(typeof(QuestionDTO))]
         public IHttpActionResult GetQuestion(Guid id)
         {
             Question question = db.Questions.Find(id);
@@ -53,7 +36,7 @@ namespace OutOfRange.Controllers
                 return NotFound();
             }
 
-            return Ok(question);
+            return Ok(new QuestionDTO(question));
         }
 
         // PUT: api/Questions/5
@@ -173,7 +156,7 @@ namespace OutOfRange.Controllers
         }
 
         // DELETE: api/Questions/5
-        [ResponseType(typeof(Question))]
+        [ResponseType(typeof(QuestionDTO))]
         public IHttpActionResult DeleteQuestion(Guid id)
         {
             Question question = db.Questions.Find(id);
@@ -184,7 +167,7 @@ namespace OutOfRange.Controllers
             db.Questions.Remove(question);
             db.SaveChanges();
 
-            return Ok(question);
+            return Ok(new QuestionDTO(question));
         }
 
         protected override void Dispose(bool disposing)

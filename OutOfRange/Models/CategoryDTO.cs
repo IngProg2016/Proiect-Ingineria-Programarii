@@ -19,5 +19,10 @@ namespace OutOfRange.Models
             Name = category.Name;
             Description = category.Description;
         }
+
+        public static CategoryDTO FromEntity(Category category)
+        {
+            return new CategoryDTO(category);
+        }
     }
 }

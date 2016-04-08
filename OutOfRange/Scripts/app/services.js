@@ -148,6 +148,12 @@
         return {
             getQuestions: function () {
                 return Questions.query().$promise;
+            },
+            addQuestion: function (question) {
+                return new Questions(question).$save()
+                    .then(function (data) {
+                        $location.path('/questions');
+                    })
             }
         }
     }]);

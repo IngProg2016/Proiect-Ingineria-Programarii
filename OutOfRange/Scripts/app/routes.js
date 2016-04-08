@@ -36,7 +36,7 @@
                 templateUrl: '/templates/Questions/questionAdd.html',
                 requiresLogin: true
             })
-            .when('/question/:id', {
+            .when('/question/:id/:scrollTo', {
                 controller: 'QuestionViewCtrl',
                 templateUrl: '/templates/Questions/questionView.html',
                 requiresLogin: true

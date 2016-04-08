@@ -25,10 +25,10 @@
                                         <a href="#">{{item.AspNetUser.Email}}</a>
                                         |
                                         <i class="fa fa-calendar"></i>
-                                        {{item.Added|date}}
+                                        {{item.Added | date}}
                                         |
                                         <i class="fa fa-comment"></i>
-                                        <a href="#">{{item.Answers.length}}</a>
+                                        <a href="/question/{{item.ID}}/Answers">{{item.Answers.length}}</a>
                                         |
                                         <i class="fa fa-bookmark"></i>
                                         <a href="#">{{item.Category.Name}}</a>

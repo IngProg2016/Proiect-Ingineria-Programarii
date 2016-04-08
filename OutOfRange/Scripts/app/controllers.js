@@ -95,7 +95,7 @@
         };
     }]);
 
-    OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', 'qaService', function ($scope, qaService) {
+    OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', '$routeParams', '$timeout', 'smoothScroll', 'qaService', function ($scope, $routeParams, $timeout, smoothScroll, qaService) {
         $scope.question = {
             title: "",
             description: "",
@@ -105,24 +105,36 @@
         function _getQuestion() {
             qaService.viewQuestion().then(function (data) {
                 $scope.question = data || [];
-            })
+            });
+        }
+
+        function _scrollToElement(scrollTo) {
+            scrollTo = scrollTo || $routeParams.scrollTo;
+
+            $scope.$on('$viewContentLoaded', function () {
+                scrollTo && $timeout(function () {
+                    smoothScroll(document.getElementById(scrollTo), { duration: 700, easing: 'easeOutQuad' });
+                }, 500);
+            });
         }
 
         (function init() {
             _getQuestion();
+            _scrollToElement();
         })();
 
         $scope.answer = {
             description: "",
             questionID: ""
         }
-        
+
         $scope.addAnswer = function () {
             $scope.answer.questionID = $scope.question.ID;
             qaService.addAnswer($scope.answer).then(function (_data) {
                 _getQuestion();
+
                 $scope.answer.description = "";
-            })
+            });
         }
     }]);
 

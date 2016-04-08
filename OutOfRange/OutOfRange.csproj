@@ -618,6 +618,7 @@
     <Content Include="templates\404.html" />
     <Content Include="templates\Questions\questionAdd.html" />
     <Content Include="templates\Questions\questionAll.html" />
+    <Content Include="templates\Questions\questionView.html" />
     <Content Include="templates\User\user.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">

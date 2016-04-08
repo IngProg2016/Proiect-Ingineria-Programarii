@@ -143,8 +143,8 @@
         $httpProvider.interceptors.push('authInterceptorService');
     }]);
 
-    OutOfRangeApp.factory('qaService', ['$resource', '$location', function ($resource, $location) {
-        var Questions = $resource('/api/questions');
+    OutOfRangeApp.factory('qaService', ['$resource', '$location','$routeParams', function ($resource, $location,$routeParams) {
+        var Questions = $resource('/api/questions/:id');
         return {
             getQuestions: function () {
                 return Questions.query().$promise;
@@ -154,6 +154,9 @@
                     .then(function (data) {
                         $location.path('/questions');
                     })
+            },
+            viewQuestion: function () {
+                return Questions.get({id:$routeParams.id}).$promise;
             }
         }
     }]);

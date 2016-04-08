@@ -513,6 +513,7 @@
     <Content Include="Scripts\angular-ngStorage.js" />
     <Content Include="Scripts\angular-resource.js" />
     <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-smooth-scroll.min.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\controllers.js" />

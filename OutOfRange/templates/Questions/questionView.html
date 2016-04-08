@@ -80,6 +80,11 @@
                 <div class="media-body">
                     <h4 class="media-heading">
                         {{ans.AspNetUser.UserName}} | <span>{{ans.Added | date}}</span>
+                            {{ans.Added | date}} |
+                        <a ng-show="isAuth" href="#">
+                            Reply
+                        </a>
+                        <small ng-hide="isAuth"><a href="/login?returnUrl=/question/{{question.ID}}">Login</a> or <a href="/register?returnUrl=/question/{{question.ID}}">Register</a> to add comment</small>
                     </h4>
                     <p>{{ans.Description}}</p>
                     <a href="javascript:;">Reply</a>
@@ -87,7 +92,8 @@
             </div>
             <div class="post-comment">
                 <h3 class="skills">Post Answer</h3>
-                <form class="form-horizontal" role="form">
+                <p ng-hide="isAuth"><a href="/login?returnUrl=/question/{{question.ID}}">Login</a> or <a href="/register?returnUrl=/question/{{question.ID}}">Register</a> to add answer</p>
+                <form class="form-horizontal" role="form" ng-show="isAuth">
                     <div class="form-group">
                         <div class="col-lg-12">
                             <textarea ng-model="answer.description" placeholder="Message" rows="8" class="form-control"></textarea>

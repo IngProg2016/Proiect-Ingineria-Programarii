@@ -39,7 +39,6 @@
             .when('/question/:id', {
                 controller: 'QuestionViewCtrl',
                 templateUrl: '/templates/Questions/questionView.html',
-                requiresLogin: true
             })
             .otherwise({
                 templateUrl: '/templates/404.html'

@@ -95,12 +95,14 @@
         };
     }]);
 
-    OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', 'qaService', function ($scope, qaService) {
+    OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', 'qaService', 'authService', function ($scope, qaService, authService) {
         $scope.question = {
             title: "",
             description: "",
             tags: ""
         };
+
+        $scope.isAuth = authService.getAuthentificationInfo().isAuth;
 
         function _getQuestion() {
             qaService.viewQuestion().then(function (data) {

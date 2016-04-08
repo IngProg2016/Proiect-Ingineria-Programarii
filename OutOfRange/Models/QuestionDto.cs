@@ -11,7 +11,7 @@ namespace OutOfRange.Models
         public QuestionDTO()
         {
             Tags=new HashSet<TagDTO>();
-            Anwsers=new HashSet<AnswerDTO>();
+            Answers=new HashSet<AnswerDTO>();
         }
 
         public QuestionDTO(Question question)
@@ -25,7 +25,7 @@ namespace OutOfRange.Models
             Modified = question.Modified;
             Tags = question.Tags.Select(TagDTO.FromEntity).ToList();
             //Tags = (from tag in question.Tags select new TagDTO(tag)).ToList();
-            Anwsers = question.Answers.Select(AnswerDTO.FromEntity).ToList();
+            Answers = question.Answers.Select(AnswerDTO.FromEntity).ToList();
             //Anwsers = (from ans in question.Answers select new AnswerDTO(ans)).ToList();
             AspNetUser = new AspNetUserDTO(question.AspNetUser);
             Category = new CategoryDTO(question.Category);
@@ -39,7 +39,7 @@ namespace OutOfRange.Models
         public DateTime Added { get; set; }
         public DateTime? Modified { get; set; }
         public ICollection<TagDTO> Tags { get; set; }
-        public ICollection<AnswerDTO> Anwsers { get; set; }
+        public ICollection<AnswerDTO> Answers { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }
         public CategoryDTO Category { get; set; }
 

@@ -145,6 +145,7 @@
 
     OutOfRangeApp.factory('qaService', ['$resource', '$location','$routeParams', function ($resource, $location,$routeParams) {
         var Questions = $resource('/api/questions/:id');
+        var Answer = $resource('/api/answers')
         return {
             getQuestions: function () {
                 return Questions.query().$promise;
@@ -157,7 +158,11 @@
             },
             viewQuestion: function () {
                 return Questions.get({id:$routeParams.id}).$promise;
+            },
+            addAnswer: function (answer) {
+                return new Answer(answer).$save();
             }
+            
         }
     }]);
 

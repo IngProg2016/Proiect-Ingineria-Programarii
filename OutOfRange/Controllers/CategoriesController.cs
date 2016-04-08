@@ -17,7 +17,7 @@ namespace OutOfRange.Controllers
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
-        // GET: api/Categories
+        //GET: api/Categories
         public JsonResult<IEnumerable<CategoryDTO>> GetCategories()
         {
             return Json(db.Categories.ToList().Select(CategoryDTO.FromEntity));
@@ -98,7 +98,7 @@ namespace OutOfRange.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = category.ID }, new CategoryDTO());
+            return CreatedAtRoute("DefaultApi", new { id = category.ID }, new CategoryDTO(category));
         }
 
         // DELETE: api/Categories/5

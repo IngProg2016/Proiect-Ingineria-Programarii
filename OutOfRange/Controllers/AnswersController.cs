@@ -23,8 +23,9 @@ namespace OutOfRange.Controllers
         {
             return Json(db.Answers.ToList().Select(AnswerDTO.FromEntity));
         }
-        //GET: api/Answers/{GUID}
-        public JsonResult<IEnumerable<AnswerDTO>> GetAnswers(Guid id)
+        //GET: api/AnswersQuestion/{GUID}
+        [Route("api/AnswersQuestion/{id}")]
+        public JsonResult<IEnumerable<AnswerDTO>> GetAnswersQuestion(Guid id)
         {
             return Json(db.Answers.Where(x=>x.QuestionID==id).ToList().Select(AnswerDTO.FromEntity));
         }
@@ -113,7 +114,7 @@ namespace OutOfRange.Controllers
         }
 
         // DELETE: api/Answers/5
-        [ResponseType(typeof(Answer))]
+        [ResponseType(typeof(AnswerDTO))]
         public IHttpActionResult DeleteAnswer(Guid id)
         {
             Answer answer = db.Answers.Find(id);
@@ -125,7 +126,7 @@ namespace OutOfRange.Controllers
             db.Answers.Remove(answer);
             db.SaveChanges();
 
-            return Ok(answer);
+            return Ok(new AnswerDTO(answer));
         }
 
         protected override void Dispose(bool disposing)

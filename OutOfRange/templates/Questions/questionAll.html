@@ -15,55 +15,39 @@
             <div ng-repeat="item in data" class="col-md-6" data-wow-animation-name="fadeInLeft">
                 <div class="blog-left wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
                     <div class="blog-content">
-                        <h3>
-                            {{item.Title}}
-                        </h3>
+                        <h3><a href="/question/{{item.ID}}">{{item.Title}}</a></h3>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="blog-two-info">
                                     <p>
-                                        <i class="fa fa-user">
-                                        </i>
+                                        <i class="fa fa-user"></i>
                                         by
-                                        <a href="#">
-                                            {{item.AspNetUser.Email}}
-                                        </a>
+                                        <a href="#">{{item.AspNetUser.Email}}</a>
                                         |
-                                        <i class="fa fa-calendar">
-                                        </i>
+                                        <i class="fa fa-calendar"></i>
                                         {{item.Added|date}}
                                         |
-                                        <i class="fa fa-comment">
-                                        </i>
-                                        <a href="#">
-                                            {{item.Anwsers.length}}
-                                        </a>
+                                        <i class="fa fa-comment"></i>
+                                        <a href="#">{{item.Anwsers.length}}</a>
                                         |
-                                        <i class="fa fa-bookmark">
-                                        </i>
-                                        <a href="#">
-                                            {{item.Category.Name}}
-                                        </a>
+                                        <i class="fa fa-bookmark"></i>
+                                        <a href="#">{{item.Category.Name}}</a>
                                         <br>
-                                        <i class="fa fa-tags">
-                                        </i>
+                                        <i class="fa fa-tags"></i>
                                         Tags :
                                         <a href="#" ng-repeat="tag in item.Tags">
-                                            <span class="label label-info">
-                                                {{tag.Name}}
-                                            </span>
+                                            <span class="label label-info">{{tag.Name}}</span>
                                         </a>
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <p>
-                            {{item.Description}}
+                            {{item.Description}}&hellip;
+                            <a href="/question/{{item.ID}}" class="text-success">Read more</a>
                         </p>
                     </div>
-                    <button class="btn btn-primary">
-                        Read More
-                    </button>
+
                 </div>
             </div>
         </div>

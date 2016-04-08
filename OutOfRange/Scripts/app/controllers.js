@@ -25,9 +25,13 @@
 
         $scope.error = null;
 
+        $scope.loading = false;
+
         $scope.register = function () {
+            $scope.loading = true;
             authService.register($scope.user)
             .catch(function (err) {
+                $scope.loading = false;
                 $scope.error = err;
             });
         };
@@ -43,9 +47,13 @@
         $scope.error = null;
         $scope.rememberMe = false;
 
+        $scope.loading = false;
+
         $scope.login = function () {
+            $scope.loading = true;
             authService.login($scope.user, $scope.rememberMe)
             .catch(function (err) {
+                $scope.loading = false;
                 $scope.error = err.error_description;
             });
         };

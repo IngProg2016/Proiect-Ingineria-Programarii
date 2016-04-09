@@ -90,6 +90,7 @@ namespace OutOfRange.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
             List<Tag> removingTags=new List<Tag>();
             List<Tag> addingTags=new List<Tag>();
             
@@ -134,7 +135,7 @@ namespace OutOfRange.Controllers
             //Category ca sa mearga (bine ca nu's puse FK inca)
             question.CategoryID = Guid.Empty;
             db.Questions.Add(question);
-
+            
             try
             {
                 db.SaveChanges();

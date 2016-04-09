@@ -562,6 +562,7 @@
           <Property Name="Modified" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Answer" Relationship="OutOfRangeModel.FK_Comments_Answers" FromRole="Comment" ToRole="Answer" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Comments_AspNetUsers" FromRole="Comment" ToRole="AspNetUser" />
+          <NavigationProperty Name="Question" Relationship="OutOfRangeModel.QuestionComment" FromRole="Comment" ToRole="Question" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -578,6 +579,7 @@
           <NavigationProperty Name="Answers" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Questions_AspNetUsers" FromRole="Question" ToRole="AspNetUser" />
           <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_Questions_Category" FromRole="Question" ToRole="Category" />
+          <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.QuestionComment" FromRole="Question" ToRole="Comment" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -730,6 +732,10 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="UserLevel" EntitySet="UserLevels" />
           </AssociationSet>
+          <AssociationSet Name="QuestionComment" Association="OutOfRangeModel.QuestionComment">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="QuestionTags">
           <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="*" />
@@ -862,6 +868,18 @@
             </Principal>
             <Dependent Role="UserLevel">
               <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="QuestionComment">
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="OutOfRangeModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ParentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

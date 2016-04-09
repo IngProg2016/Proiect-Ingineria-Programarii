@@ -23,5 +23,6 @@ namespace OutOfRange.Models
     
         public virtual Answer Answer { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Question Question { get; set; }
     }
 }

@@ -32,6 +32,7 @@
         <AssociationConnector Association="OutOfRangeModel.FK_UserBadges_Badges" />
         <AssociationConnector Association="OutOfRangeModel.FK_Questions_Category" />
         <AssociationConnector Association="OutOfRangeModel.FK_UserLevel_Category" />
+        <AssociationConnector Association="OutOfRangeModel.QuestionComment" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

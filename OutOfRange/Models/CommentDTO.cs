@@ -7,7 +7,7 @@ namespace OutOfRange.Models
         public Guid ID { get; set; }
         public Guid ParentID { get; set; }
         public string UserID { get; set; }
-        public string Description { get; set; }
+        public string CommentBody { get; set; }
         public DateTime Added { get; set; }
         public DateTime? Modified { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }
@@ -22,7 +22,7 @@ namespace OutOfRange.Models
             ID = comment.ID;
             ParentID = comment.ParentID;
             UserID = comment.UserID;
-            Description = comment.Description;
+            CommentBody = comment.CommentBody;
             Added = comment.Added;
             Modified = comment.Modified;
             AspNetUser=new AspNetUserDTO(comment.AspNetUser);

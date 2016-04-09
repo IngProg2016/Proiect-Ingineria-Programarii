@@ -80,16 +80,17 @@
 
     OutOfRangeApp.controller('QuestionAddCtrl', ['$scope', 'qaService', function ($scope, qaService) {
         $scope.question = {
-            title: "",
-            tescription:"",
-            tags:""
+            Title: '',
+            QuestionBody: '',
+            Tags: '',
+            TagString: ''
         };
         $scope.addQuestion = function () {
             debugger;
-            var taglist = $scope.question.tags.split(/ |,/);
-            $scope.question.tags = []
+            var taglist = $scope.question.TagString.split(/ |,/);
+            $scope.question.Tags = []
             for (var tag in taglist) {
-                $scope.question.tags.push({ name: taglist[tag] });
+                $scope.question.Tags.push({ name: taglist[tag] });
             }
             qaService.addQuestion($scope.question);
         };
@@ -97,9 +98,9 @@
 
     OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', '$routeParams', '$timeout', 'smoothScroll', 'qaService', 'authService', function ($scope, $routeParams, $timeout, smoothScroll, qaService, authService) {
         $scope.question = {
-            title: "",
-            description: "",
-            tags: ""
+            Title: "",
+            QuestionBody: "",
+            Tags: ""
         };
 
         $scope.isAuth = authService.getAuthentificationInfo().isAuth;
@@ -126,16 +127,16 @@
         })();
 
         $scope.answer = {
-            description: "",
-            questionID: ""
+            AnswerBody: "",
+            QuestionID: ""
         }
 
         $scope.addAnswer = function () {
-            $scope.answer.questionID = $scope.question.ID;
+            $scope.answer.QuestionID = $scope.question.ID;
             qaService.addAnswer($scope.answer).then(function (_data) {
                 _getQuestion();
 
-                $scope.answer.description = "";
+                $scope.answer.AnswerBody = "";
             });
         }
     }]);

@@ -17,9 +17,9 @@ namespace OutOfRange.Models
         public System.Guid ID { get; set; }
         public System.Guid ParentID { get; set; }
         public string UserID { get; set; }
-        public string Description { get; set; }
         public System.DateTime Added { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
+        public string CommentBody { get; set; }
     
         public virtual Answer Answer { get; set; }
         public virtual AspNetUser AspNetUser { get; set; }

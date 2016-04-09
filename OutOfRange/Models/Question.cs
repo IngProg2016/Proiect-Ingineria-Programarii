@@ -26,9 +26,9 @@ namespace OutOfRange.Models
         public string UserID { get; set; }
         public System.Guid CategoryID { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
         public System.DateTime Added { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
+        public string QuestionBody { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Tag> Tags { get; set; }

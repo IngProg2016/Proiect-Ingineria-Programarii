@@ -20,7 +20,7 @@ namespace OutOfRange.Models
             UserID = question.UserID;
             CategoryID = question.CategoryID;
             Title = question.Title;
-            Description = question.Description;
+            QuestionBody = question.QuestionBody;
             Added = question.Added;
             Modified = question.Modified;
             Tags = question.Tags.Select(TagDTO.FromEntity).ToList();
@@ -35,7 +35,7 @@ namespace OutOfRange.Models
         public string UserID { get; set; }
         public Guid CategoryID { get; set; }
         public string Title { get; set; }
-        public string Description { get; set; }
+        public string QuestionBody { get; set; }
         public DateTime Added { get; set; }
         public DateTime? Modified { get; set; }
         public ICollection<TagDTO> Tags { get; set; }

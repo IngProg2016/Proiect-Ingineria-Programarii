@@ -127,6 +127,21 @@
 
         new WOW().init();
 
+        function init() {
+            var windowHeight = $(window).height();
+            var headHeight = $("header").height();
+            var footHeight = 0;
+            $('footer').each(function (i, obj) {
+                footHeight += obj.clientHeight;
+            });
+            var mainHeight = windowHeight - footHeight - headHeight;
+            if (mainHeight < 250) {
+                mainHeight = 250;
+            }
+                $("#main-container").css("min-height", mainHeight);
+        };
+
+        init();
 
     </script>
 </body>

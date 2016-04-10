@@ -515,6 +515,7 @@
     <Content Include="Scripts\angular-route.js" />
     <Content Include="Scripts\angular-smooth-scroll.min.js" />
     <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\angular_1_router.js" />
     <Content Include="Scripts\app\app.js" />
     <Content Include="Scripts\app\controllers.js" />
     <Content Include="Scripts\app\routes.js" />
@@ -588,6 +589,7 @@
     <Content Include="Models\Models.edmx.diagram">
       <DependentUpon>Models.edmx</DependentUpon>
     </Content>
+    <Content Include="package.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\common-scripts.js" />
     <Content Include="Scripts\hover-dropdown.js" />
@@ -617,6 +619,9 @@
     <Content Include="templates\Auth\register.html" />
     <Content Include="templates\front-page.html" />
     <Content Include="templates\404.html" />
+    <Content Include="templates\MasterPage\app.html" />
+    <Content Include="templates\MasterPage\footer.html" />
+    <Content Include="templates\MasterPage\header.html" />
     <Content Include="templates\Questions\questionAdd.html" />
     <Content Include="templates\Questions\questionAll.html" />
     <Content Include="templates\Questions\questionView.html" />

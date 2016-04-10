@@ -1,9 +1,50 @@
 ﻿(function () {
     'use strict';
 
-    var OutOfRangeApp = angular.module('OutOfRangeApp');
+    var OutOfRangeApp = angular.module('OutOfRangeApp')
+    .service('routeChangeService', ['$rootRouter', 'authService', RouteChangeService])
+    .service('authService', ['$q', '$resource', 'storageService', AuthService])
+    .service('storageService', ['$localStorage', '$sessionStorage', StorageService])
+    .service('authInterceptorService', ['$q', '$rootRouter', 'storageService', AuthInterceptorService])
+    .service('qaService', ['$resource', QaService])
+    .config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptorService');
+    }])
+    ;
 
-    OutOfRangeApp.factory('authService', ['$q', '$resource', '$location', '$routeParams', 'storageService', function ($q, $resource, $location, $routeParams, storageService) {
+    function RouteChangeService($rootRouter, authService) {
+        var $svc = this;
+
+        this.onChange = function (toRoute, fromRoute) {
+            debugger;
+            if (toRoute.routeData.data.requiresLogin && !authService.getAuthentificationInfo().isAuth) {
+                $rootRouter.recognize(toRoute.urlPath + '?' + toRoute.urlParams.join('&'))
+                .then(function (result) {
+                    var loginIntruction = $rootRouter.generate(['Login']);
+                    loginIntruction.component.routeData.data.returnInstruction = result;
+                    $rootRouter.navigateByInstruction(loginIntruction);
+                });
+            }
+
+            if (toRoute.routeData.data.guestOnly && authService.getAuthentificationInfo().isAuth) {
+                debugger;
+                $svc.navigateToRedirectUrl(toRoute);
+            }
+        }
+
+        this.navigateToRedirectUrl = function (instruction) {
+            debugger;
+            if (instruction.routeData.data.returnInstruction) {
+                $rootRouter.navigateByInstruction(instruction.routeData.data.returnInstruction);
+                delete instruction.routeData.data.returnInstruction;
+            } else {
+                var returnLink = instruction.params.returnUrl ? JSON.parse(decodeURIComponent(instruction.params.returnUrl)) : ['Home'];
+                $rootRouter.navigate(returnLink);
+            }
+        }
+    }
+
+    function AuthService($q, $resource, storageService) {
         var Register = $resource('/api/account/register');
         var Login = $resource('/token', null, {
             save: {
@@ -11,20 +52,18 @@
                 headers: { 'Accept': '*/*', 'Content-Type': 'application/x-www-form-urlencoded' },
                 transformRequest: function (data, headersGetter) {
                     var str = [];
-                    for (var d in data) {
+                    for (var d in data)
                         if (data.hasOwnProperty(d))
                             str.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
-                    }
                     return str.join('&');
                 }
             }
         });
 
-        function _register(user) {
+        this.register = function (user) {
             var _user = new Register(user);
             return _user.$save()
                 .then(function (data) {
-                    $location.path('/login');
                     return $q.resolve(data);
                 })
                 .catch(function (err) {
@@ -33,7 +72,7 @@
                 });
         };
 
-        function _login(user, rememberMe) {
+        this.login = function (user, rememberMe) {
             user.grant_type = 'password';
             var _user = new Login(user);
             return _user.$save()
@@ -45,42 +84,37 @@
                         _expiration: new Date(data['.expires'])
                     });
 
-                    var returnUrl = $routeParams.returnUrl ? decodeURIComponent($routeParams.returnUrl) : '/';
-                    $location.path(returnUrl).search('returnUrl', null);
                     return $q.resolve({
                         isAuth: storageService.auth.get().isAuth,
                         userName: storageService.auth.get().userName,
                     });
                 })
-            .catch(function (err) {
-                console.error(err.data.error_description);
-                storageService.auth.remove();
-                return $q.reject(err.data);
-            });
+                .catch(function (err) {
+                    console.error(err.data.error_description);
+                    storageService.auth.remove();
+                    return $q.reject(err.data);
+                });
         };
 
-        function _logout() {
+        this.logout = function () {
             storageService.auth.remove();
         }
 
-
-
-        return {
-            register: _register,
-            login: _login,
-            logout: _logout,
-            getAuthentificationInfo: function () {
-                return storageService.auth.get();
-            }
+        this.getAuthentificationInfo = function () {
+            return storageService.auth.get();
         }
-    }]);
+    }
 
-    OutOfRangeApp.factory('storageService', ['$localStorage', '$sessionStorage', function ($localStorage, $sessionStorage) {
-        function _getAuthData() {
+    function StorageService($localStorage, $sessionStorage) {
+        var $svc = this;
+
+        this.auth = {};
+
+        this.auth.get = function () {
             var authData = $sessionStorage.authData || $localStorage.authData;
 
             if (authData && (new Date(authData._expiration) < Date.now()))
-                _deleteAuthData();
+                $svx.auth.remove();
 
             if (authData) {
                 authData._expiration = new Date(authData._expiration);
@@ -89,30 +123,43 @@
             return { isAuth: false };
         }
 
-        function _setAuthData(rememberMe, data) {
+        this.auth.set = function (rememberMe, data) {
             if (rememberMe)
                 $localStorage.authData = data;
             else
                 $sessionStorage.authData = data;
         }
 
-        function _deleteAuthData() {
+        this.auth.remove = function () {
             delete $localStorage.authData;
             delete $sessionStorage.authData;
         }
+    }
 
-        return {
-            auth: {
-                get: _getAuthData,
-                set: _setAuthData,
-                remove: _deleteAuthData
-            }
+    function QaService($resource) {
+        var Questions = $resource('/api/questions/:id');
+        var Answer = $resource('/api/answers');
+
+        this.getQuestions = function (filter) {
+            return Questions.query(filter).$promise;
         }
-    }]);
 
-    OutOfRangeApp.factory('authInterceptorService', ['$q', '$location', 'storageService', function ($q, $location, storageService) {
+        this.addQuestion = function (question) {
+            return new Questions(question).$save();
+        }
 
-        function _request(config) {
+        this.viewQuestion = function (questionId) {
+            return Questions.get({ id: questionId }).$promise;
+        }
+
+        this.addAnswer = function (answer) {
+            return new Answer(answer).$save();
+        }
+    }
+
+    function AuthInterceptorService($q, $rootRouter, storageService) {
+
+        this.request = function (config) {
             config.headers = config.headers || {};
 
             if (config.url === '/token')
@@ -125,45 +172,17 @@
             return config;
         };
 
-        function _responseError(rejection) {
+        this.responseError = function (rejection) {
             if (rejection.status === 401) {
-                var oldUrl = $location.path()
-                $location.path('/login').search('returnUrl', encodeURIComponent(oldUrl))
+                debugger;
+                $rootRouter;
+
+                var loginIntruction = $rootRouter.generate(['Login']);
+                loginIntruction.component.routeData.data.returnInstruction = $rootRouter._currentInstruction;
+                $rootRouter.navigateByInstruction(loginIntruction);
             }
             return $q.reject(rejection);
         }
-
-        return {
-            request: _request,
-            responseError: _responseError
-        }
-    }]);
-
-    OutOfRangeApp.config(['$httpProvider', function ($httpProvider) {
-        $httpProvider.interceptors.push('authInterceptorService');
-    }]);
-
-    OutOfRangeApp.factory('qaService', ['$resource', '$location','$routeParams', function ($resource, $location,$routeParams) {
-        var Questions = $resource('/api/questions/:id');
-        var Answer = $resource('/api/answers')
-        return {
-            getQuestions: function () {
-                return Questions.query().$promise;
-            },
-            addQuestion: function (question) {
-                return new Questions(question).$save()
-                    .then(function (data) {
-                        $location.path('/questions');
-                    })
-            },
-            viewQuestion: function () {
-                return Questions.get({id:$routeParams.id}).$promise;
-            },
-            addAnswer: function (answer) {
-                return new Answer(answer).$save();
-            }
-            
-        }
-    }]);
+    }
 
 })();

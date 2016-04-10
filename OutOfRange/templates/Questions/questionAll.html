@@ -12,10 +12,10 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div ng-repeat="item in data" class="col-md-6" data-wow-animation-name="fadeInLeft">
+            <div ng-repeat="item in $ctrl.data" class="col-md-6" data-wow-animation-name="fadeInLeft">
                 <div class="blog-left wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
                     <div class="blog-content">
-                        <h3><a href="/question/{{item.ID}}">{{item.Title}}</a></h3>
+                        <h3><a ng-link="['ViewQuestion', {id: item.ID}]">{{item.Title}}</a></h3>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="blog-two-info">
@@ -28,7 +28,7 @@
                                         {{item.Added | date}}
                                         |
                                         <i class="fa fa-comment"></i>
-                                        <a href="/question/{{item.ID}}/Answers">{{item.Answers.length}}</a>
+                                        <a ng-link="['ViewQuestionScrollTo', {id: item.ID, scrollTo: 'Answers'}]">{{item.Answers.length}}</a>
                                         |
                                         <i class="fa fa-bookmark"></i>
                                         <a href="#">{{item.Category.Name}}</a>
@@ -44,7 +44,7 @@
                         </div>
                         <p>
                             {{item.QuestionBody}}&hellip;
-                            <a href="/question/{{item.ID}}" class="text-success">Read more</a>
+                            <a ng-link="['ViewQuestion', {id: item.ID}]" class="text-success">Read more</a>
                         </p>
                     </div>
 
@@ -54,3 +54,4 @@
     </div>
 </div>
 
+<div ng-show="$ctrl.error" class="text-danger text-center">{{error}}</div>

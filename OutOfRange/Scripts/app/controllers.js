@@ -1,144 +1,288 @@
 ﻿(function () {
     'use strict';
 
-    var OutOfRangeApp = angular.module('OutOfRangeApp');
+    var OutOfRangeApp = angular.module('OutOfRangeApp')
 
-    OutOfRangeApp.controller('MainCtrl', ['$scope', 'authService', function ($scope, authService) {
-        $scope.isAuthenticated = function () {
-            return authService.getAuthentificationInfo().isAuth;
+    .component('app', {
+        templateUrl: '/templates/masterpage/app.html',
+        $routeConfig: [
+            { path: '/', name: 'Home', component: 'homeCmp' },
+            { path: '/register', name: 'Register', component: 'registerCmp' },
+            { path: '/login', name: 'Login', component: 'loginCmp', data: { guestOnly: true } },
+            { path: '/logout', name: 'Logout', component: 'logoutCmp' },
+            { path: '/user', name: 'User', component: 'userCmp', data: { requiresLogin: true } },
+            { path: '/questions', name: 'Questions', component: 'questionsCmp' },
+            { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
+            { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
+            { path: '/question/:id/:scrollTo', name: 'ViewQuestionScrollTo', component: 'viewQuestionCmp' },
+            { path: '/*any', name: 'NotFound', component: 'notFoundCmp' }
+        ]
+    })
+    .component('headSection', {
+        templateUrl: '/templates/masterpage/header.html',
+        controller: ['authService', HeadCtrl]
+    })
+    .component('footerSection', {
+        templateUrl: '/templates/masterpage/footer.html',
+        controller: [FooterCtrl]
+    })
+    .component('homeCmp', {
+        templateUrl: '/templates/front-page.html',
+        controller: [HomeCtrl]
+    })
+    .component('notFoundCmp', {
+        templateUrl: '/templates/404.html'
+    })
+    .component('registerCmp', {
+        templateUrl: '/templates/auth/register.html',
+        controller: ['authService', 'routeChangeService', RegisterCtrl],
+        bindings: {
+            $router: '<'
+        }
+    })
+    .component('loginCmp', {
+        templateUrl: '/templates/auth/login.html',
+        controller: ['authService', 'routeChangeService', LoginCtrl],
+        bindings: {
+            $router: '<'
+        }
+    })
+    .component('logoutCmp', {
+        controller: ['authService', LogoutCtrl],
+        bindings: {
+            $router: '<'
+        }
+    })
+    .component('userCmp', {
+        templateUrl: '',
+        controller: ['authService', UserCtrl]
+    })
+    .component('questionsCmp', {
+        templateUrl: '/templates/questions/questionAll.html',
+        controller: ['$q', 'qaService', QuestionsCtrl]
+    })
+    .component('addQuestionCmp', {
+        templateUrl: '/templates/questions/questionAdd.html',
+        controller: ['qaService', 'routeChangeService', AddQuestionCtrl]
+    })
+    .component('viewQuestionCmp', {
+        templateUrl: '/templates/questions/questionView.html',
+        controller: ['$q', '$interval', 'smoothScroll', 'authService', 'qaService', ViewQuestionCtrl],
+        bindings: {
+            $router: '<'
+        }
+    })
+    ;
+
+    function HeadCtrl(authService) {
+        var $ctrl = this;
+
+        var authInfo = authService.getAuthentificationInfo;
+
+        this.isAuthenticated = function () {
+            return authInfo().isAuth;
         };
-        $scope.userName = function () {
-            return authService.getAuthentificationInfo().userName;
-        };
-    }]);
+        this.userName = function () {
+            return authInfo().userName;
+        }
 
-    OutOfRangeApp.controller('HomeCtrl', ['$scope', function ($scope) {
+    }
 
-    }]);
+    function FooterCtrl() { }
 
-    OutOfRangeApp.controller('RegisterCtrl', ['$scope', 'authService', function ($scope, authService) {
-        $scope.user = {
+    function HomeCtrl() {
+        var $ctrl = this;
+    }
+
+    function RegisterCtrl(authService, routeChangeService) {
+        var $ctrl = this;
+
+        this.user = {
             email: '',
             password: '',
             confirmPassword: ''
         };
 
-        $scope.error = null;
+        this.error = null;
+        this.loading = false;
 
-        $scope.loading = false;
-
-        $scope.register = function () {
-            $scope.loading = true;
-            authService.register($scope.user)
+        this.register = function () {
+            $ctrl.loading = true;
+            authService.register($ctrl.user)
+            .then(function (result) {
+                debugger;
+                var loginInstruction = $ctrl.$router.generate(['Login']);
+                loginInstruction.component.routeData.data.returnInstruction = $ctrl.$router.parent._currentInstruction.component.routeData.data.returnInstruction;
+                $ctrl.$router.navigateByInstruction(loginInstruction);
+            })
             .catch(function (err) {
-                $scope.loading = false;
-                $scope.error = err;
+                $ctrl.loading = false;
+                $ctrl.error = err;
             });
-        };
+        }
 
-    }]);
+        this.$routerOnActivate = function (toRoute, fromRoute) { routeChangeService.onChange(toRoute, fromRoute); }
+    }
 
-    OutOfRangeApp.controller('LoginCtrl', ['$scope', 'authService', function ($scope, authService) {
-        $scope.user = {
+    function LoginCtrl(authService, routeChangeService) {
+
+        var $ctrl = this;
+        var authInfo = authService.getAuthentificationInfo;
+
+        this.user = {
             username: '',
             password: ''
         };
 
-        $scope.error = null;
-        $scope.rememberMe = false;
+        this.error = null;
+        this.rememberMe = false;
 
-        $scope.loading = false;
+        this.loading = false;
 
-        $scope.login = function () {
-            $scope.loading = true;
-            authService.login($scope.user, $scope.rememberMe)
+        this.login = function () {
+            debugger;
+            $ctrl.loading = true;
+            authService.login($ctrl.user, $ctrl.rememberMe)
+            .then(function (result) {
+                routeChangeService.navigateToRedirectUrl($ctrl.$router.parent._currentInstruction.component);
+            })
             .catch(function (err) {
-                $scope.loading = false;
-                $scope.error = err.error_description;
+                $ctrl.loading = false;
+                $ctrl.error = err.error_description;
             });
-        };
-    }]);
+        }
 
-    OutOfRangeApp.controller('LogoutCtrl', ['$location', 'authService', function ($location, authService) {
-        (function init() {
+        this.$routerOnActivate = function (toRoute, fromRoute) { routeChangeService.onChange(toRoute, fromRoute); }
+
+    }
+
+    function LogoutCtrl(authService) {
+        var $ctrl = this;
+
+        this.$routerOnActivate = function (toRoute, fromRoute) {
             authService.logout();
-            $location.path('/');
-        })();
-    }]);
+            if (fromRoute && !fromRoute.routeData.data.requiresLogin)
+                $ctrl.$router.navigateByUrl(fromRoute.urlPath + '?' + fromRoute.urlParams.join('&'));
+            else
+                $ctrl.$router.navigate(['Home']);
+        }
+    }
 
-    OutOfRangeApp.controller('UserCtrl', ['$location', 'authService', function ($location, authService) {
+    function UserCtrl() { }
 
-    }]);
+    function QuestionsCtrl($q, qaService) {
+        var $ctrl = this;
 
-    OutOfRangeApp.controller('QuestionsCtrl', ['$scope', 'qaService', function ($scope, qaService) {
-        (function init() {
-            qaService.getQuestions().then(function (data) {
-                $scope.data = data || [];
+        this.error = null;
+
+        this.$routerOnActivate = function () {
+            return $q(function (resolve, reject) {
+                qaService.getQuestions().then(function (data) {
+                    $ctrl.data = data || [];
+                    resolve();
+                }).catch(function (err) {
+                    // accept the route change but put an error on the page
+                    $ctrl.error = err;
+                    resolve();
+                });
             });
-        })();
-    }]);
+        }
+    }
 
-    OutOfRangeApp.controller('QuestionAddCtrl', ['$scope', 'qaService', function ($scope, qaService) {
-        $scope.question = {
+    function AddQuestionCtrl(qaService, routeChangeService) {
+        var $ctrl = this;
+
+        this.question = {
             Title: '',
             QuestionBody: '',
             Tags: '',
             TagString: ''
         };
-        $scope.addQuestion = function () {
-            debugger;
-            var taglist = $scope.question.TagString.split(/ |,/);
-            $scope.question.Tags = []
+
+        this.addQuestion = function () {
+            var taglist = $ctrl.question.TagString.split(/ |,/);
+            $ctrl.question.Tags = []
             for (var tag in taglist) {
-                $scope.question.Tags.push({ name: taglist[tag] });
+                $ctrl.question.Tags.push({ name: taglist[tag] });
             }
-            qaService.addQuestion($scope.question);
-        };
-    }]);
-
-    OutOfRangeApp.controller('QuestionViewCtrl', ['$scope', '$routeParams', '$timeout', 'smoothScroll', 'qaService', 'authService', function ($scope, $routeParams, $timeout, smoothScroll, qaService, authService) {
-        $scope.question = {
-            Title: "",
-            QuestionBody: "",
-            Tags: ""
-        };
-
-        $scope.isAuth = authService.getAuthentificationInfo().isAuth;
-
-        function _getQuestion() {
-            qaService.viewQuestion().then(function (data) {
-                $scope.question = data || [];
+            qaService.addQuestion($ctrl.question)
+            .then(function (result) {
+                $ctrl.$router.navigate(['ViewQuestion', { id: result.ID }]);
             });
-        }
+        };
+
+
+        this.$routerOnActivate = function (toRoute, fromRoute) { routeChangeService.onChange(toRoute, fromRoute); }
+    }
+
+    function ViewQuestionCtrl($q, $interval, smoothScroll, authService, qaService) {
+        var $ctrl = this;
+        this.isAuth = authService.getAuthentificationInfo().isAuth;
+
+        this.question = {};
+        this.error = null;
+        this.scrollTo = null;
 
         function _scrollToElement(scrollTo) {
-            scrollTo = scrollTo || $routeParams.scrollTo;
+            $ctrl.scrollTo = scrollTo;
+        }
 
-            $scope.$on('$viewContentLoaded', function () {
-                scrollTo && $timeout(function () {
-                    smoothScroll(document.getElementById(scrollTo), { duration: 700, easing: 'easeOutQuad' });
-                }, 500);
+        this.$postLink = function () {
+            var int = $interval(function () {
+                if ($ctrl.scrollTo) {
+                    $interval.cancel(int);
+                    $interval(function () {
+                        smoothScroll(document.getElementById($ctrl.scrollTo), { duration: 700, easing: 'easeOutQuad' });
+                    }, 500, 1);
+                }
+            }, 100, 10);
+        }
+
+        this.$routerOnActivate = function (toRoute) {
+            return $q(function (resolve, reject) {
+                _getQuestion(toRoute.params.id).then(function () {
+                    resolve();
+                    _scrollToElement(toRoute.params.scrollTo);
+                })
+                .catch(function (err) {
+                    $ctrl.error = err;
+                    resolve();
+                });
             });
         }
 
-        (function init() {
-            _getQuestion();
-            _scrollToElement();
-        })();
-
-        $scope.answer = {
-            AnswerBody: "",
-            QuestionID: ""
-        }
-
-        $scope.addAnswer = function () {
-            $scope.answer.QuestionID = $scope.question.ID;
-            qaService.addAnswer($scope.answer).then(function (_data) {
-                _getQuestion();
-
-                $scope.answer.AnswerBody = "";
+        function _getQuestion(questionId) {
+            return qaService.viewQuestion(questionId).then(function (data) {
+                $ctrl.question = data || {};
+                return $q.resolve(data);
             });
         }
-    }]);
+
+        this.answer = {};
+
+        this.addAnswer = function () {
+            $ctrl.answer.QuestionID = $ctrl.question.ID;
+            qaService.addAnswer($ctrl.answer).then(function (_data) {
+                _getQuestion($ctrl.question.ID);
+
+                $ctrl.answer.AnswerBody = "";
+            });
+        }
+
+        this.navigateWithReturn = function (routeLink, scrollTo) {
+            var loginInstruction = $ctrl.$router.generate(routeLink);
+            loginInstruction.component.routeData.data.returnInstruction = $ctrl.$router.generate(_getReturnLink(scrollTo));
+            $ctrl.$router.navigateByInstruction(loginInstruction);
+        }
+
+        function _getReturnLink(scrollTo) {
+            var link = ['ViewQuestion', { id: $ctrl.question.ID }];
+            if (scrollTo) {
+                link[0] = 'ViewQuestionScrollTo'
+                link[1].scrollTo = scrollTo;
+            }
+            return link;
+        }
+    }
 
 })();

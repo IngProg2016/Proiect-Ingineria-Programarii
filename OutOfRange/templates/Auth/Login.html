@@ -17,28 +17,26 @@
                 <h2 class="form-signin-heading">sign in now</h2>
                 <div class="login-wrap">
                     <div class="form-group" ng-class="{'has-error': loginForm.email.$error.required && loginForm.email.$dirty, 'has-warning': loginForm.email.$error.email} ">
-                        <input ng-model="user.username" type="email" name="email" class="form-control" placeholder="Email" autofocus required>
+                        <input ng-model="$ctrl.user.username" type="email" name="email" class="form-control" placeholder="Email" autofocus required>
                     </div>
                     <div class="form-group" ng-class="{'has-error': loginForm.password.$error.required && loginForm.password.$dirty, 'has-warning': loginForm.password.$error.minlength} ">
-                        <input ng-model="user.password" type="password" name="password" class="form-control" placeholder="Password" ng-minlength="6" required>
+                        <input ng-model="$ctrl.user.password" type="password" name="password" class="form-control" placeholder="Password" ng-minlength="6" required>
                     </div>
                     <label class="checkbox">
-                        <input ng-model="rememberMe" type="checkbox" value="remember-me"> Remember me
+                        <input ng-model="$ctrl.rememberMe" type="checkbox" value="remember-me"> Remember me
                         <span class="pull-right">
                             <a data-toggle="modal" href="#myModal"> Forgot Password?</a>
 
                         </span>
                     </label>
-                    <button class="btn btn-lg btn-login btn-block" type="button" ng-hide="loading" ng-disabled="loginForm.email.$invalid || loginForm.password.$invalid" ng-click="login()">Sign in</button>
-                    <div style="text-align:center;width:100%;" ng-show="loading">
-                        <h3>Loading...</h3>
-                        <i class="fa fa-4x fa-spin fa-spinner" style="width:70px;padding-top:10px;padding-bottom:30px;"></i>
-                        <!--<img style="width:70px;padding-top:10px;padding-bottom:30px;" src="/Content/images/loading.gif">-->
+                    <button class="btn btn-lg btn-login btn-block" type="button" ng-hide="$ctrl.loading" ng-disabled="loginForm.email.$invalid || loginForm.password.$invalid" ng-click="$ctrl.login()">Sign in</button>
+                    <div style="text-align:center;width:100%;" ng-show="$ctrl.loading">
+                        <h3><i class="fa fa-spin fa-spinner"></i> Loading...</h3>
                     </div>
-                    <div ng-show="error" class="text-danger"><i class="fa fa-chevron-right"></i> {{error}}</div>
+                    <div ng-show="$ctrl.error" class="text-danger"><i class="fa fa-chevron-right"></i> {{$ctrl.error}}</div>
                     <div class="registration">
                         Don't have an account yet?
-                        <a class="" href="/register">
+                        <a ng-link="['Register']">
                             Create an account
                         </a>
                     </div>

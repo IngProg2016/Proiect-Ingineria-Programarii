@@ -183,20 +183,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Comments_Answers">
-          <End Role="Answers" Type="Self.Answers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Answers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="ParentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Comments_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
           <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
@@ -291,18 +277,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_QuestionTags_Question">
-          <End Role="Questions" Type="Self.Questions" Multiplicity="1" />
-          <End Role="QuestionTags" Type="Self.QuestionTags" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Questions">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="QuestionTags">
-              <PropertyRef Name="QuestionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_QuestionTags_Questions">
           <End Role="Questions" Type="Self.Questions" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -314,18 +288,6 @@
             </Principal>
             <Dependent Role="QuestionTags">
               <PropertyRef Name="QuestionID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_QuestionTags_Tag">
-          <End Role="Tags" Type="Self.Tags" Multiplicity="1" />
-          <End Role="QuestionTags" Type="Self.QuestionTags" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Tags">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="QuestionTags">
-              <PropertyRef Name="TagID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -426,10 +388,6 @@
             <End Role="Category" EntitySet="Category" />
             <End Role="Badges" EntitySet="Badges" />
           </AssociationSet>
-          <AssociationSet Name="FK_Comments_Answers" Association="Self.FK_Comments_Answers">
-            <End Role="Answers" EntitySet="Answers" />
-            <End Role="Comments" EntitySet="Comments" />
-          </AssociationSet>
           <AssociationSet Name="FK_Comments_AspNetUsers" Association="Self.FK_Comments_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Comments" EntitySet="Comments" />
@@ -458,16 +416,8 @@
             <End Role="Category" EntitySet="Category" />
             <End Role="Questions" EntitySet="Questions" />
           </AssociationSet>
-          <AssociationSet Name="FK_QuestionTags_Question" Association="Self.FK_QuestionTags_Question">
-            <End Role="Questions" EntitySet="Questions" />
-            <End Role="QuestionTags" EntitySet="QuestionTags" />
-          </AssociationSet>
           <AssociationSet Name="FK_QuestionTags_Questions" Association="Self.FK_QuestionTags_Questions">
             <End Role="Questions" EntitySet="Questions" />
-            <End Role="QuestionTags" EntitySet="QuestionTags" />
-          </AssociationSet>
-          <AssociationSet Name="FK_QuestionTags_Tag" Association="Self.FK_QuestionTags_Tag">
-            <End Role="Tags" EntitySet="Tags" />
             <End Role="QuestionTags" EntitySet="QuestionTags" />
           </AssociationSet>
           <AssociationSet Name="FK_QuestionTags_Tags" Association="Self.FK_QuestionTags_Tags">

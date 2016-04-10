@@ -14,50 +14,44 @@ using OutOfRange.Models;
 
 namespace OutOfRange.Controllers
 {
-    public class AnswersController : ApiController
+    public class CommentsController : ApiController
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
-        // GET: api/Answers
-        public JsonResult<IEnumerable<AnswerDTO>> GetAnswers()
+        // GET: api/Comments
+        public JsonResult<IEnumerable<CommentDTO>> GetComments()
         {
-            return Json(db.Answers.ToList().Select(AnswerDTO.FromEntity));
-        }
-        //GET: api/AnswersQuestion/{GUID}
-        [Route("api/AnswersQuestion/{id}")]
-        public JsonResult<IEnumerable<AnswerDTO>> GetAnswersQuestion(Guid id)
-        {
-            return Json(db.Answers.Where(x=>x.QuestionID==id).ToList().Select(AnswerDTO.FromEntity));
+            return Json(db.Comments.ToList().Select(CommentDTO.FromEntity));
         }
 
-        // GET: api/Answers/5
-        [ResponseType(typeof(AnswerDTO))]
-        public IHttpActionResult GetAnswer(Guid id)
+        // GET: api/Comments/5
+        [ResponseType(typeof(CommentDTO))]
+        public IHttpActionResult GetComment(Guid id)
         {
-            Answer answer = db.Answers.Find(id);
-            if (answer == null)
+            Comment comment = db.Comments.Find(id);
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            return Ok(new AnswerDTO(answer));
+            return Ok(CommentDTO.FromEntity(comment));
         }
 
-        // PUT: api/Answers/5
+        // PUT: api/Comments/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutAnswer(Guid id, Answer answer)
+        public IHttpActionResult PutComment(Guid id, Comment comment)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != answer.ID)
+            if (id != comment.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(answer).State = EntityState.Modified;
+            db.Entry(comment).State = EntityState.Modified;
 
             try
             {
@@ -65,7 +59,7 @@ namespace OutOfRange.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AnswerExists(id))
+                if (!CommentExists(id))
                 {
                     return NotFound();
                 }
@@ -78,21 +72,19 @@ namespace OutOfRange.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Answers
-        [Authorize]
-        [ResponseType(typeof(AnswerDTO))]
-        public IHttpActionResult PostAnswer(Answer answer)
+        // POST: api/Comments
+        [ResponseType(typeof(CommentDTO))]
+        public IHttpActionResult PostComment(Comment comment)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            comment.ID = Guid.NewGuid();
+            comment.Added = DateTime.Now;
+            comment.UserID = User.Identity.GetUserId();
 
-            answer.ID = Guid.NewGuid();
-            answer.Added=DateTime.Now;
-            answer.UserID = User.Identity.GetUserId();
-
-            db.Answers.Add(answer);
+            db.Comments.Add(comment);
 
             try
             {
@@ -100,7 +92,7 @@ namespace OutOfRange.Controllers
             }
             catch (DbUpdateException)
             {
-                if (AnswerExists(answer.ID))
+                if (CommentExists(comment.ID))
                 {
                     return Conflict();
                 }
@@ -110,24 +102,25 @@ namespace OutOfRange.Controllers
                 }
             }
             db=new OutOfRangeEntities();
-            answer = db.Answers.Find(answer.ID);
-            return CreatedAtRoute("DefaultApi", new { id = answer.ID }, AnswerDTO.FromEntity(answer));
+            comment = db.Comments.Find(comment.ID);
+
+            return CreatedAtRoute("DefaultApi", new { id = comment.ID }, CommentDTO.FromEntity(comment));
         }
 
-        // DELETE: api/Answers/5
-        [ResponseType(typeof(AnswerDTO))]
-        public IHttpActionResult DeleteAnswer(Guid id)
+        // DELETE: api/Comments/5
+        [ResponseType(typeof(Comment))]
+        public IHttpActionResult DeleteComment(Guid id)
         {
-            Answer answer = db.Answers.Find(id);
-            if (answer == null)
+            Comment comment = db.Comments.Find(id);
+            if (comment == null)
             {
                 return NotFound();
             }
 
-            db.Answers.Remove(answer);
+            db.Comments.Remove(comment);
             db.SaveChanges();
 
-            return Ok(new AnswerDTO(answer));
+            return Ok(comment);
         }
 
         protected override void Dispose(bool disposing)
@@ -139,9 +132,9 @@ namespace OutOfRange.Controllers
             base.Dispose(disposing);
         }
 
-        private bool AnswerExists(Guid id)
+        private bool CommentExists(Guid id)
         {
-            return db.Answers.Count(e => e.ID == id) > 0;
+            return db.Comments.Count(e => e.ID == id) > 0;
         }
     }
 }

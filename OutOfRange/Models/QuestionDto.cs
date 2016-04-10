@@ -27,6 +27,7 @@ namespace OutOfRange.Models
             //Tags = (from tag in question.Tags select new TagDTO(tag)).ToList();
             Answers = question.Answers.Select(AnswerDTO.FromEntity).ToList();
             //Anwsers = (from ans in question.Answers select new AnswerDTO(ans)).ToList();
+            Comments = question.Comments.Select(CommentDTO.FromEntity).ToList();
             AspNetUser = new AspNetUserDTO(question.AspNetUser);
             Category = new CategoryDTO(question.Category);
         }
@@ -40,6 +41,7 @@ namespace OutOfRange.Models
         public DateTime? Modified { get; set; }
         public ICollection<TagDTO> Tags { get; set; }
         public ICollection<AnswerDTO> Answers { get; set; }
+        public ICollection<CommentDTO> Comments { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }
         public CategoryDTO Category { get; set; }
 

@@ -88,7 +88,7 @@
         </div>
     </header>
     <!--header end-->
-    <div ng-view>
+    <div ng-view id="main-container">
         <div style="text-align:center;width:100%;">
             <h3>Loading...</h3>
             <i class="fa fa-4x fa-spin fa-spinner" style="width:70px;padding-top:10px;padding-bottom:30px;"></i>
@@ -284,6 +284,21 @@
 
         new WOW().init();
 
+        function init() {
+            var windowHeight = $(window).height();
+            var headHeight = $("header").height();
+            var footHeight = 0;
+            $('footer').each(function (i, obj) {
+                footHeight += obj.clientHeight;
+            });
+            var mainHeight = windowHeight - footHeight - headHeight;
+            if (mainHeight < 250) {
+                mainHeight = 250;
+            }
+                $("#main-container").css("min-height", mainHeight);
+        };
+
+        init();
 
     </script>
 </body>

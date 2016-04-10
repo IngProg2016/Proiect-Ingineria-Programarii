@@ -23,9 +23,9 @@ namespace OutOfRange.Models
         public System.Guid ID { get; set; }
         public string UserID { get; set; }
         public System.Guid QuestionID { get; set; }
-        public string Description { get; set; }
         public Nullable<int> Score { get; set; }
         public System.DateTime Added { get; set; }
+        public string AnswerBody { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Question Question { get; set; }

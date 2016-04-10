@@ -12,7 +12,7 @@
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="QuestionID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AnswerBody" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Score" Type="int" />
           <Property Name="Added" Type="datetime" Nullable="false" />
         </EntityType>
@@ -92,7 +92,7 @@
           <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ParentID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
-          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CommentBody" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" />
         </EntityType>
@@ -104,7 +104,7 @@
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="CategoryID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Title" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="QuestionBody" Type="nvarchar(max)" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" />
         </EntityType>
@@ -180,20 +180,6 @@
             </Principal>
             <Dependent Role="Badges">
               <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Comments_Answers">
-          <End Role="Answers" Type="Self.Answers" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Comments" Type="Self.Comments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Answers">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Comments">
-              <PropertyRef Name="ParentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -320,7 +306,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserBadges_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UserBadges" Type="Self.UserBadges" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -346,7 +334,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserLevel_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="UserLevel" Type="Self.UserLevel" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -397,10 +387,6 @@
           <AssociationSet Name="FK_Badges_Category" Association="Self.FK_Badges_Category">
             <End Role="Category" EntitySet="Category" />
             <End Role="Badges" EntitySet="Badges" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Comments_Answers" Association="Self.FK_Comments_Answers">
-            <End Role="Answers" EntitySet="Answers" />
-            <End Role="Comments" EntitySet="Comments" />
           </AssociationSet>
           <AssociationSet Name="FK_Comments_AspNetUsers" Association="Self.FK_Comments_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -466,12 +452,12 @@
           <Property Name="ID" Type="Guid" Nullable="false" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="QuestionID" Type="Guid" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Score" Type="Int32" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Answers_AspNetUsers" FromRole="Answer" ToRole="AspNetUser" />
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.FK_Comments_Answers" FromRole="Answer" ToRole="Comment" />
+          <Property Name="AnswerBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -557,11 +543,12 @@
           <Property Name="ID" Type="Guid" Nullable="false" />
           <Property Name="ParentID" Type="Guid" Nullable="false" />
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Answer" Relationship="OutOfRangeModel.FK_Comments_Answers" FromRole="Comment" ToRole="Answer" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Comments_AspNetUsers" FromRole="Comment" ToRole="AspNetUser" />
+          <NavigationProperty Name="Question" Relationship="OutOfRangeModel.QuestionComment" FromRole="Comment" ToRole="Question" />
+          <Property Name="CommentBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -571,13 +558,14 @@
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="CategoryID" Type="Guid" Nullable="false" />
           <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Tags" Relationship="OutOfRangeModel.QuestionTags" FromRole="Question" ToRole="Tag" />
           <NavigationProperty Name="Answers" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Questions_AspNetUsers" FromRole="Question" ToRole="AspNetUser" />
           <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_Questions_Category" FromRole="Question" ToRole="Category" />
+          <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.QuestionComment" FromRole="Question" ToRole="Comment" />
+          <Property Name="QuestionBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -730,6 +718,10 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="UserLevel" EntitySet="UserLevels" />
           </AssociationSet>
+          <AssociationSet Name="QuestionComment" Association="OutOfRangeModel.QuestionComment">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="QuestionTags">
           <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="*" />
@@ -865,6 +857,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="QuestionComment">
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="OutOfRangeModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -874,10 +878,10 @@
           <EntitySetMapping Name="Answers">
             <EntityTypeMapping TypeName="OutOfRangeModel.Answer">
               <MappingFragment StoreEntitySet="Answers">
+                <ScalarProperty Name="AnswerBody" ColumnName="AnswerBody" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="Added" ColumnName="Added" />
               </MappingFragment>
@@ -951,10 +955,10 @@
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="OutOfRangeModel.Comment">
               <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="CommentBody" ColumnName="CommentBody" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Added" ColumnName="Added" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
               </MappingFragment>
@@ -963,11 +967,11 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="OutOfRangeModel.Question">
               <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="QuestionBody" ColumnName="QuestionBody" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Added" ColumnName="Added" />
                 <ScalarProperty Name="Modified" ColumnName="Modified" />
               </MappingFragment>

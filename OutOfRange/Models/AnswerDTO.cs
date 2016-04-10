@@ -16,7 +16,7 @@ namespace OutOfRange.Models
             ID = answer.ID;
             UserID = answer.UserID;
             QuestionID = answer.QuestionID;
-            Description = answer.Description;
+            AnswerBody = answer.AnswerBody;
             Score = answer.Score;
             Added = answer.Added;
             AspNetUser = new AspNetUserDTO(answer.AspNetUser);
@@ -27,7 +27,7 @@ namespace OutOfRange.Models
         public Guid ID { get; set; }
         public string UserID { get; set; }
         public Guid QuestionID { get; set; }
-        public string Description { get; set; }
+        public string AnswerBody { get; set; }
         public int? Score { get; set; }
         public DateTime Added { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }

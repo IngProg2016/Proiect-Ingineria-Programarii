@@ -1,4 +1,15 @@
-﻿    <!--container start-->
+﻿<!--breadcrumbs start-->
+<div class="breadcrumbs">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-sm-8">
+                <h1>Register</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<!--breadcrumbs end-->    
+<!--container start-->
 <div class="registration-bg">
     <div class="container">
 
@@ -7,28 +18,27 @@
             <div class="login-wrap">
                 <p> Enter account details below</p>
                 <div class="form-group" ng-class="{'has-error': registerForm.email.$error.required && registerForm.email.$dirty, 'has-warning': registerForm.email.$error.email} ">
-                    <input ng-model="user.email" type="email" name="email" class="form-control" placeholder="Email" autofocus required>
+                    <input ng-model="$ctrl.user.email" type="email" name="email" class="form-control" placeholder="Email" autofocus required>
                 </div>
                 <div class="form-group" ng-class="{'has-error': registerForm.password.$error.required && registerForm.password.$dirty, 'has-warning': registerForm.password.$error.minlength} ">
-                    <input ng-model="user.password" type="password" name="password" class="form-control" placeholder="Password" ng-minlength="6" required>
+                    <input ng-model="$ctrl.user.password" type="password" name="password" class="form-control" placeholder="Password" ng-minlength="6" required>
                 </div>
-                <div class="form-group" ng-class="{'has-error': registerForm.cpassword.$error.required && registerForm.cpassword.$dirty, 'has-warning': registerForm.cpassword.$error.minlength && (password == confirmPassword)} ">
-                    <input ng-model="user.confirmPassword" type="password" name="cpassword" class="form-control"  placeholder="Re-type Password" ng-minlength="6" required>
+                <div class="form-group" ng-class="{'has-error': registerForm.cpassword.$error.required && registerForm.cpassword.$dirty, 'has-warning': registerForm.cpassword.$error.minlength && ($ctrl.user.password == $ctrl.user.confirmPassword)} ">
+                    <input ng-model="$ctrl.user.confirmPassword" type="password" name="cpassword" class="form-control"  placeholder="Re-type Password" ng-minlength="6" required>
                 </div>
                 
                 <label class="checkbox">
-                    <input ng-model="tsppAgree" type="checkbox" value="agree this condition" required> I agree to the Terms of Service and Privacy Policy
+                    <input ng-model="$ctrl.tsppAgree" type="checkbox" value="agree this condition" required> I agree to the Terms of Service and Privacy Policy
                 </label>
-                <button class="btn btn-lg btn-login btn-block" type="submit"  ng-hide="loading" ng-disabled="registerForm.email.$invalid || registerForm.password.$invalid || registerForm.cpassword.$invalid|| !tsppAgree" ng-click="register()">Submit</button>
-                <div style="text-align:center;width:100%;" ng-show="loading">
-                    <h3>Loading...</h3>
-                    <i class="fa fa-4x fa-spin fa-spinner" style="width:70px;padding-top:10px;padding-bottom:30px;"></i>
-                    <!--<img style="width:70px;padding-top:10px;padding-bottom:30px;" src="/Content/images/loading.gif">-->
+                <button class="btn btn-lg btn-login btn-block" type="submit"  ng-hide="loading" ng-disabled="registerForm.email.$invalid || registerForm.password.$invalid || registerForm.cpassword.$invalid|| !$ctrl.tsppAgree" ng-click="$ctrl.register()">Submit</button>
+                <div style="text-align:center;width:100%;" ng-show="$ctrl.loading">
+                    <h3><i class="fa fa-spin fa-spinner"></i> Loading...</h3>
+                    
                 </div>
-                <div ng-show="error" class="text-danger" ng-repeat="err in error.ModelState"><i class="fa fa-chevron-right"></i> {{err[0]}} </div>
+                <div ng-show="$ctrl.error" class="text-danger" ng-repeat="err in $ctrl.error.ModelState"><i class="fa fa-chevron-right"></i> {{err[0]}} </div>
                 <div class="registration">
                     Already Registered ?
-                    <a class="" href="/login">
+                    <a ng-link="['Login']">
                         Login
                     </a>
                 </div>

@@ -12,14 +12,14 @@
 <div class="container">
     <form name="qFrom" class="wow fadeInUp">
         <div class="form-group">
-            <input ng-model="question.title" type="text" name="title" class="form-control" placeholder="Question Title" autofocus required>
+            <input ng-model="$ctrl.question.Title" type="text" name="title" class="form-control" placeholder="Question Title" autofocus required>
         </div>
         <div class="form-group">
-            <textarea ng-model="question.description" name="description" class="form-control" rows="5" placeholder="Question Title" required ng-minlength="5"></textarea>
+            <textarea ng-model="$ctrl.question.QuestionBody" name="description" class="form-control" rows="5" placeholder="Question Title" required ng-minlength="5"></textarea>
         </div>
         <div class="form-group">
-            <input ng-model="question.tags" type="text" name="tags" class="form-control" placeholder="Tags" autofocus required>
+            <input ng-model="$ctrl.question.TagString" type="text" name="tags" class="form-control" placeholder="Tags" autofocus required>
         </div>
-        <button ng-click="addQuestion()" class="btn btn-lg btn-success" type="button">Add Question</button>
+        <button ng-click="$ctrl.addQuestion()" class="btn btn-lg btn-success" type="button">Add Question</button>
     </form>
 </div>

@@ -1,0 +1,1 @@
+ALTER TABLE Comments DROP CONSTRAINT FK_Comments_Answers;

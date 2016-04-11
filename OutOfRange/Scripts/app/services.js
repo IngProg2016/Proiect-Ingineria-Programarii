@@ -139,6 +139,7 @@
     function QaService($resource) {
         var Questions = $resource('/api/questions/:id');
         var Answer = $resource('/api/answers');
+        var Comment = $resource('/api/comments');
 
         this.getQuestions = function (filter) {
             return Questions.query(filter).$promise;
@@ -154,6 +155,10 @@
 
         this.addAnswer = function (answer) {
             return new Answer(answer).$save();
+        }
+
+        this.addComment = function (comment) {
+            return new Comment(comment).$save();
         }
     }
 

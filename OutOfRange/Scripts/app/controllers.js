@@ -220,8 +220,22 @@
         this.isAuth = authService.getAuthentificationInfo().isAuth;
 
         this.question = {};
+        this.comment = {};
         this.error = null;
         this.scrollTo = null;
+
+        this.prepareComment = function(parentID){
+            this.replyCommentID = parentID;
+        }
+
+        this.addComment = function () {
+            $ctrl.comment.parentID = $ctrl.replyCommentID;
+            qaService.addComment($ctrl.comment).then(function (_data) {
+                _getQuestion($ctrl.question.ID);
+
+                $ctrl.comment.commentBody = "";
+            });
+        }
 
         function _scrollToElement(scrollTo) {
             $ctrl.scrollTo = scrollTo;

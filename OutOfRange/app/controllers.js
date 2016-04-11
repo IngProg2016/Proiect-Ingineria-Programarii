@@ -110,7 +110,6 @@
             $ctrl.loading = true;
             authService.register($ctrl.user)
             .then(function (result) {
-                debugger;
                 var loginInstruction = $ctrl.$router.generate(['Login']);
                 loginInstruction.component.routeData.data.returnInstruction = $ctrl.$router.parent._currentInstruction.component.routeData.data.returnInstruction;
                 $ctrl.$router.navigateByInstruction(loginInstruction);
@@ -140,7 +139,6 @@
         this.loading = false;
 
         this.login = function () {
-            debugger;
             $ctrl.loading = true;
             authService.login($ctrl.user, $ctrl.rememberMe)
             .then(function (result) {

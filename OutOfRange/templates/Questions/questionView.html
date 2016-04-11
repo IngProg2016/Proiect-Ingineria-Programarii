@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-lg-10 col-sm-10">
                         <h1>
-                            <a href="blog-detail.html">{{$ctrl.question.Title}}</a>
+                            <a href="#">{{$ctrl.question.Title}}</a>
                         </h1>
                         <div class="author">
                             By
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="col-lg-10 col-sm-10">
-                        <p>{{$ctrl.question.QuestionBody}}</p>
+                        <p ng-bind-html="$ctrl.question.QuestionBody"></p>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                     <h4 class="media-heading">
                         {{ans.AspNetUser.UserName}} | <span>{{ans.Added | date}}</span>
                     </h4>
-                    <p>{{ans.AnswerBody}}</p>
+                    <p ng-bind-html="ans.AnswerBody"></p>
                     <a ng-show="$ctrl.isAuth" href="javascript:;">Reply</a>
                     <small ng-hide="$ctrl.isAuth"><a href="#" ng-click="$ctrl.navigateWithReturn(['Login'], 'Answer-'+ans.ID)">Login</a> or <a href="#" ng-click="$ctrl.navigateWithReturn(['Register'], 'Answer-'+ans.ID)">Register</a> to add comment</small>
                 </div>

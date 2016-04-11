@@ -205,6 +205,8 @@
             for (var tag in taglist) {
                 $ctrl.question.Tags.push({ name: taglist[tag] });
             }
+            $ctrl.question.QuestionBody = $ctrl.question.QuestionBody.replace('\r', '').replace('\n', '</br>');
+
             qaService.addQuestion($ctrl.question)
             .then(function (result) {
                 $ctrl.$router.navigate(['ViewQuestion', { id: result.ID }]);
@@ -262,6 +264,7 @@
 
         this.addAnswer = function () {
             $ctrl.answer.QuestionID = $ctrl.question.ID;
+            $ctrl.answer.AnswerBody = $ctrl.answer.AnswerBody.replace('\r', '').replace('\n', '</br>');
             qaService.addAnswer($ctrl.answer).then(function (_data) {
                 _getQuestion($ctrl.question.ID);
 

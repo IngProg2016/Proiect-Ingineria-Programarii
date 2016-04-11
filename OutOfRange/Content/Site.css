@@ -9,3 +9,24 @@
     padding-right: 15px;
 }
 
+.centered-list.fa {
+    display: inline-block;
+    list-style: none;
+    line-height: 1.5;
+}
+
+    .centered-list.fa li:before {
+        content: "\f105";
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-right: 10px;
+        -moz-transition: margin .3s ease-out;
+        -o-transition: margin .3s ease-out;
+        -webkit-transition: margin .3s ease-out;
+        transition: margin .3s ease-out;
+    }
+
+    .centered-list.fa li:hover:before {
+        margin-left: 5px;
+        margin-right: 5px;
+    }

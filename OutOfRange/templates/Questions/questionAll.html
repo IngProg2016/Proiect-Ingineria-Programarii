@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <p>
-                            {{item.QuestionBody}}&hellip;
+                            <span ng-bind="item.QuestionBody | plainText"></span>&hellip;
                             <a ng-link="['ViewQuestion', {id: item.ID}]" class="text-success">Read more</a>
                         </p>
                     </div>

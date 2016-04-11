@@ -16,7 +16,6 @@
         var $svc = this;
 
         this.onChange = function (toRoute, fromRoute) {
-            debugger;
             if (toRoute.routeData.data.requiresLogin && !authService.getAuthentificationInfo().isAuth) {
                 $rootRouter.recognize(toRoute.urlPath + '?' + toRoute.urlParams.join('&'))
                 .then(function (result) {
@@ -27,13 +26,11 @@
             }
 
             if (toRoute.routeData.data.guestOnly && authService.getAuthentificationInfo().isAuth) {
-                debugger;
                 $svc.navigateToRedirectUrl(toRoute);
             }
         }
 
         this.navigateToRedirectUrl = function (instruction) {
-            debugger;
             if (instruction.routeData.data.returnInstruction) {
                 $rootRouter.navigateByInstruction(instruction.routeData.data.returnInstruction);
                 delete instruction.routeData.data.returnInstruction;
@@ -179,7 +176,6 @@
 
         this.responseError = function (rejection) {
             if (rejection.status === 401) {
-                debugger;
                 $rootRouter;
 
                 var loginIntruction = $rootRouter.generate(['Login']);

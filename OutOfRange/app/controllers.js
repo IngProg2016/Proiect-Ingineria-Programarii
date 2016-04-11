@@ -110,7 +110,6 @@
             $ctrl.loading = true;
             authService.register($ctrl.user)
             .then(function (result) {
-                debugger;
                 var loginInstruction = $ctrl.$router.generate(['Login']);
                 loginInstruction.component.routeData.data.returnInstruction = $ctrl.$router.parent._currentInstruction.component.routeData.data.returnInstruction;
                 $ctrl.$router.navigateByInstruction(loginInstruction);
@@ -140,7 +139,6 @@
         this.loading = false;
 
         this.login = function () {
-            debugger;
             $ctrl.loading = true;
             authService.login($ctrl.user, $ctrl.rememberMe)
             .then(function (result) {
@@ -205,6 +203,8 @@
             for (var tag in taglist) {
                 $ctrl.question.Tags.push({ name: taglist[tag] });
             }
+            $ctrl.question.QuestionBody = $ctrl.question.QuestionBody.replace('\r', '').replace('\n', '</br>');
+
             qaService.addQuestion($ctrl.question)
             .then(function (result) {
                 $ctrl.$router.navigate(['ViewQuestion', { id: result.ID }]);
@@ -276,6 +276,7 @@
 
         this.addAnswer = function () {
             $ctrl.answer.QuestionID = $ctrl.question.ID;
+            $ctrl.answer.AnswerBody = $ctrl.answer.AnswerBody.replace('\r', '').replace('\n', '</br>');
             qaService.addAnswer($ctrl.answer).then(function (_data) {
                 _getQuestion($ctrl.question.ID);
 

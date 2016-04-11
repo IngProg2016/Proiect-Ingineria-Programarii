@@ -511,16 +511,17 @@
     </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
-    <Content Include="Scripts\angular-ngStorage.js" />
-    <Content Include="Scripts\angular-resource.js" />
-    <Content Include="Scripts\angular-route.js" />
-    <Content Include="Scripts\angular-smooth-scroll.min.js" />
-    <Content Include="Scripts\angular.min.js" />
-    <Content Include="Scripts\angular_1_router.js" />
-    <Content Include="Scripts\app\app.js" />
-    <Content Include="Scripts\app\controllers.js" />
-    <Content Include="Scripts\app\routes.js" />
-    <Content Include="Scripts\app\services.js" />
+    <Content Include="Scripts\angular\angular-ngStorage.js" />
+    <Content Include="Scripts\angular\angular-resource.js" />
+    <Content Include="Scripts\angular\angular-route.js" />
+    <Content Include="Scripts\angular\angular-sanitize.js" />
+    <Content Include="Scripts\angular\angular-smooth-scroll.min.js" />
+    <Content Include="Scripts\angular\angular.min.js" />
+    <Content Include="Scripts\angular\angular_1_router.js" />
+    <Content Include="app\app.js" />
+    <Content Include="app\controllers.js" />
+    <Content Include="app\routes.js" />
+    <Content Include="app\services.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Areas\HelpPage\Views\Web.config" />

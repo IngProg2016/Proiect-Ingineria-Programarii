@@ -90,7 +90,7 @@
                             <h4 class="media-heading">
                             </h4>
                             <p>
-                                <b>{{com.AspNetUser.UserName}}:</b> {{com.CommentBody}}
+                                <b>{{com.AspNetUser.UserName}}:</b> <span ng-bind="com.CommentBody | plainText"></span>
                             </p>
                         </div>
                     </div>

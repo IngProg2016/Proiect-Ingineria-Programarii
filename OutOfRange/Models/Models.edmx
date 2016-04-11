@@ -13,7 +13,7 @@
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="QuestionID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AnswerBody" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Score" Type="int" />
+          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
           <Property Name="Added" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRoles">
@@ -95,6 +95,7 @@
           <Property Name="CommentBody" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" />
+          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Questions">
           <Key>
@@ -107,6 +108,7 @@
           <Property Name="QuestionBody" Type="nvarchar(max)" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" />
+          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="QuestionTags">
           <Key>
@@ -142,6 +144,7 @@
           <Property Name="CategoryID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="Obtained" Type="datetime" Nullable="false" />
+          <Property Name="XP" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <Association Name="FK_Answers_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
@@ -549,6 +552,7 @@
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Comments_AspNetUsers" FromRole="Comment" ToRole="AspNetUser" />
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.QuestionComment" FromRole="Comment" ToRole="Question" />
           <Property Name="CommentBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -566,6 +570,7 @@
           <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_Questions_Category" FromRole="Question" ToRole="Category" />
           <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.QuestionComment" FromRole="Question" ToRole="Comment" />
           <Property Name="QuestionBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -598,6 +603,7 @@
           <Property Name="Obtained" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_UserLevel_AspNetUsers" FromRole="UserLevel" ToRole="AspNetUser" />
           <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_UserLevel_Category" FromRole="UserLevel" ToRole="Category" />
+          <Property Name="XP" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -955,6 +961,7 @@
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="OutOfRangeModel.Comment">
               <MappingFragment StoreEntitySet="Comments">
+                <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="CommentBody" ColumnName="CommentBody" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
@@ -967,6 +974,7 @@
           <EntitySetMapping Name="Questions">
             <EntityTypeMapping TypeName="OutOfRangeModel.Question">
               <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="QuestionBody" ColumnName="QuestionBody" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
@@ -998,6 +1006,7 @@
           <EntitySetMapping Name="UserLevels">
             <EntityTypeMapping TypeName="OutOfRangeModel.UserLevel">
               <MappingFragment StoreEntitySet="UserLevel">
+                <ScalarProperty Name="XP" ColumnName="XP" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="Level" ColumnName="Level" />

@@ -63,7 +63,10 @@
     })
     .component('addQuestionCmp', {
         templateUrl: '/templates/questions/questionAdd.html',
-        controller: ['qaService', 'routeChangeService', AddQuestionCtrl]
+        controller: ['qaService', 'routeChangeService', AddQuestionCtrl],
+        bindings: {
+            $router: '<'
+        }
     })
     .component('viewQuestionCmp', {
         templateUrl: '/templates/questions/questionView.html',
@@ -200,8 +203,8 @@
         this.addQuestion = function () {
             var taglist = $ctrl.question.TagString.split(/ |,/);
             $ctrl.question.Tags = []
-            for (var tag in taglist) {
-                $ctrl.question.Tags.push({ name: taglist[tag] });
+            for (var tag of taglist) {
+                $ctrl.question.Tags.push({ name: tag });
             }
             $ctrl.question.QuestionBody = $ctrl.question.QuestionBody.replace('\r', '').replace('\n', '</br>');
 

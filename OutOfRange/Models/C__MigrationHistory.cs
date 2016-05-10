@@ -15,24 +15,16 @@ namespace OutOfRange.Models
 using System;
     using System.Collections.Generic;
     
-public partial class UserLevel
+public partial class C__MigrationHistory
 {
 
-    public string UserID { get; set; }
+    public string MigrationId { get; set; }
 
-    public System.Guid CategoryID { get; set; }
+    public string ContextKey { get; set; }
 
-    public int Level { get; set; }
+    public byte[] Model { get; set; }
 
-    public System.DateTime Obtained { get; set; }
-
-    public Nullable<decimal> XP { get; set; }
-
-
-
-    public virtual AspNetUser AspNetUser { get; set; }
-
-    public virtual Category Category { get; set; }
+    public string ProductVersion { get; set; }
 
 }
 

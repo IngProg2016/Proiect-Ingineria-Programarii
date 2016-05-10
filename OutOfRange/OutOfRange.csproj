@@ -34,6 +34,24 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PublishDatabaseSettings>
+      <Objects>
+        <ObjectGroup Name="DefaultConnection-Deployment" Order="1">
+          <Destination Path="" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=%28LocalDB%29\MSSQLLocalDB%3bInitial Catalog=OutOfRange%3bIntegrated Security=True%3bConnect Timeout=15%3bEncrypt=False%3bTrustServerCertificate=False%3bApplicationIntent=ReadWrite%3bMultiSubnetFailover=False" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\DefaultConnection-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+        <ObjectGroup Name="OutOfRangeEntities-Deployment" Order="2">
+          <Destination Path="" />
+          <Object Type="DbFullSql">
+            <PreSource Path="Data Source=%28LocalDB%29\MSSQLLocalDB%3bInitial Catalog=OutOfRange%3bIntegrated Security=True%3bConnect Timeout=15%3bEncrypt=False%3bTrustServerCertificate=False%3bApplication Name=EntityFramework%3bApplicationIntent=ReadWrite%3bMultiSubnetFailover=False" ScriptSchema="True" ScriptData="False" CopyAllFullTextCatalogs="False" DriDefaults="True" />
+            <Source Path="obj\Debug\AutoScripts\OutOfRangeEntities-Deployment_SchemaOnly.sql" Transacted="True" />
+          </Object>
+        </ObjectGroup>
+      </Objects>
+    </PublishDatabaseSettings>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -275,6 +293,9 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CommentDTO.cs" />
+    <Compile Include="Models\C__MigrationHistory.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Models.Context.cs">
       <AutoGen>True</AutoGen>
@@ -628,7 +649,9 @@
     <Content Include="templates\Questions\questionAll.html" />
     <Content Include="templates\Questions\questionView.html" />
     <Content Include="templates\User\user.html" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

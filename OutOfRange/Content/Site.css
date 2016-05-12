@@ -50,7 +50,7 @@
 
 .score-controls .score-control {
     display: inline-block;
-    color: black;
+    color: gray;
 }
 
 .score-controls .score-number {

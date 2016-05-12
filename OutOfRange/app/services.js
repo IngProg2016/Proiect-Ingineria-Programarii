@@ -111,7 +111,7 @@
             var authData = $sessionStorage.authData || $localStorage.authData;
 
             if (authData && (new Date(authData._expiration) < Date.now()))
-                $svx.auth.remove();
+                $svc.auth.remove();
 
             if (authData) {
                 authData._expiration = new Date(authData._expiration);

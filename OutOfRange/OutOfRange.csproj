@@ -368,6 +368,9 @@
     <Content Include="Content\images\blog\img6.jpg" />
     <Content Include="Content\images\blog\img7.jpg" />
     <Content Include="Content\images\blog\img8.jpg" />
+    <Content Include="Content\images\borders\hue.gif" />
+    <Content Include="Content\images\borders\slav.jpg" />
+    <Content Include="Content\images\borders\wood.png" />
     <Content Include="Content\images\clients\graylogo6.png" />
     <Content Include="Content\images\clients\newlogo6.png" />
     <Content Include="Content\images\ipadwhite.png" />
@@ -645,7 +648,7 @@
     <Content Include="templates\Questions\questionAdd.html" />
     <Content Include="templates\Questions\questionAll.html" />
     <Content Include="templates\Questions\questionView.html" />
-    <Content Include="templates\User\user.html" />
+    <Content Include="templates\User\profile.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

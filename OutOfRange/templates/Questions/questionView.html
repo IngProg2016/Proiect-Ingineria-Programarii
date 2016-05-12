@@ -15,9 +15,9 @@
             <div id="question" class="blog-item">
                 <div class="row">
                     <div class="score-controls col-lg-2 col-sm-2 text-center">
-                        <i class="fa fa-3x fa-chevron-up score-control"></i>
+                        <i class="fa fa-3x fa-chevron-up score-control up-vote"></i>
                         <div class="fa-2x score-number">0</div>
-                        <i class="fa fa-3x fa-chevron-down score-control"></i>
+                        <i class="fa fa-3x fa-chevron-down score-control down-vote"></i>
 
                         <!--<div class="date-wrap">
                             <span class="date">{{$ctrl.question.Added | date:'dd'}}</span>
@@ -82,9 +82,9 @@
             <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers">
                 <div class="row">
                     <div class="score-controls col-lg-2 col-sm-2 text-center">
-                        <i class="fa fa-3x fa-chevron-up score-control"></i>
+                        <i class="fa fa-3x fa-chevron-up score-control up-vote"></i>
                         <div class="fa-2x score-number">0</div>
-                        <i class="fa fa-3x fa-chevron-down score-control"></i>
+                        <i class="fa fa-3x fa-chevron-down score-control down-vote"></i>
                         <div ng-click="acceptAnswer()" class="fa fa-3x fa-check accept-control state-unchecked"></div>
                     </div>
 
@@ -99,7 +99,7 @@
                             <hr />
                             <div class="media-body" ng-repeat="com in ans.Comments">
                                 <div class="score-controls col-lg-1 col-sm-1 text-center">
-                                    <i class="fa fa-chevron-up score-control"></i>
+                                    <i class="fa fa-chevron-up score-control up-vote"></i>
                                     <div class="score-number">0</div>
                                 </div>
 

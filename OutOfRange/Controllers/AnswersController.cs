@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using OutOfRange.Models;
+using OutOfRange.utils;
 
 namespace OutOfRange.Controllers
 {
@@ -109,8 +110,13 @@ namespace OutOfRange.Controllers
                     throw;
                 }
             }
+           
             db=new OutOfRangeEntities();
             answer = db.Answers.Find(answer.ID);
+
+            Category category = db.Categories.Single(x => x.ID == answer.Question.CategoryID);
+            PointsUtils.addCreditsAndXP(answer.UserID, category.ID, 10, 15);
+
             return CreatedAtRoute("DefaultApi", new { id = answer.ID }, AnswerDTO.FromEntity(answer));
         }
 
@@ -123,6 +129,8 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
+            Category category = db.Categories.Single(x => x.ID == answer.Question.CategoryID);
+            PointsUtils.addCreditsAndXP(answer.UserID, category.ID, -50, 0);
 
             db.Answers.Remove(answer);
             db.SaveChanges();

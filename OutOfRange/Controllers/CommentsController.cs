@@ -15,6 +15,7 @@ using OutOfRange.Utils;
 
 namespace OutOfRange.Controllers
 {
+    [RoutePrefix("api/comments")]
     public class CommentsController : ApiController
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
@@ -71,6 +72,37 @@ namespace OutOfRange.Controllers
             }
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        //POST: api/comments/AddScore
+        [ResponseType(typeof(CommentDTO))]
+        [HttpPost]
+        [Route("AddScore")]
+        public IHttpActionResult AddScore(ItemScore score)
+        {
+            Comment comment = db.Comments.Find(score.id);
+            string userId = User.Identity.GetUserId();
+            var scoreitems = comment.ScoreItems.Where(x => x.UserID == userId).ToList();
+            if (scoreitems.Count == 0)
+            {
+                decimal addedScore = Math.Sign(score.score);
+                comment.ScoreItems.Add(new ScoreItem()
+                {
+                    Added = DateTime.Now,
+                    Score = addedScore,
+                    UserID = userId,
+                    ItemID = comment.ID,
+                });
+
+                if (comment.Score.HasValue == false)
+                    comment.Score = 0;
+
+                comment.Score += addedScore;
+                db.Entry(comment).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return Ok(new CommentDTO(comment));
         }
 
         // POST: api/Comments

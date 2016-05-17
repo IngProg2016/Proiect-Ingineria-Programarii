@@ -17,7 +17,7 @@ using OutOfRange.Utils;
 
 namespace OutOfRange.Controllers
 {
-    public class QuestionScore
+    public class ItemScore
     {
         public Guid id { get; set; }
         public int score { get; set; }
@@ -42,8 +42,36 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
+            string userId = User.Identity.GetUserId();
+            var view = question.QuestionViews.Where(x => x.UserID == userId).ToList();
+            if (view.Count == 0)
+            {
+                question.QuestionViews.Add(new QuestionView()
+                {
+                    UserID = userId,
+                    Added = DateTime.Now,
+                    LastVisit = DateTime.Now,
+                });
+                db.Entry(question).State=EntityState.Modified;
+            }
+            else
+            {
+                view.First().LastVisit = DateTime.Now;
+                db.Entry(view.First()).State=EntityState.Modified;
+            }
+            db.SaveChanges();
+            db=new OutOfRangeEntities();
+            question = db.Questions.Find(id);
 
-            return Ok(new QuestionDTO(question));
+            QuestionDTO jsonQuestion=new QuestionDTO(question);
+            var qScore = question.ScoreItems.Where(x => x.UserID == userId).ToList();
+            if (qScore.Count > 0)
+            {
+                var score = qScore.First().Score;
+                if (score != null) jsonQuestion.ScoreGiven = decimal.ToInt32(score.Value);
+            }
+
+            return Ok(jsonQuestion);
         }
 
         // PUT: api/Questions/5
@@ -98,24 +126,42 @@ namespace OutOfRange.Controllers
         [ResponseType(typeof(QuestionDTO))]
         [HttpPost]
         [Route("AddScore")]
-        public IHttpActionResult AddScore(QuestionScore score)
+        public IHttpActionResult AddScore(ItemScore score)
         {
             Question question = db.Questions.Find(score.id);
-            if(question.Score.HasValue==false)
-                question.Score = 0;
-            question.Score += Math.Sign(score.score);
-            db.Entry(question).State = EntityState.Modified;
-            db.SaveChanges();
+            string userId = User.Identity.GetUserId();
+            var scoreitems = question.ScoreItems.Where(x => x.UserID == userId).ToList();
+            if (scoreitems.Count == 0)
+            {
+                decimal addedScore = Math.Sign(score.score);
+                question.ScoreItems.Add(new ScoreItem()
+                {
+                    Added = DateTime.Now,
+                    Score = addedScore,
+                    UserID = userId,
+                    ItemID = question.ID,
+                });
+
+                if (question.Score.HasValue == false)
+                    question.Score = 0;
+
+                question.Score += addedScore;
+                db.Entry(question).State = EntityState.Modified;
+                db.SaveChanges();
+            }
 
             return Ok(new QuestionDTO(question));
         }
         // POST: api/Questions
         /* Model Json
-        {"Title":"Intrebarea no1","Description":"Ceva text",
-"Tags":
-[ {"Name":"c#","description":"ceva cu c#"},{"name":"valoare","description":"ceva valoros"}
-]
-}
+        {
+            "Title":"Intrebarea no1",
+            "Description":"Ceva text",
+            "Tags": [
+                {"Name":"c#","description":"ceva cu c#"},
+                {"name":"valoare","description":"ceva valoros"}
+            ]
+        }
         */
         [ResponseType(typeof(QuestionDTO))]
         public IHttpActionResult PostQuestion(Question question)
@@ -149,24 +195,29 @@ namespace OutOfRange.Controllers
                     addingTags.Add(currentTag);
                 }
             }
+
             foreach (var removingTag in removingTags)
             {
                 question.Tags.Remove(removingTag);
             }
+
             foreach (var addingTag in addingTags)
             {
                 question.Tags.Add(addingTag);
             }
 
-            String userId = User.Identity.GetUserId();
+            string userId = User.Identity.GetUserId();
 
             question.ID=Guid.NewGuid();
+
             //guid hardcodat al unui user 
             if (User.Identity.IsAuthenticated)
                 question.UserID = userId;
             else
                 question.UserID = "9e03ab56-d1c8-460a-ad48-fa7c6e69bf18";
+
             question.Added=DateTime.Now;
+            question.Modified=DateTime.Now;
             //Category ca sa mearga (bine ca nu's puse FK inca)
             question.CategoryID = Guid.Empty;
             db.Questions.Add(question);

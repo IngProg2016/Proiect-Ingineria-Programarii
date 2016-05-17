@@ -13,7 +13,7 @@ using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using OutOfRange.Models;
-using OutOfRange.utils;
+using OutOfRange.Utils;
 
 namespace OutOfRange.Controllers
 {
@@ -186,7 +186,7 @@ namespace OutOfRange.Controllers
                     throw e;
                 }
             }
-            PointsUtils.addCreditsAndXP(userId, question.CategoryID, 10, 15);
+            PointsUtils.AddCreditsAndXP(userId, question.CategoryID, 10, 15);
 
             db=new OutOfRangeEntities();
             question = db.Questions.Find(question.ID);
@@ -202,7 +202,7 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
-            PointsUtils.addCreditsAndXP(question.UserID, question.CategoryID, -100, 0);
+            PointsUtils.AddCreditsAndXP(question.UserID, question.CategoryID, -100, 0);
             db.Questions.Remove(question);
             db.SaveChanges();
 

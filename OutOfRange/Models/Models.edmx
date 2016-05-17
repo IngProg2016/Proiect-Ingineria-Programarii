@@ -120,6 +120,26 @@
           <Property Name="QuestionID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TagID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="QuestionViews">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="QuestionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Added" Type="datetime" />
+          <Property Name="LastVisit" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ScoreItems">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ItemID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Added" Type="datetime" />
+        </EntityType>
         <EntityType Name="Tags">
           <Key>
             <PropertyRef Name="ID" />
@@ -310,6 +330,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_QuestionViews_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="QuestionViews" Type="Self.QuestionViews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionViews">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionViews_Questions">
+          <End Role="Questions" Type="Self.Questions" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="QuestionViews" Type="Self.QuestionViews" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Questions">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestionViews">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScoreItems_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="ScoreItems" Type="Self.ScoreItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScoreItems">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UserBadges_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -378,6 +436,8 @@
           <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Questions" EntityType="Self.Questions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionTags" EntityType="Self.QuestionTags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="QuestionViews" EntityType="Self.QuestionViews" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScoreItems" EntityType="Self.ScoreItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserBadges" EntityType="Self.UserBadges" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserLevel" EntityType="Self.UserLevel" Schema="dbo" store:Type="Tables" />
@@ -428,6 +488,18 @@
           <AssociationSet Name="FK_QuestionTags_Tags" Association="Self.FK_QuestionTags_Tags">
             <End Role="Tags" EntitySet="Tags" />
             <End Role="QuestionTags" EntitySet="QuestionTags" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionViews_AspNetUsers" Association="Self.FK_QuestionViews_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="QuestionViews" EntitySet="QuestionViews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionViews_Questions" Association="Self.FK_QuestionViews_Questions">
+            <End Role="Questions" EntitySet="Questions" />
+            <End Role="QuestionViews" EntitySet="QuestionViews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScoreItems_AspNetUsers" Association="Self.FK_ScoreItems_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="ScoreItems" EntitySet="ScoreItems" />
           </AssociationSet>
           <AssociationSet Name="FK_UserBadges_AspNetUsers" Association="Self.FK_UserBadges_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -527,6 +599,32 @@
             <End Role="Answer" EntitySet="Answers" />
             <End Role="Comment" EntitySet="Comments" />
           </AssociationSet>
+          <EntitySet Name="QuestionViews" EntityType="OutOfRangeModel.QuestionView" />
+          <EntitySet Name="ScoreItems" EntityType="OutOfRangeModel.ScoreItem" />
+          <AssociationSet Name="FK_QuestionViews_AspNetUsers" Association="OutOfRangeModel.FK_QuestionViews_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="QuestionView" EntitySet="QuestionViews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ScoreItems_AspNetUsers" Association="OutOfRangeModel.FK_ScoreItems_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="ScoreItem" EntitySet="ScoreItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionViews_Questions" Association="OutOfRangeModel.FK_QuestionViews_Questions">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="QuestionView" EntitySet="QuestionViews" />
+          </AssociationSet>
+          <AssociationSet Name="QuestionScoreItem" Association="OutOfRangeModel.QuestionScoreItem">
+            <End Role="Question" EntitySet="Questions" />
+            <End Role="ScoreItem" EntitySet="ScoreItems" />
+          </AssociationSet>
+          <AssociationSet Name="CommentScoreItem" Association="OutOfRangeModel.CommentScoreItem">
+            <End Role="Comment" EntitySet="Comments" />
+            <End Role="ScoreItem" EntitySet="ScoreItems" />
+          </AssociationSet>
+          <AssociationSet Name="AnswerScoreItem" Association="OutOfRangeModel.AnswerScoreItem">
+            <End Role="Answer" EntitySet="Answers" />
+            <End Role="ScoreItem" EntitySet="ScoreItems" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Answer">
           <Key>
@@ -541,6 +639,7 @@
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Answers_AspNetUsers" FromRole="Answer" ToRole="AspNetUser" />
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.AnswerComment" FromRole="Answer" ToRole="Comment" />
+          <NavigationProperty Name="ScoreItems" Relationship="OutOfRangeModel.AnswerScoreItem" FromRole="Answer" ToRole="ScoreItem" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -596,6 +695,8 @@
           <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_AspNetUsers" FromRole="AspNetUser" ToRole="UserBadge" />
           <NavigationProperty Name="UserLevels" Relationship="OutOfRangeModel.FK_UserLevel_AspNetUsers" FromRole="AspNetUser" ToRole="UserLevel" />
           <NavigationProperty Name="AspNetRoles" Relationship="OutOfRangeModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+          <NavigationProperty Name="QuestionViews" Relationship="OutOfRangeModel.FK_QuestionViews_AspNetUsers" FromRole="AspNetUser" ToRole="QuestionView" />
+          <NavigationProperty Name="ScoreItems" Relationship="OutOfRangeModel.FK_ScoreItems_AspNetUsers" FromRole="AspNetUser" ToRole="ScoreItem" />
         </EntityType>
         <EntityType Name="Badge">
           <Key>
@@ -634,6 +735,7 @@
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.QuestionComment" FromRole="Comment" ToRole="Question" />
           <NavigationProperty Name="Answer" Relationship="OutOfRangeModel.AnswerComment" FromRole="Comment" ToRole="Answer" />
           <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="ScoreItems" Relationship="OutOfRangeModel.CommentScoreItem" FromRole="Comment" ToRole="ScoreItem" />
         </EntityType>
         <EntityType Name="Question">
           <Key>
@@ -653,6 +755,8 @@
           <NavigationProperty Name="Tags" Relationship="OutOfRangeModel.QuestionTags" FromRole="Question" ToRole="Tag" />
           <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.QuestionComment" FromRole="Question" ToRole="Comment" />
           <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
+          <NavigationProperty Name="QuestionViews" Relationship="OutOfRangeModel.FK_QuestionViews_Questions" FromRole="Question" ToRole="QuestionView" />
+          <NavigationProperty Name="ScoreItems" Relationship="OutOfRangeModel.QuestionScoreItem" FromRole="Question" ToRole="ScoreItem" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -881,6 +985,106 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="QuestionView">
+          <Key>
+            <PropertyRef Name="QuestionID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="QuestionID" Type="Guid" Nullable="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Added" Type="DateTime" Precision="3" />
+          <Property Name="LastVisit" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_QuestionViews_AspNetUsers" FromRole="QuestionView" ToRole="AspNetUser" />
+          <NavigationProperty Name="Question" Relationship="OutOfRangeModel.FK_QuestionViews_Questions" FromRole="QuestionView" ToRole="Question" />
+        </EntityType>
+        <EntityType Name="ScoreItem">
+          <Key>
+            <PropertyRef Name="ItemID" />
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="ItemID" Type="Guid" Nullable="false" />
+          <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Added" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_ScoreItems_AspNetUsers" FromRole="ScoreItem" ToRole="AspNetUser" />
+          <NavigationProperty Name="Question" Relationship="OutOfRangeModel.QuestionScoreItem" FromRole="ScoreItem" ToRole="Question" />
+          <NavigationProperty Name="Comment" Relationship="OutOfRangeModel.CommentScoreItem" FromRole="ScoreItem" ToRole="Comment" />
+          <NavigationProperty Name="Answer" Relationship="OutOfRangeModel.AnswerScoreItem" FromRole="ScoreItem" ToRole="Answer" />
+        </EntityType>
+        <Association Name="FK_QuestionViews_AspNetUsers">
+          <End Type="OutOfRangeModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="OutOfRangeModel.QuestionView" Role="QuestionView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionView">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ScoreItems_AspNetUsers">
+          <End Type="OutOfRangeModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="OutOfRangeModel.ScoreItem" Role="ScoreItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScoreItem">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionViews_Questions">
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OutOfRangeModel.QuestionView" Role="QuestionView" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="QuestionView">
+              <PropertyRef Name="QuestionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="QuestionScoreItem">
+          <End Type="OutOfRangeModel.Question" Role="Question" Multiplicity="1" />
+          <End Type="OutOfRangeModel.ScoreItem" Role="ScoreItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Question">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScoreItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CommentScoreItem">
+          <End Type="OutOfRangeModel.Comment" Role="Comment" Multiplicity="1" />
+          <End Type="OutOfRangeModel.ScoreItem" Role="ScoreItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Comment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScoreItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AnswerScoreItem">
+          <End Type="OutOfRangeModel.Answer" Role="Answer" Multiplicity="1" />
+          <End Type="OutOfRangeModel.ScoreItem" Role="ScoreItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Answer">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ScoreItem">
+              <PropertyRef Name="ItemID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1038,6 +1242,26 @@
               <ScalarProperty Name="ID" ColumnName="QuestionID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="QuestionViews">
+            <EntityTypeMapping TypeName="OutOfRangeModel.QuestionView">
+              <MappingFragment StoreEntitySet="QuestionViews">
+                <ScalarProperty Name="LastVisit" ColumnName="LastVisit" />
+                <ScalarProperty Name="Added" ColumnName="Added" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="QuestionID" ColumnName="QuestionID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScoreItems">
+            <EntityTypeMapping TypeName="OutOfRangeModel.ScoreItem">
+              <MappingFragment StoreEntitySet="ScoreItems">
+                <ScalarProperty Name="Added" ColumnName="Added" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -5,19 +5,19 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace OutOfRange.utils
+namespace OutOfRange.Utils
 {
     public class PointsUtils
     {
-       /// <summary>
-       /// Set user credits and xp on category; also adjusts user level on the given category if necessary.
-       /// Give negative values if you need to subtract points
-       /// </summary>
-       /// <param name="userId"></param>
-       /// <param name="categoryId"></param>
-       /// <param name="credits"></param>
-       /// <param name="xp"></param>
-        public static void addCreditsAndXP(String userId, Guid categoryId, int credits, decimal xp)
+        /// <summary>
+        /// Set user credits and xp on category; also adjusts user level on the given category if necessary.
+        /// Give negative values if you need to subtract points
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="categoryId"></param>
+        /// <param name="credits"></param>
+        /// <param name="xp"></param>
+        public static void AddCreditsAndXP(string userId, Guid categoryId, int credits, decimal xp)
         {
             OutOfRangeEntities db = new OutOfRangeEntities();
             AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);

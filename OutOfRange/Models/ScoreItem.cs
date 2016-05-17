@@ -12,26 +12,16 @@ namespace OutOfRange.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Comment
+    public partial class ScoreItem
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Comment()
-        {
-            this.ScoreItems = new HashSet<ScoreItem>();
-        }
-    
-        public System.Guid ID { get; set; }
-        public System.Guid ParentID { get; set; }
+        public System.Guid ItemID { get; set; }
         public string UserID { get; set; }
-        public string CommentBody { get; set; }
-        public System.DateTime Added { get; set; }
-        public Nullable<System.DateTime> Modified { get; set; }
         public Nullable<decimal> Score { get; set; }
+        public Nullable<System.DateTime> Added { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Question Question { get; set; }
+        public virtual Comment Comment { get; set; }
         public virtual Answer Answer { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ScoreItem> ScoreItems { get; set; }
     }
 }

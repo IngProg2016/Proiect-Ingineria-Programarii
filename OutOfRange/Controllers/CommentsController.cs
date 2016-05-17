@@ -11,7 +11,7 @@ using System.Web.Http.Description;
 using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using OutOfRange.Models;
-using OutOfRange.utils;
+using OutOfRange.Utils;
 
 namespace OutOfRange.Controllers
 {
@@ -116,7 +116,7 @@ namespace OutOfRange.Controllers
                 categoryId = comment.Question.CategoryID;
             }
 
-            PointsUtils.addCreditsAndXP(comment.UserID, categoryId, 4, 7);
+            PointsUtils.AddCreditsAndXP(comment.UserID, categoryId, 4, 7);
 
             return CreatedAtRoute("DefaultApi", new { id = comment.ID }, CommentDTO.FromEntity(comment));
         }
@@ -140,7 +140,7 @@ namespace OutOfRange.Controllers
             {
                 categoryId = comment.Question.CategoryID;
             }
-                PointsUtils.addCreditsAndXP(comment.UserID, categoryId, -30, 0);
+                PointsUtils.AddCreditsAndXP(comment.UserID, categoryId, -30, 0);
             
                 db.Comments.Remove(comment);
             db.SaveChanges();

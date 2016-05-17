@@ -286,7 +286,6 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AnswerDTO.cs" />
-    <Compile Include="Models\AnswerExt.cs" />
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -300,7 +299,6 @@
     <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AspNetUsersExt.cs" />
     <Compile Include="Models\Badge.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -312,7 +310,6 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CommentDTO.cs" />
-    <Compile Include="Models\CommentExt.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Models.Context.cs">
       <AutoGen>True</AutoGen>
@@ -329,11 +326,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Models.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\QuestionExt.cs" />
     <Compile Include="Models\Question.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QuestionDTO.cs" />
+    <Compile Include="Models\QuestionView.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScoreItem.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tag.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -346,12 +348,11 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserLevelDTO.cs" />
-    <Compile Include="Models\UserLevelExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="utils\PointsUtils.cs" />
+    <Compile Include="Utils\PointsUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

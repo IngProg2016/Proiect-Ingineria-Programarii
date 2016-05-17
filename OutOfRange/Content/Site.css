@@ -30,3 +30,67 @@
         margin-left: 5px;
         margin-right: 5px;
     }
+
+#question .score-controls {
+    margin-top: 20px;
+}
+
+.answer .score-controls {
+    margin-top: -5px;
+}
+
+.comment .score-controls {
+    padding-right: 0;
+}
+
+.comment-body {
+    padding-left: 0;
+    padding-top: 8px;
+}
+
+.score-controls .score-control {
+    display: inline-block;
+    color: rgba(0, 0, 0, 0.4);
+    -moz-transition: color .3s ease-out;
+    -o-transition: color .3s ease-out;
+    -webkit-transition: color .3s ease-out;
+    transition: color .3s ease-out;
+}
+
+    .score-controls .score-control.up-vote:hover {
+        color: rgba(0, 200, 0, 0.7);
+    }
+
+    .score-controls .score-control.down-vote:hover {
+        color: rgba(200, 0, 0, 0.7);
+    }
+
+.score-controls .score-number {
+    line-height: 0.5;
+}
+
+.score-controls .accept-control {
+    display: block;
+
+    transition: color .3s ease-out, -webkit-text-stroke-color .3s ease-out;
+}
+
+    .score-controls .accept-control.state-unchecked {
+        color: transparent;
+        -webkit-text-stroke: rgba(0, 0, 0, 0.5) 3px;
+    }
+
+    .score-controls .accept-control.state-unchecked:hover {
+        color:  rgba(240, 250, 0, 0.60);
+        -webkit-text-stroke: rgba(0, 0, 0, 0.7) 3px;
+    }
+
+    .score-controls .accept-control.state-checked {
+        color: lawngreen;
+        -webkit-text-stroke: black 3px;
+    }
+
+    .score-controls .accept-control.state-checked:hover {
+        color: rgba(240, 250, 0, 0.60);
+        -webkit-text-stroke: rgba(0, 0, 0, 0.3) 3px;
+    }

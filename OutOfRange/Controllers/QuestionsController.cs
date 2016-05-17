@@ -13,6 +13,7 @@ using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using OutOfRange.Models;
+using OutOfRange.utils;
 
 namespace OutOfRange.Controllers
 {
@@ -156,19 +157,20 @@ namespace OutOfRange.Controllers
             {
                 question.Tags.Add(addingTag);
             }
-            
+
+            String userId = User.Identity.GetUserId();
 
             question.ID=Guid.NewGuid();
-            //guid hardcodat al unui user
+            //guid hardcodat al unui user 
             if (User.Identity.IsAuthenticated)
-                question.UserID = User.Identity.GetUserId();
+                question.UserID = userId;
             else
                 question.UserID = "9e03ab56-d1c8-460a-ad48-fa7c6e69bf18";
             question.Added=DateTime.Now;
             //Category ca sa mearga (bine ca nu's puse FK inca)
             question.CategoryID = Guid.Empty;
             db.Questions.Add(question);
-            
+
             try
             {
                 db.SaveChanges();
@@ -184,6 +186,8 @@ namespace OutOfRange.Controllers
                     throw e;
                 }
             }
+            PointsUtils.addCreditsAndXP(userId, question.CategoryID, 10, 15);
+
             db=new OutOfRangeEntities();
             question = db.Questions.Find(question.ID);
             return CreatedAtRoute("DefaultApi", new { id = question.ID }, QuestionDTO.FromEntity(question));
@@ -198,6 +202,7 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
+            PointsUtils.addCreditsAndXP(question.UserID, question.CategoryID, -100, 0);
             db.Questions.Remove(question);
             db.SaveChanges();
 

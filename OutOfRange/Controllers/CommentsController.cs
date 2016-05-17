@@ -11,6 +11,7 @@ using System.Web.Http.Description;
 using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using OutOfRange.Models;
+using OutOfRange.utils;
 
 namespace OutOfRange.Controllers
 {
@@ -101,8 +102,21 @@ namespace OutOfRange.Controllers
                     throw;
                 }
             }
-            db=new OutOfRangeEntities();
+            db = new OutOfRangeEntities();
             comment = db.Comments.Find(comment.ID);
+
+            Guid categoryId = Guid.Empty;
+            if (comment.Answer != null)
+            {
+                categoryId = comment.Answer.Question.CategoryID;
+
+            }
+            else if (comment.Question != null)
+            {
+                categoryId = comment.Question.CategoryID;
+            }
+
+            PointsUtils.addCreditsAndXP(comment.UserID, categoryId, 4, 7);
 
             return CreatedAtRoute("DefaultApi", new { id = comment.ID }, CommentDTO.FromEntity(comment));
         }
@@ -116,8 +130,19 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
+            Guid categoryId = Guid.Empty;
+            if (comment.Answer != null)
+            {
+                categoryId = comment.Answer.Question.CategoryID;
 
-            db.Comments.Remove(comment);
+            }
+            else if (comment.Question != null)
+            {
+                categoryId = comment.Question.CategoryID;
+            }
+                PointsUtils.addCreditsAndXP(comment.UserID, categoryId, -30, 0);
+            
+                db.Comments.Remove(comment);
             db.SaveChanges();
 
             return Ok(comment);

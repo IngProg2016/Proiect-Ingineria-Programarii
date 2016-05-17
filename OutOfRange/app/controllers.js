@@ -54,7 +54,7 @@
         }
     })
     .component('userCmp', {
-        templateUrl: '',
+        templateUrl: 'templates/user/profile.html',
         controller: ['authService', UserCtrl]
     })
     .component('questionsCmp', {

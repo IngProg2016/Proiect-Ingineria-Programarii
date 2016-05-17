@@ -12,14 +12,17 @@
     <div class="row">
         <!--blog start-->
         <div class="col-lg-9 ">
-            <div id="Question" class="blog-item">
+            <div id="question" class="blog-item">
                 <div class="row">
-                    <div class="col-lg-2 col-sm-2">
-                        <div class="date-wrap">
+                    <div class="score-controls col-lg-2 col-sm-2 text-center">
+                        <i class="fa fa-3x fa-chevron-up score-control up-vote"></i>
+                        <div class="fa-2x score-number">0</div>
+                        <i class="fa fa-3x fa-chevron-down score-control down-vote"></i>
+
+                        <!--<div class="date-wrap">
                             <span class="date">{{$ctrl.question.Added | date:'dd'}}</span>
                             <span class="month">{{$ctrl.question.Added | date:'MMMM yyyy'}}</span>
-                        </div>
-
+                        </div>-->
                     </div>
                     <div class="col-lg-10 col-sm-10">
                         <h1>
@@ -76,22 +79,36 @@
                 </h3>
                 <hr>
             </div>
-            <div id="Answer-{{ans.ID}}" class="media" ng-repeat="ans in $ctrl.question.Answers">
-                <div class="media-body">
-                    <h4 class="media-heading">
-                        {{ans.AspNetUser.UserName}} | <span>{{ans.Added | date}}</span>
-                    </h4>
-                    <p ng-bind-html="ans.AnswerBody"></p>
-                    <a ng-show="$ctrl.isAuth" data-toggle="modal" data-target="#myModal" ng-click="$ctrl.prepareComment(ans.ID)" href="#">Reply</a>
-                    <small ng-hide="$ctrl.isAuth"><a href="#" ng-click="$ctrl.navigateWithReturn(['Login'], 'Answer-'+ans.ID)">Login</a> or <a href="#" ng-click="$ctrl.navigateWithReturn(['Register'], 'Answer-'+ans.ID)">Register</a> to add comment</small>
-                    <div class="media" style="margin-left:50px;">
-                        <hr />
-                        <div class="media-body" ng-repeat="com in ans.Comments">
-                            <h4 class="media-heading">
-                            </h4>
-                            <p>
-                                <b>{{com.AspNetUser.UserName}}:</b> <span ng-bind="com.CommentBody | plainText"></span>
-                            </p>
+            <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers">
+                <div class="row">
+                    <div class="score-controls col-lg-2 col-sm-2 text-center">
+                        <i class="fa fa-3x fa-chevron-up score-control up-vote"></i>
+                        <div class="fa-2x score-number">0</div>
+                        <i class="fa fa-3x fa-chevron-down score-control down-vote"></i>
+                        <div ng-click="acceptAnswer()" class="fa fa-3x fa-check accept-control state-unchecked"></div>
+                    </div>
+
+                    <div class="media-body col-lg-10 col-sm-10">
+                        <h4 class="media-heading">
+                            {{ans.AspNetUser.UserName}} | <span>{{ans.Added | date}}</span>
+                        </h4>
+                        <p ng-bind-html="ans.AnswerBody"></p>
+                        <a ng-show="$ctrl.isAuth" data-toggle="modal" data-target="#myModal" ng-click="$ctrl.prepareComment(ans.ID)" href="#">Reply</a>
+                        <small ng-hide="$ctrl.isAuth"><a href="#" ng-click="$ctrl.navigateWithReturn(['Login'], 'Answer-'+ans.ID)">Login</a> or <a href="#" ng-click="$ctrl.navigateWithReturn(['Register'], 'Answer-'+ans.ID)">Register</a> to add comment</small>
+                        <div class="media comment" style="margin-left:50px;">
+                            <hr />
+                            <div class="media-body" ng-repeat="com in ans.Comments">
+                                <div class="score-controls col-lg-1 col-sm-1 text-center">
+                                    <i class="fa fa-chevron-up score-control up-vote"></i>
+                                    <div class="score-number">0</div>
+                                </div>
+
+                                <div class="comment-body col-lg-11 col-sm-11">
+                                    <p>
+                                        <b>{{com.AspNetUser.UserName}}:</b> <span ng-bind="com.CommentBody | plainText"></span>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

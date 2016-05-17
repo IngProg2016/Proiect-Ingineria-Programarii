@@ -16,6 +16,12 @@ using OutOfRange.Models;
 
 namespace OutOfRange.Controllers
 {
+    public class QuestionScore
+    {
+        public Guid id { get; set; }
+        public int score { get; set; }
+    }
+    [RoutePrefix("api/questions")]
     public class QuestionsController : ApiController
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
@@ -75,6 +81,33 @@ namespace OutOfRange.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [HttpGet]
+        [Route("Bounties")]
+        public JsonResult<IEnumerable<QuestionDTO>> GetBounties()
+        {
+            return
+                Json(
+                    db.Questions.Where(question => question.Bounty > 0)
+                        .OrderByDescending(x => x.Bounty)
+                        .ToList()
+                        .Select(QuestionDTO.FromEntity));
+        }
+
+        //POST: api/questions/AddScore
+        [ResponseType(typeof(QuestionDTO))]
+        [HttpPost]
+        [Route("AddScore")]
+        public IHttpActionResult AddScore(QuestionScore score)
+        {
+            Question question = db.Questions.Find(score.id);
+            if(question.Score.HasValue==false)
+                question.Score = 0;
+            question.Score += Math.Sign(score.score);
+            db.Entry(question).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return Ok(new QuestionDTO(question));
+        }
         // POST: api/Questions
         /* Model Json
         {"Title":"Intrebarea no1","Description":"Ceva text",
@@ -155,7 +188,7 @@ namespace OutOfRange.Controllers
             question = db.Questions.Find(question.ID);
             return CreatedAtRoute("DefaultApi", new { id = question.ID }, QuestionDTO.FromEntity(question));
         }
-
+        
         // DELETE: api/Questions/5
         [ResponseType(typeof(QuestionDTO))]
         public IHttpActionResult DeleteQuestion(Guid id)

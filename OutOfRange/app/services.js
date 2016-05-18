@@ -110,7 +110,7 @@
 
     function AdminService($q, $resource) {
         var Categories = $resource('/api/categories/:id', {}, {
-            $update: { method: 'PUT' }
+            update: { method: 'PUT' }
         });
 
         this.getCategories = function () {
@@ -119,7 +119,7 @@
 
         this.saveCategory = function (category) {
             var _category = new Categories(category);
-            _category.$update(_category.ID);
+            return _category.$update({ id: _category.ID }).$promise;
         }
     }
 

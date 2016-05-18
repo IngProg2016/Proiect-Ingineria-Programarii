@@ -119,7 +119,17 @@
 
         this.saveCategory = function (category) {
             var _category = new Categories(category);
-            return _category.$update({ id: _category.ID }).$promise;
+            return _category.$update({ id: _category.ID });
+        }
+
+        this.deleteCategory = function (category) {
+            var _category = new Categories(category);
+            return _category.$delete({ id: _category.ID });
+        }
+
+        this.addCategory = function (category) {
+            var _category = new Categories(category);
+            return _category.$save();
         }
     }
 

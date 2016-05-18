@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-8 col-sm-8">
                 <h1>
-                    Admin
+                    Admin :: Manage Categories
                 </h1>
             </div>
         </div>
@@ -11,41 +11,44 @@
 </div>
 
 <div class="container mar-b-30">
-    <div class="table-responsive">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>
-                        Categories
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                    <th>
-                        Action
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="category in $ctrl.categories">
-                    <td class="col-sm-4">
-                        {{category.Name}}
-                    </td>
-                    <td class="col-sm-6">
-                        {{category.Description}}
-                    </td>
-                    <td class="col-sm-2">
-                        <a class="btn btn-primary" data-toggle="modal" data-target="#editModal" ng-click="$ctrl.currentCategory = category">
-                            <i class="fa fa-edit"></i> Edit
-                        </a>
-                        <a class="btn btn-danger">
-                            <i class="fa fa-trash-o"></i> Delete
-                        </a>
-                    </td>
-                </tr>
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    Categories
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="category in $ctrl.categories">
+                <td class="col-sm-4">
+                    {{category.Name}}
+                </td>
+                <td class="col-sm-6">
+                    {{category.Description}}
+                </td>
+                <td class="col-sm-2">
+                    <a class="btn btn-primary" data-toggle="modal" data-target="#editModal" ng-click="$ctrl.currentCategory = { category: category, action: $ctrl.saveCategory }">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="$ctrl.currentCategory = category">
+                        <i class="fa fa-trash-o"></i> Delete
+                    </a>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <a class="btn btn-success" data-toggle="modal" data-target="#editModal" ng-click="$ctrl.currentCategory = { category: {}, action: $ctrl.addCategory }">
+            <i class="fa fa-plus"></i> Add
+        </a>
     </div>
     <!-- /.table-responsive -->
 </div>
@@ -62,15 +65,37 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <input ng-model="$ctrl.currentCategory.Name" placeholder="Category name" class="form-control" required />
+                    <input ng-model="$ctrl.currentCategory.category.Name" placeholder="Category name" class="form-control" required />
                 </div>
                 <div class="form-group">
-                    <textarea ng-model="$ctrl.currentCategory.Description" placeholder="Category description" rows="4" class="form-control" required></textarea>
+                    <textarea ng-model="$ctrl.currentCategory.category.Description" placeholder="Category description" rows="4" class="form-control" required></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button ng-click="$ctrl.saveCategory($ctrl.currentCategory)" type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+                <button ng-click="$ctrl.currentCategory.action($ctrl.currentCategory.category)" type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- delete modal-->
+<div id="deleteModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm delete</h4>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <b>{{$ctrl.currentCategory.Name}}</b>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button ng-click="$ctrl.deleteCategory($ctrl.currentCategory)" type="button" class="btn btn-danger" data-dismiss="modal">Yes</button>
             </div>
         </div>
 

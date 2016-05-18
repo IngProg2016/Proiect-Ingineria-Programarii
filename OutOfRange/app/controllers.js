@@ -183,15 +183,33 @@
         var $ctrl = this;
 
         (function () {
+            updateCategories();
+        })();
+
+        function updateCategories() {
             adminService.getCategories()
             .then(function (categories) {
                 $ctrl.categories = categories;
             });
-        })();
+        }
 
         this.saveCategory = function (category) {
-            adminService.saveCategory(category);
+            adminService.saveCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
         };
+
+        this.deleteCategory = function (category) {
+            adminService.deleteCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        };
+
+        this.addCategory = function (category) {
+            adminService.addCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        }
     }
 
     function UserCtrl() { }

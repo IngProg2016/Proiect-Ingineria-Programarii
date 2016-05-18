@@ -80,6 +80,7 @@ namespace OutOfRange.Controllers
                 return BadRequest(ModelState);
             }
 
+            category.ID = Guid.NewGuid();
             db.Categories.Add(category);
 
             try

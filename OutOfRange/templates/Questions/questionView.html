@@ -15,9 +15,9 @@
             <div id="question" class="blog-item">
                 <div class="row">
                     <div class="score-controls col-lg-2 col-sm-2 text-center">
-                        <i class="fa fa-3x fa-chevron-up score-control up-vote"></i>
+                        <i class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusQuestionVote()" ng-class="{ 'score-given': $ctrl.question.ScoreGiven == 1 }"></i>
                         <div class="fa-2x score-number">0</div>
-                        <i class="fa fa-3x fa-chevron-down score-control down-vote"></i>
+                        <i class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusQuestionVote()" ng-class="{ 'score-given': $ctrl.question.ScoreGiven == -1 }"></i>
 
                         <!--<div class="date-wrap">
                             <span class="date">{{$ctrl.question.Added | date:'dd'}}</span>
@@ -82,10 +82,10 @@
             <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers">
                 <div class="row">
                     <div class="score-controls col-lg-2 col-sm-2 text-center">
-                        <i class="fa fa-3x fa-chevron-up score-control up-vote"></i>
+                        <i class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == 1 }"></i>
                         <div class="fa-2x score-number">0</div>
-                        <i class="fa fa-3x fa-chevron-down score-control down-vote"></i>
-                        <div ng-click="acceptAnswer()" class="fa fa-3x fa-check accept-control state-unchecked"></div>
+                        <i class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == -1 }"></i>
+                        <div ng-click="$ctrl.acceptAnswer(ans)" class="fa fa-3x fa-check accept-control" ng-class="{ 'state-unchecked': !ans.Accepted, 'state-checked': ans.Accepted }"></div>
                     </div>
 
                     <div class="media-body col-lg-10 col-sm-10">
@@ -99,8 +99,9 @@
                             <hr />
                             <div class="media-body" ng-repeat="com in ans.Comments">
                                 <div class="score-controls col-lg-1 col-sm-1 text-center">
-                                    <i class="fa fa-chevron-up score-control up-vote"></i>
+                                    <i class="fa fa-chevron-up score-control up-vote" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
                                     <div class="score-number">0</div>
+                                    <i class="fa fa-chevron-down score-control down-vote" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
                                 </div>
 
                                 <div class="comment-body col-lg-11 col-sm-11">

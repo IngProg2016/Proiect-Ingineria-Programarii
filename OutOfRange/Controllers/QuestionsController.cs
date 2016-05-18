@@ -219,7 +219,6 @@ namespace OutOfRange.Controllers
             question.Added=DateTime.Now;
             question.Modified=DateTime.Now;
             //Category ca sa mearga (bine ca nu's puse FK inca)
-            //question.CategoryID = Guid.Empty;
             db.Questions.Add(question);
 
             try

@@ -183,15 +183,33 @@
         var $ctrl = this;
 
         (function () {
+            updateCategories();
+        })();
+
+        function updateCategories() {
             adminService.getCategories()
             .then(function (categories) {
                 $ctrl.categories = categories;
             });
-        })();
+        }
 
         this.saveCategory = function (category) {
-            adminService.saveCategory(category);
+            adminService.saveCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
         };
+
+        this.deleteCategory = function (category) {
+            adminService.deleteCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        };
+
+        this.addCategory = function (category) {
+            adminService.addCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        }
     }
 
     function UserCtrl() { }
@@ -308,6 +326,20 @@
             });
         }
 
+        this.plusQuestionVote = function () {
+            if ($ctrl.question.ScoreGiven)
+                return;
+            qaService.voteQuestion(1, $ctrl.question.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.minusQuestionVote = function () {
+            if ($ctrl.question.ScoreGiven)
+                return;
+            qaService.voteQuestion(-1, $ctrl.question.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
         this.answer = {};
 
         this.addAnswer = function () {
@@ -318,6 +350,38 @@
 
                 $ctrl.answer.AnswerBody = "";
             });
+        }
+
+        this.plusAnswerVote = function (answer) {
+            if (answer.ScoreGiven)
+                return;
+            qaService.voteAnswer(1, answer.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.minusAnswerVote = function (answer) {
+            if (answer.ScoreGiven)
+                return;
+            qaService.voteAnswer(-1, answer.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.acceptAnswer = function (answer) {
+            console.warn('not implemented');
+        }
+
+        this.plusCommentVote = function (comment) {
+            if (comment.ScoreGiven)
+                return;
+            qaService.voteComment(1, comment.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        }
+
+        this.minusCommentVote = function (comment) {
+            if (comment.ScoreGiven)
+                return;
+            qaService.voteComment(-1, comment.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
         }
 
         this.navigateWithReturn = function (routeLink, scrollTo) {

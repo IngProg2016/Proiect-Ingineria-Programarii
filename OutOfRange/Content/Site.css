@@ -3,6 +3,10 @@
     padding-bottom: 20px;
 }
 
+.form-control {
+    color: black;
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -31,6 +35,23 @@
         margin-right: 5px;
     }
 
+/* Question Add */
+.category-select:invalid {
+    color: #a1a1a1;
+}
+
+.category-select option[value=""] {
+    color: #a1a1a1;
+}
+
+.category-select option {
+    color: black;
+}
+
+/* Question All*/
+
+
+/* Question View */
 #question .score-controls {
     margin-top: 20px;
 }

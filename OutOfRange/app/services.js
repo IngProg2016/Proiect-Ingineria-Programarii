@@ -4,6 +4,7 @@
     var OutOfRangeApp = angular.module('OutOfRangeApp')
     .service('routeChangeService', ['$rootRouter', 'authService', RouteChangeService])
     .service('authService', ['$q', '$resource', 'storageService', AuthService])
+    .service('adminService', ['$q', '$resource', AdminService])
     .service('storageService', ['$localStorage', '$sessionStorage', StorageService])
     .service('authInterceptorService', ['$q', '$rootRouter', 'storageService', AuthInterceptorService])
     .service('qaService', ['$resource', QaService])
@@ -26,6 +27,11 @@
             }
 
             if (toRoute.routeData.data.guestOnly && authService.getAuthentificationInfo().isAuth) {
+                $svc.navigateToRedirectUrl(toRoute);
+            }
+
+            if (toRoute.routeData.data.roles) {
+                console.warn('roles not implemented! (RouteChangeService -> onChange)');
                 $svc.navigateToRedirectUrl(toRoute);
             }
         }
@@ -102,6 +108,19 @@
         }
     }
 
+    function AdminService($q, $resource) {
+        var Categories = $resource('/api/categories');
+
+        this.getCategories = function () {
+            return Categories.query().$promise;
+        }
+
+        this.saveCategory = function (category) {
+            var _category = Categories(category);
+            _category.$save();
+        }
+    }
+
     function StorageService($localStorage, $sessionStorage) {
         var $svc = this;
 
@@ -137,6 +156,11 @@
         var Questions = $resource('/api/questions/:id');
         var Answer = $resource('/api/answers');
         var Comment = $resource('/api/comments');
+        var Category = $resource('/api/categories');
+
+        this.getCategories = function () {
+            return Category.query().$promise;
+        }
 
         this.getQuestions = function (filter) {
             return Questions.query(filter).$promise;

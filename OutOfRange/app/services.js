@@ -118,7 +118,7 @@
         }
 
         this.saveCategory = function (category) {
-            var _category = Categories(category);
+            var _category = new Categories(category);
             _category.$update(_category.ID);
         }
     }

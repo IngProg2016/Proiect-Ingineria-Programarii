@@ -189,7 +189,7 @@
             });
         })();
 
-        this.save = function (category) {
+        this.saveCategory = function (category) {
             adminService.saveCategory(category);
         };
     }

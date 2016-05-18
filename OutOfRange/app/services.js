@@ -166,8 +166,8 @@
 
     function QaService($resource) {
         var Questions = $resource('/api/questions/:id');
-        var Answer = $resource('/api/answers');
-        var Comment = $resource('/api/comments');
+        var Answer = $resource('/api/answers/:id');
+        var Comment = $resource('/api/comments/:id');
         var Category = $resource('/api/categories');
 
         this.getCategories = function () {
@@ -186,12 +186,24 @@
             return Questions.get({ id: questionId }).$promise;
         }
 
+        this.voteQuestion = function (vote, questionId) {
+            return new Questions({ score: vote, id: questionId }).$save({ id: 'addscore' });
+        }
+
         this.addAnswer = function (answer) {
             return new Answer(answer).$save();
         }
 
+        this.voteAnswer = function (vote, answerId) {
+            return new Answer({ score: vote, id: answerId }).$save({ id: 'addscore' });
+        }
+
         this.addComment = function (comment) {
             return new Comment(comment).$save();
+        }
+
+        this.voteComment = function (vote, commentId) {
+            return new Comment({ score: vote, id: commentId }).$save({ id: 'addscore' });
         }
     }
 

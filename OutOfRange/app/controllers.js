@@ -326,6 +326,20 @@
             });
         }
 
+        this.plusQuestionVote = function () {
+            if ($ctrl.question.ScoreGiven)
+                return;
+            qaService.voteQuestion(1, $ctrl.question.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.minusQuestionVote = function () {
+            if ($ctrl.question.ScoreGiven)
+                return;
+            qaService.voteQuestion(-1, $ctrl.question.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
         this.answer = {};
 
         this.addAnswer = function () {
@@ -336,6 +350,38 @@
 
                 $ctrl.answer.AnswerBody = "";
             });
+        }
+
+        this.plusAnswerVote = function (answer) {
+            if (answer.ScoreGiven)
+                return;
+            qaService.voteAnswer(1, answer.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.minusAnswerVote = function (answer) {
+            if (answer.ScoreGiven)
+                return;
+            qaService.voteAnswer(-1, answer.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.acceptAnswer = function (answer) {
+            console.warn('not implemented');
+        }
+
+        this.plusCommentVote = function (comment) {
+            if (comment.ScoreGiven)
+                return;
+            qaService.voteComment(1, comment.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        }
+
+        this.minusCommentVote = function (comment) {
+            if (comment.ScoreGiven)
+                return;
+            qaService.voteComment(-1, comment.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
         }
 
         this.navigateWithReturn = function (routeLink, scrollTo) {

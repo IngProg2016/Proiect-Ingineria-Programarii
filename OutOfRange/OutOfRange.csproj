@@ -661,6 +661,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\superfish.js" />
     <Content Include="Scripts\wow.min.js" />
+    <Content Include="templates\Admin\categories.html" />
     <Content Include="templates\Auth\login.html" />
     <Content Include="templates\Auth\register.html" />
     <Content Include="templates\front-page.html" />

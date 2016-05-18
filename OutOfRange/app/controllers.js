@@ -11,6 +11,7 @@
             { path: '/login', name: 'Login', component: 'loginCmp', data: { guestOnly: true } },
             { path: '/logout', name: 'Logout', component: 'logoutCmp' },
             { path: '/user', name: 'User', component: 'userCmp', data: { requiresLogin: true } },
+            { path: '/admin/categories', name: 'AdminCategories', component: 'adminCatCmp', data: { roles: ['admin'] } },
             { path: '/questions', name: 'Questions', component: 'questionsCmp' },
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
             { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
@@ -53,6 +54,10 @@
             $router: '<'
         }
     })
+    .component('adminCatCmp', {
+        templateUrl: 'templates/admin/categories.html',
+        controller: ['adminService', AdminCatCmp]
+    })
     .component('userCmp', {
         templateUrl: 'templates/user/profile.html',
         controller: ['authService', UserCtrl]
@@ -85,6 +90,11 @@
         this.isAuthenticated = function () {
             return authInfo().isAuth;
         };
+
+        this.isAdmin = function () {
+            return true;
+        };
+
         this.userName = function () {
             return authInfo().userName;
         }
@@ -169,6 +179,21 @@
         }
     }
 
+    function AdminCatCmp(adminService) {
+        var $ctrl = this;
+
+        (function () {
+            adminService.getCategories()
+            .then(function (categories) {
+                $ctrl.categories = categories;
+            });
+        })();
+
+        this.save = function (category) {
+            adminService.saveCategory(category);
+        };
+    }
+
     function UserCtrl() { }
 
     function QuestionsCtrl($q, qaService) {
@@ -193,7 +218,15 @@
     function AddQuestionCtrl(qaService, routeChangeService) {
         var $ctrl = this;
 
+        (function () {
+            qaService.getCategories()
+            .then(function (categories) {
+                $ctrl.categories = categories;
+            });
+        })();
+
         this.question = {
+            Category: '',
             Title: '',
             QuestionBody: '',
             Tags: '',
@@ -227,7 +260,7 @@
         this.error = null;
         this.scrollTo = null;
 
-        this.prepareComment = function(parentID){
+        this.prepareComment = function (parentID) {
             this.replyCommentID = parentID;
         }
 

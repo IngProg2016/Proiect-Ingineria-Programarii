@@ -31,6 +31,9 @@ namespace OutOfRange.Utils
                 userLevel.UserID = userId;
                 userLevel.CategoryID = categoryId;
                 userLevel.XP = 0;
+                userLevel.Obtained = DateTime.Now;
+                user.UserLevels.Add(userLevel);
+                db.SaveChanges();
             }
             else
             {
@@ -38,6 +41,7 @@ namespace OutOfRange.Utils
             }
 
             userLevel.XP += xp;
+            
             db.Entry(userLevel).State = EntityState.Modified;
             db.Entry(user).State = EntityState.Modified;
 

@@ -9,25 +9,70 @@
         </div>
     </div>
 </div>
-<div class="bs-example mar-b-30">
+
+<div class="container mar-b-30">
     <div class="table-responsive">
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        Header
+                        Categories
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Action
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>
-                        Value
+                <tr ng-repeat="category in $ctrl.categories">
+                    <td class="col-sm-4">
+                        {{category.Name}}
+                    </td>
+                    <td class="col-sm-6">
+                        {{category.Description}}
+                    </td>
+                    <td class="col-sm-2">
+                        <a class="btn btn-primary" data-toggle="modal" data-target="#editModal" ng-click="$ctrl.currentCategory = category">
+                            <i class="fa fa-edit"></i> Edit
+                        </a>
+                        <a class="btn btn-danger">
+                            <i class="fa fa-trash-o"></i> Delete
+                        </a>
                     </td>
                 </tr>
-                <tr> 
+
             </tbody>
         </table>
     </div>
     <!-- /.table-responsive -->
+</div>
+
+<!-- edit modal-->
+<div id="editModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit Category</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input ng-model="$ctrl.currentCategory.Name" placeholder="Category name" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <textarea ng-model="$ctrl.currentCategory.Description" placeholder="Category description" rows="4" class="form-control" required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button ng-click="$ctrl.saveCategory($ctrl.currentCategory)" type="button" class="btn btn-success" data-dismiss="modal">Submit</button>
+            </div>
+        </div>
+
+    </div>
 </div>

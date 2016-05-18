@@ -11,9 +11,11 @@ using System.Web.Http.Description;
 using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using OutOfRange.Models;
+using OutOfRange.Utils;
 
 namespace OutOfRange.Controllers
 {
+    [RoutePrefix("api/comments")]
     public class CommentsController : ApiController
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
@@ -72,6 +74,37 @@ namespace OutOfRange.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        //POST: api/comments/AddScore
+        [ResponseType(typeof(CommentDTO))]
+        [HttpPost]
+        [Route("AddScore")]
+        public IHttpActionResult AddScore(ItemScore score)
+        {
+            Comment comment = db.Comments.Find(score.id);
+            string userId = User.Identity.GetUserId();
+            var scoreitems = comment.ScoreItems.Where(x => x.UserID == userId).ToList();
+            if (scoreitems.Count == 0)
+            {
+                decimal addedScore = Math.Sign(score.score);
+                comment.ScoreItems.Add(new ScoreItem()
+                {
+                    Added = DateTime.Now,
+                    Score = addedScore,
+                    UserID = userId,
+                    ItemID = comment.ID,
+                });
+
+                if (comment.Score.HasValue == false)
+                    comment.Score = 0;
+
+                comment.Score += addedScore;
+                db.Entry(comment).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return Ok(new CommentDTO(comment));
+        }
+
         // POST: api/Comments
         [ResponseType(typeof(CommentDTO))]
         public IHttpActionResult PostComment(Comment comment)
@@ -101,8 +134,21 @@ namespace OutOfRange.Controllers
                     throw;
                 }
             }
-            db=new OutOfRangeEntities();
+            db = new OutOfRangeEntities();
             comment = db.Comments.Find(comment.ID);
+
+            Guid categoryId = Guid.Empty;
+            if (comment.Answer != null)
+            {
+                categoryId = comment.Answer.Question.CategoryID;
+
+            }
+            else if (comment.Question != null)
+            {
+                categoryId = comment.Question.CategoryID;
+            }
+
+            PointsUtils.AddCreditsAndXP(comment.UserID, categoryId, 4, 7);
 
             return CreatedAtRoute("DefaultApi", new { id = comment.ID }, CommentDTO.FromEntity(comment));
         }
@@ -116,8 +162,19 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
+            Guid categoryId = Guid.Empty;
+            if (comment.Answer != null)
+            {
+                categoryId = comment.Answer.Question.CategoryID;
 
-            db.Comments.Remove(comment);
+            }
+            else if (comment.Question != null)
+            {
+                categoryId = comment.Question.CategoryID;
+            }
+                PointsUtils.AddCreditsAndXP(comment.UserID, categoryId, -30, 0);
+            
+                db.Comments.Remove(comment);
             db.SaveChanges();
 
             return Ok(comment);

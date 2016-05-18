@@ -8,6 +8,7 @@ namespace OutOfRange.Models
         public Guid ParentID { get; set; }
         public string UserID { get; set; }
         public string CommentBody { get; set; }
+        public decimal? Score { get; set; }
         public DateTime Added { get; set; }
         public DateTime? Modified { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }
@@ -22,6 +23,7 @@ namespace OutOfRange.Models
             ID = comment.ID;
             ParentID = comment.ParentID;
             UserID = comment.UserID;
+            Score = comment.Score;
             CommentBody = comment.CommentBody;
             Added = comment.Added;
             Modified = comment.Modified;

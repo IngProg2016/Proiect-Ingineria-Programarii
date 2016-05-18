@@ -11,9 +11,11 @@ using System.Web.Http.Description;
 using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using OutOfRange.Models;
+using OutOfRange.Utils;
 
 namespace OutOfRange.Controllers
 {
+    [RoutePrefix("api/answers")]
     public class AnswersController : ApiController
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
@@ -78,6 +80,37 @@ namespace OutOfRange.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        //POST: api/answers/AddScore
+        [ResponseType(typeof(CommentDTO))]
+        [HttpPost]
+        [Route("AddScore")]
+        public IHttpActionResult AddScore(ItemScore score)
+        {
+            Answer answer = db.Answers.Find(score.id);
+            string userId = User.Identity.GetUserId();
+            var scoreitems = answer.ScoreItems.Where(x => x.UserID == userId).ToList();
+            if (scoreitems.Count == 0)
+            {
+                int addedScore = Math.Sign(score.score);
+                answer.ScoreItems.Add(new ScoreItem()
+                {
+                    Added = DateTime.Now,
+                    Score = addedScore,
+                    UserID = userId,
+                    ItemID = answer.ID,
+                });
+
+                if (answer.Score.HasValue == false)
+                    answer.Score = 0;
+
+                answer.Score += addedScore;
+                db.Entry(answer).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return Ok(new AnswerDTO(answer));
+        }
+
         // POST: api/Answers
         [Authorize]
         [ResponseType(typeof(AnswerDTO))]
@@ -109,8 +142,13 @@ namespace OutOfRange.Controllers
                     throw;
                 }
             }
+           
             db=new OutOfRangeEntities();
             answer = db.Answers.Find(answer.ID);
+
+            Category category = db.Categories.Single(x => x.ID == answer.Question.CategoryID);
+            PointsUtils.AddCreditsAndXP(answer.UserID, category.ID, 10, 15);
+
             return CreatedAtRoute("DefaultApi", new { id = answer.ID }, AnswerDTO.FromEntity(answer));
         }
 
@@ -123,6 +161,8 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
+            Category category = db.Categories.Single(x => x.ID == answer.Question.CategoryID);
+            PointsUtils.AddCreditsAndXP(answer.UserID, category.ID, -50, 0);
 
             db.Answers.Remove(answer);
             db.SaveChanges();

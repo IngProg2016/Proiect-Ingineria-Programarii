@@ -367,7 +367,7 @@
         };
 
         this.acceptAnswer = function (answer) {
-            console.warn('not implemented');
+            qaService.acceptAnswer(answer.ID);
         }
 
         this.plusCommentVote = function (comment) {

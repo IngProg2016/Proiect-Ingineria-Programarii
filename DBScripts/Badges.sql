@@ -1,3 +1,9 @@
+/*
+	C,C++,C#,
+	Java,Javascript,Python,
+	Ruby,Go,Haskell
+*/
+
 BEGIN TRANSACTION
 SET QUOTED_IDENTIFIER ON
 SET ARITHABORT ON
@@ -6,6 +12,46 @@ SET CONCAT_NULL_YIELDS_NULL ON
 SET ANSI_NULLS ON
 SET ANSI_PADDING ON
 SET ANSI_WARNINGS ON
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'C');
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'C++');
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'C#');
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'Java');
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'Javascript');
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'Ruby');
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'Go');
+GO
+	INSERT INTO Category
+	(ID, Name)
+	VALUES
+	(NEWID(), 'Haskell');
 GO
 DECLARE
 	@CategoryID uniqueidentifier,

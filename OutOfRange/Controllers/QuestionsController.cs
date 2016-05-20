@@ -70,6 +70,39 @@ namespace OutOfRange.Controllers
                 var score = qScore.First().Score;
                 if (score != null) jsonQuestion.ScoreGiven = decimal.ToInt32(score.Value);
             }
+            foreach (var comment in jsonQuestion.Comments)
+            {
+                var comm = db.Comments.Find(comment.ID);
+                var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
+                if (qComScore.Count > 0)
+                {
+                    var score = qComScore.First().Score;
+                    if (score != null)
+                        comment.ScoreGiven = decimal.ToInt32(score.Value);
+                }
+            }
+            foreach (var answer in jsonQuestion.Answers)
+            {
+                var answ = db.Answers.Find(answer.ID);
+                var qAnswScore = answ.ScoreItems.Where(x => x.UserID == userId).ToList();
+                if (qAnswScore.Count > 0)
+                {
+                    var score = qAnswScore.First().Score;
+                    if (score != null)
+                        answer.ScoreGiven = decimal.ToInt32(score.Value);
+                }
+                foreach (var comment in answer.Comments)
+                {
+                    var comm = db.Comments.Find(comment.ID);
+                    var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
+                    if (qComScore.Count > 0)
+                    {
+                        var score = qComScore.First().Score;
+                        if (score != null)
+                            comment.ScoreGiven = decimal.ToInt32(score.Value);
+                    }
+                }
+            }
 
             return Ok(jsonQuestion);
         }
@@ -146,9 +179,26 @@ namespace OutOfRange.Controllers
                     question.Score = 0;
 
                 question.Score += addedScore;
-                db.Entry(question).State = EntityState.Modified;
-                db.SaveChanges();
             }
+            else
+            {
+                decimal addedScore = Math.Sign(score.score);
+                var scoreItem = scoreitems.First();
+                if (scoreItem.Score != addedScore)
+                {
+                    question.Score -= scoreItem.Score;
+                    scoreItem.Score = addedScore;
+                    question.Score += addedScore;
+                    db.Entry(scoreItem).State = EntityState.Modified;
+                }
+                else
+                {
+                    question.Score -= scoreItem.Score;
+                    db.Entry(scoreItem).State=EntityState.Deleted;
+                }
+            }
+            db.Entry(question).State = EntityState.Modified;
+            db.SaveChanges();
 
             return Ok(new QuestionDTO(question));
         }

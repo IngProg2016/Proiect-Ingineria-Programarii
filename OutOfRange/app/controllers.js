@@ -327,15 +327,15 @@
         }
 
         this.plusQuestionVote = function () {
-            if ($ctrl.question.ScoreGiven)
-                return;
+            //if ($ctrl.question.ScoreGiven)
+            //    return;
             qaService.voteQuestion(1, $ctrl.question.ID)
             .then(function () { _getQuestion($ctrl.question.ID); });
         };
 
         this.minusQuestionVote = function () {
-            if ($ctrl.question.ScoreGiven)
-                return;
+            //if ($ctrl.question.ScoreGiven)
+            //    return;
             qaService.voteQuestion(-1, $ctrl.question.ID)
             .then(function () { _getQuestion($ctrl.question.ID); });
         };
@@ -353,15 +353,15 @@
         }
 
         this.plusAnswerVote = function (answer) {
-            if (answer.ScoreGiven)
-                return;
+            //if (answer.ScoreGiven)
+            //    return;
             qaService.voteAnswer(1, answer.ID)
             .then(function () { _getQuestion($ctrl.question.ID); });
         };
 
         this.minusAnswerVote = function (answer) {
-            if (answer.ScoreGiven)
-                return;
+            //if (answer.ScoreGiven)
+            //    return;
             qaService.voteAnswer(-1, answer.ID)
             .then(function () { _getQuestion($ctrl.question.ID); });
         };
@@ -371,15 +371,15 @@
         }
 
         this.plusCommentVote = function (comment) {
-            if (comment.ScoreGiven)
-                return;
+            //if (comment.ScoreGiven)
+            //    return;
             qaService.voteComment(1, comment.ID)
             .then(function () { _getQuestion($ctrl.question.ID); });
         }
 
         this.minusCommentVote = function (comment) {
-            if (comment.ScoreGiven)
-                return;
+            //if (comment.ScoreGiven)
+            //   return;
             qaService.voteComment(-1, comment.ID)
             .then(function () { _getQuestion($ctrl.question.ID); });
         }

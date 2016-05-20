@@ -22,7 +22,10 @@ namespace OutOfRange.Models
             Title = question.Title;
             QuestionBody = question.QuestionBody;
             Added = question.Added;
+            Score = question.Score;
+            Bounty = question.Bounty;
             Modified = question.Modified;
+            Views = question.QuestionViews.Count;
             Tags = question.Tags.Select(TagDTO.FromEntity).ToList();
             //Tags = (from tag in question.Tags select new TagDTO(tag)).ToList();
             Answers = question.Answers.Select(AnswerDTO.FromEntity).ToList();
@@ -32,10 +35,14 @@ namespace OutOfRange.Models
             Category = new CategoryDTO(question.Category);
         }
 
+        public int ScoreGiven { get; set; }
         public Guid ID { get; set; }
         public string UserID { get; set; }
         public Guid CategoryID { get; set; }
         public string Title { get; set; }
+        public decimal? Score { get; set; }
+        public int Views { get; set; }
+        public decimal? Bounty { get; set; }
         public string QuestionBody { get; set; }
         public DateTime Added { get; set; }
         public DateTime? Modified { get; set; }

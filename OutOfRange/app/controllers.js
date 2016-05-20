@@ -11,6 +11,7 @@
             { path: '/login', name: 'Login', component: 'loginCmp', data: { guestOnly: true } },
             { path: '/logout', name: 'Logout', component: 'logoutCmp' },
             { path: '/user', name: 'User', component: 'userCmp', data: { requiresLogin: true } },
+            { path: '/admin/categories', name: 'AdminCategories', component: 'adminCatCmp', data: { roles: ['admin'] } },
             { path: '/questions', name: 'Questions', component: 'questionsCmp' },
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
             { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
@@ -53,6 +54,10 @@
             $router: '<'
         }
     })
+    .component('adminCatCmp', {
+        templateUrl: 'templates/admin/categories.html',
+        controller: ['adminService', AdminCatCmp]
+    })
     .component('userCmp', {
         templateUrl: 'templates/user/profile.html',
         controller: ['authService', UserCtrl]
@@ -85,6 +90,11 @@
         this.isAuthenticated = function () {
             return authInfo().isAuth;
         };
+
+        this.isAdmin = function () {
+            return true;
+        };
+
         this.userName = function () {
             return authInfo().userName;
         }
@@ -169,6 +179,39 @@
         }
     }
 
+    function AdminCatCmp(adminService) {
+        var $ctrl = this;
+
+        (function () {
+            updateCategories();
+        })();
+
+        function updateCategories() {
+            adminService.getCategories()
+            .then(function (categories) {
+                $ctrl.categories = categories;
+            });
+        }
+
+        this.saveCategory = function (category) {
+            adminService.saveCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        };
+
+        this.deleteCategory = function (category) {
+            adminService.deleteCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        };
+
+        this.addCategory = function (category) {
+            adminService.addCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        }
+    }
+
     function UserCtrl() { }
 
     function QuestionsCtrl($q, qaService) {
@@ -193,7 +236,15 @@
     function AddQuestionCtrl(qaService, routeChangeService) {
         var $ctrl = this;
 
+        (function () {
+            qaService.getCategories()
+            .then(function (categories) {
+                $ctrl.categories = categories;
+            });
+        })();
+
         this.question = {
+            Category: '',
             Title: '',
             QuestionBody: '',
             Tags: '',
@@ -227,7 +278,7 @@
         this.error = null;
         this.scrollTo = null;
 
-        this.prepareComment = function(parentID){
+        this.prepareComment = function (parentID) {
             this.replyCommentID = parentID;
         }
 
@@ -275,6 +326,20 @@
             });
         }
 
+        this.plusQuestionVote = function () {
+            //if ($ctrl.question.ScoreGiven)
+            //    return;
+            qaService.voteQuestion(1, $ctrl.question.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.minusQuestionVote = function () {
+            //if ($ctrl.question.ScoreGiven)
+            //    return;
+            qaService.voteQuestion(-1, $ctrl.question.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
         this.answer = {};
 
         this.addAnswer = function () {
@@ -285,6 +350,38 @@
 
                 $ctrl.answer.AnswerBody = "";
             });
+        }
+
+        this.plusAnswerVote = function (answer) {
+            //if (answer.ScoreGiven)
+            //    return;
+            qaService.voteAnswer(1, answer.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.minusAnswerVote = function (answer) {
+            //if (answer.ScoreGiven)
+            //    return;
+            qaService.voteAnswer(-1, answer.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        };
+
+        this.acceptAnswer = function (answer) {
+            qaService.acceptAnswer(answer.ID);
+        }
+
+        this.plusCommentVote = function (comment) {
+            //if (comment.ScoreGiven)
+            //    return;
+            qaService.voteComment(1, comment.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        }
+
+        this.minusCommentVote = function (comment) {
+            //if (comment.ScoreGiven)
+            //   return;
+            qaService.voteComment(-1, comment.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
         }
 
         this.navigateWithReturn = function (routeLink, scrollTo) {

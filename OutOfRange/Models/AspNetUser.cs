@@ -25,6 +25,8 @@ namespace OutOfRange.Models
             this.UserBadges = new HashSet<UserBadge>();
             this.UserLevels = new HashSet<UserLevel>();
             this.AspNetRoles = new HashSet<AspNetRole>();
+            this.QuestionViews = new HashSet<QuestionView>();
+            this.ScoreItems = new HashSet<ScoreItem>();
         }
     
         public string Id { get; set; }
@@ -57,5 +59,9 @@ namespace OutOfRange.Models
         public virtual ICollection<UserLevel> UserLevels { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuestionView> QuestionViews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ScoreItem> ScoreItems { get; set; }
     }
 }

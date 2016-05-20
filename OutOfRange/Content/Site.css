@@ -3,6 +3,10 @@
     padding-bottom: 20px;
 }
 
+.form-control {
+    color: black;
+}
+
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -31,16 +35,34 @@
         margin-right: 5px;
     }
 
+/* Question Add */
+.category-select:invalid {
+    color: #a1a1a1;
+}
+
+.category-select option[value=""] {
+    color: #a1a1a1;
+}
+
+.category-select option {
+    color: black;
+}
+
+/* Question All*/
+
+
+/* Question View */
 #question .score-controls {
     margin-top: 20px;
 }
 
 .answer .score-controls {
-    margin-top: -5px;
+    margin-top: -5px !important;
 }
 
 .comment .score-controls {
     padding-right: 0;
+    margin-top: 8px !important;
 }
 
 .comment-body {
@@ -57,8 +79,16 @@
     transition: color .3s ease-out;
 }
 
+    .score-controls .score-control.up-vote.score-given {
+        color: rgba(0, 200, 0, 0.4);
+    }
+
     .score-controls .score-control.up-vote:hover {
         color: rgba(0, 200, 0, 0.7);
+    }
+
+    .score-controls .score-control.down-vote.score-given {
+        color: rgba(200, 0, 0, 0.4);
     }
 
     .score-controls .score-control.down-vote:hover {
@@ -71,7 +101,6 @@
 
 .score-controls .accept-control {
     display: block;
-
     transition: color .3s ease-out, -webkit-text-stroke-color .3s ease-out;
 }
 
@@ -80,17 +109,17 @@
         -webkit-text-stroke: rgba(0, 0, 0, 0.5) 3px;
     }
 
-    .score-controls .accept-control.state-unchecked:hover {
-        color:  rgba(240, 250, 0, 0.60);
-        -webkit-text-stroke: rgba(0, 0, 0, 0.7) 3px;
-    }
+        .score-controls .accept-control.state-unchecked:hover {
+            color: rgba(240, 250, 0, 0.60);
+            -webkit-text-stroke: rgba(0, 0, 0, 0.7) 3px;
+        }
 
     .score-controls .accept-control.state-checked {
         color: lawngreen;
         -webkit-text-stroke: black 3px;
     }
 
-    .score-controls .accept-control.state-checked:hover {
-        color: rgba(240, 250, 0, 0.60);
-        -webkit-text-stroke: rgba(0, 0, 0, 0.3) 3px;
-    }
+        .score-controls .accept-control.state-checked:hover {
+            color: rgba(240, 250, 0, 0.60);
+            -webkit-text-stroke: rgba(0, 0, 0, 0.3) 3px;
+        }

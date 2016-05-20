@@ -158,6 +158,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="WebActivator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivator.1.0.0.0\lib\WebActivator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -269,7 +273,6 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AnswerDTO.cs" />
-    <Compile Include="Models\AnswerExt.cs" />
     <Compile Include="Models\AspNetRole.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -283,7 +286,6 @@
     <Compile Include="Models\AspNetUserLogin.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\AspNetUsersExt.cs" />
     <Compile Include="Models\Badge.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -295,7 +297,6 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CommentDTO.cs" />
-    <Compile Include="Models\CommentExt.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Models.Context.cs">
       <AutoGen>True</AutoGen>
@@ -312,11 +313,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Models.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\QuestionExt.cs" />
     <Compile Include="Models\Question.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\QuestionDTO.cs" />
+    <Compile Include="Models\QuestionView.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ScoreItem.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tag.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
@@ -329,12 +335,11 @@
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\UserLevelDTO.cs" />
-    <Compile Include="Models\UserLevelExt.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="utils\PointsUtils.cs" />
+    <Compile Include="Utils\PointsUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -547,7 +552,6 @@
     <Content Include="Scripts\angular\angular_1_router.js" />
     <Content Include="app\app.js" />
     <Content Include="app\controllers.js" />
-    <Content Include="app\routes.js" />
     <Content Include="app\services.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -644,6 +648,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\superfish.js" />
     <Content Include="Scripts\wow.min.js" />
+    <Content Include="templates\Admin\categories.html" />
     <Content Include="templates\Auth\login.html" />
     <Content Include="templates\Auth\register.html" />
     <Content Include="templates\front-page.html" />

@@ -20,6 +20,8 @@ namespace OutOfRange.Models
             this.Answers = new HashSet<Answer>();
             this.Tags = new HashSet<Tag>();
             this.Comments = new HashSet<Comment>();
+            this.QuestionViews = new HashSet<QuestionView>();
+            this.ScoreItems = new HashSet<ScoreItem>();
         }
     
         public System.Guid ID { get; set; }
@@ -40,5 +42,9 @@ namespace OutOfRange.Models
         public virtual ICollection<Tag> Tags { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Comment> Comments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QuestionView> QuestionViews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ScoreItem> ScoreItems { get; set; }
     }
 }

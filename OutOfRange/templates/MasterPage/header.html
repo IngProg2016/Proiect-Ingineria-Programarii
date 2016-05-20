@@ -11,15 +11,9 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li><a ng-link="['Home']">Home</a></li>
-                <li><a ng-hide="$ctrl.isAuthenticated()" ng-link="['Questions']">Questions</a></li>
-                <li ng-show="$ctrl.isAuthenticated()" class="dropdown">
-                    <a class="dropdown-toggle" data-close-others="false" data-delay="0" data-hover="dropdown" data-toggle="dropdown" ng-link="['Questions']">
-                        Questions <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a ng-link="['AddQuestion']">Add Question</a></li>
-                    </ul>
-                </li>
+                <li><a ng-link="['Questions']">Questions</a></li>
+                <li><a ng-show="$ctrl.isAuthenticated()" ng-link="['AddQuestion']">Ask a question</a></li>
+
                 <li><a ng-hide="$ctrl.isAuthenticated()" ng-link="['Login']">Log In</a></li>
                 <li><a ng-hide="$ctrl.isAuthenticated()" ng-link="['Register']">Register</a></li>
                 <li ng-show="$ctrl.isAuthenticated()" class="dropdown">
@@ -28,6 +22,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a ng-link="['User']">Profile</a></li>
+                        <li><a ng-show="$ctrl.isAdmin()" ng-link="['AdminCategories']">Manage Categories</a></li>
                         <li><a ng-link="['Logout']">Logout</a></li>
                     </ul>
                 </li>

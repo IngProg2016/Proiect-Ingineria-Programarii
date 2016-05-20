@@ -4,6 +4,7 @@
     var OutOfRangeApp = angular.module('OutOfRangeApp')
     .service('routeChangeService', ['$rootRouter', 'authService', RouteChangeService])
     .service('authService', ['$q', '$resource', 'storageService', AuthService])
+    .service('adminService', ['$q', '$resource', AdminService])
     .service('storageService', ['$localStorage', '$sessionStorage', StorageService])
     .service('authInterceptorService', ['$q', '$rootRouter', 'storageService', AuthInterceptorService])
     .service('qaService', ['$resource', QaService])
@@ -26,6 +27,11 @@
             }
 
             if (toRoute.routeData.data.guestOnly && authService.getAuthentificationInfo().isAuth) {
+                $svc.navigateToRedirectUrl(toRoute);
+            }
+
+            if (toRoute.routeData.data.roles) {
+                console.warn('roles not implemented! (RouteChangeService -> onChange)');
                 $svc.navigateToRedirectUrl(toRoute);
             }
         }
@@ -102,6 +108,31 @@
         }
     }
 
+    function AdminService($q, $resource) {
+        var Categories = $resource('/api/categories/:id', {}, {
+            update: { method: 'PUT' }
+        });
+
+        this.getCategories = function () {
+            return Categories.query().$promise;
+        }
+
+        this.saveCategory = function (category) {
+            var _category = new Categories(category);
+            return _category.$update({ id: _category.ID });
+        }
+
+        this.deleteCategory = function (category) {
+            var _category = new Categories(category);
+            return _category.$delete({ id: _category.ID });
+        }
+
+        this.addCategory = function (category) {
+            var _category = new Categories(category);
+            return _category.$save();
+        }
+    }
+
     function StorageService($localStorage, $sessionStorage) {
         var $svc = this;
 
@@ -135,8 +166,13 @@
 
     function QaService($resource) {
         var Questions = $resource('/api/questions/:id');
-        var Answer = $resource('/api/answers');
-        var Comment = $resource('/api/comments');
+        var Answer = $resource('/api/answers/:id/:action');
+        var Comment = $resource('/api/comments/:id');
+        var Category = $resource('/api/categories');
+
+        this.getCategories = function () {
+            return Category.query().$promise;
+        }
 
         this.getQuestions = function (filter) {
             return Questions.query(filter).$promise;
@@ -150,12 +186,28 @@
             return Questions.get({ id: questionId }).$promise;
         }
 
+        this.voteQuestion = function (vote, questionId) {
+            return new Questions({ score: vote, id: questionId }).$save({ id: 'addscore' });
+        }
+
         this.addAnswer = function (answer) {
             return new Answer(answer).$save();
         }
 
+        this.voteAnswer = function (vote, answerId) {
+            return new Answer({ score: vote, id: answerId }).$save({ id: 'addscore' });
+        }
+
+        this.acceptAnswer = function (answerId) {
+            return new Answer({ id: answerId }).$save({ id: answerId, action: 'accept' });
+        }
+
         this.addComment = function (comment) {
             return new Comment(comment).$save();
+        }
+
+        this.voteComment = function (vote, commentId) {
+            return new Comment({ score: vote, id: commentId }).$save({ id: 'addscore' });
         }
     }
 

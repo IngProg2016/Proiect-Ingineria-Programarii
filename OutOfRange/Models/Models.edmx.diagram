@@ -33,6 +33,14 @@
         <AssociationConnector Association="OutOfRangeModel.QuestionTags" />
         <AssociationConnector Association="OutOfRangeModel.QuestionComment" />
         <AssociationConnector Association="OutOfRangeModel.AnswerComment" />
+        <EntityTypeShape EntityType="OutOfRangeModel.QuestionView" Width="1.5" PointX="10.5" PointY="9.875" />
+        <EntityTypeShape EntityType="OutOfRangeModel.ScoreItem" Width="1.5" PointX="12.5" PointY="18.25" />
+        <AssociationConnector Association="OutOfRangeModel.FK_QuestionViews_AspNetUsers" />
+        <AssociationConnector Association="OutOfRangeModel.FK_ScoreItems_AspNetUsers" />
+        <AssociationConnector Association="OutOfRangeModel.FK_QuestionViews_Questions" />
+        <AssociationConnector Association="OutOfRangeModel.QuestionScoreItem" />
+        <AssociationConnector Association="OutOfRangeModel.CommentScoreItem" />
+        <AssociationConnector Association="OutOfRangeModel.AnswerScoreItem" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

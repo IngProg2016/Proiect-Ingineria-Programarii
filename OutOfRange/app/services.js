@@ -166,7 +166,7 @@
 
     function QaService($resource) {
         var Questions = $resource('/api/questions/:id');
-        var Answer = $resource('/api/answers/:id');
+        var Answer = $resource('/api/answers/:id/:action');
         var Comment = $resource('/api/comments/:id');
         var Category = $resource('/api/categories');
 
@@ -196,6 +196,10 @@
 
         this.voteAnswer = function (vote, answerId) {
             return new Answer({ score: vote, id: answerId }).$save({ id: 'addscore' });
+        }
+
+        this.acceptAnswer = function (answerId) {
+            return new Answer({ id: answerId }).$save({ id: answerId, action: 'accept' });
         }
 
         this.addComment = function (comment) {

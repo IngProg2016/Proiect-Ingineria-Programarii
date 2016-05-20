@@ -104,10 +104,26 @@ namespace OutOfRange.Controllers
                     answer.Score = 0;
 
                 answer.Score += addedScore;
-                db.Entry(answer).State = EntityState.Modified;
-                db.SaveChanges();
             }
-
+            else
+            {
+                int addedScore = Math.Sign(score.score);
+                var scoreItem = scoreitems.First();
+                if (scoreItem.Score != addedScore)
+                {
+                    answer.Score -= decimal.ToInt32(scoreItem.Score.Value);
+                    scoreItem.Score = addedScore;
+                    answer.Score += addedScore;
+                    db.Entry(scoreItem).State = EntityState.Modified;
+                }
+                else
+                {
+                    answer.Score -= addedScore;
+                    db.Entry(scoreItem).State = EntityState.Deleted;
+                }
+            }
+            db.Entry(answer).State = EntityState.Modified;
+            db.SaveChanges();
             return Ok(new AnswerDTO(answer));
         }
 

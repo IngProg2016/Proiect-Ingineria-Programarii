@@ -29,10 +29,12 @@ namespace OutOfRange.Models
         public Guid QuestionID { get; set; }
         public string AnswerBody { get; set; }
         public int? Score { get; set; }
+        public bool Validated { get; set; }
         public DateTime Added { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }
         public QuestionDTO Question { get; set; }
         public ICollection<CommentDTO> Comments { get; set; }
+        public int ScoreGiven { get; set; }
 
         public static AnswerDTO FromEntity(Answer answer)
         {

@@ -9,6 +9,7 @@ namespace OutOfRange.Models
         public string UserID { get; set; }
         public string CommentBody { get; set; }
         public decimal? Score { get; set; }
+        public int ScoreGiven { get; set; }
         public DateTime Added { get; set; }
         public DateTime? Modified { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }

@@ -373,7 +373,10 @@
         };
 
         this.acceptAnswer = function (answer) {
-            qaService.acceptAnswer(answer.ID);
+            if (answer.Accepted)
+                return;
+            qaService.acceptAnswer(answer.ID)
+            .then(function () { _getQuestion($ctrl.question.ID); });
         }
 
         this.plusCommentVote = function (comment) {

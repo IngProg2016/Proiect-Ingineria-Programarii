@@ -10,7 +10,8 @@
             { path: '/register', name: 'Register', component: 'registerCmp' },
             { path: '/login', name: 'Login', component: 'loginCmp', data: { guestOnly: true } },
             { path: '/logout', name: 'Logout', component: 'logoutCmp' },
-            { path: '/user', name: 'User', component: 'userCmp', data: { requiresLogin: true } },
+            { path: '/user/profile/:userId', name: 'User', component: 'userCmp', data: { requiresLogin: true } },
+            { path: '/user/profile', name: 'CurrentUser', component: 'userCmp', data: { requiresLogin: true } },
             { path: '/admin/categories', name: 'AdminCategories', component: 'adminCatCmp', data: { roles: ['admin'] } },
             { path: '/questions', name: 'Questions', component: 'questionsCmp' },
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
@@ -60,7 +61,7 @@
     })
     .component('userCmp', {
         templateUrl: 'templates/user/profile.html',
-        controller: ['authService', UserCtrl]
+        controller: ['userService', UserCtrl]
     })
     .component('questionsCmp', {
         templateUrl: '/templates/questions/questionAll.html',
@@ -212,7 +213,12 @@
         }
     }
 
-    function UserCtrl() { }
+    function UserCtrl(userService) {
+        var $ctrl = this;
+        (function () {
+            $ctrl.userProfile = userService.getProfileInfo();
+        })();
+    }
 
     function QuestionsCtrl($q, qaService) {
         var $ctrl = this;

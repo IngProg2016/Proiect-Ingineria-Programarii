@@ -14,7 +14,14 @@
         <div class="col-lg-9 ">
             <div id="question" class="blog-item">
                 <div class="row">
-                    <div class="score-controls col-lg-2 col-sm-2 text-center">
+                    <div class="col-lg-10 col-sm-10 col-lg-offset-2">
+                        <h1>
+                            <a href="#">{{$ctrl.question.Title}}</a>
+                        </h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-2 col-sm-2 text-center score-controls">
                         <i class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusQuestionVote()" ng-class="{ 'score-given': $ctrl.question.ScoreGiven == 1 }"></i>
                         <div class="fa-2x score-number">{{$ctrl.question.Score || 0}}</div>
                         <i class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusQuestionVote()" ng-class="{ 'score-given': $ctrl.question.ScoreGiven == -1 }"></i>
@@ -23,52 +30,10 @@
                             <span class="date">{{$ctrl.question.Added | date:'dd'}}</span>
                             <span class="month">{{$ctrl.question.Added | date:'MMMM yyyy'}}</span>
                         </div>-->
+
                     </div>
                     <div class="col-lg-10 col-sm-10">
-                        <h1>
-                            <a href="#">{{$ctrl.question.Title}}</a>
-                        </h1>
-                        <div class="author">
-                            By
-                            <a href="#">{{$ctrl.question.AspNetUser.UserName}}</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-2 col-sm-2 text-right">
-                        <ul class="list-unstyled">
-                            <li>
-                                <a href="javascript:;">
-                                    <em>
-                                        <b>Last Modified:</b><br /> {{$ctrl.question.Modified | date}}
-                                    </em>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <em>
-                                        <b>Oher Data:</b><br /> *****
-                                    </em>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <em>
-                                        <b>More Info:</b><br /> *****
-                                    </em>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="st-view">
-                            <ul class="list-unstyled">
-                                <li>
-                                    <a href="javascript:;">{{$ctrl.question.Answers.length}} answers</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 col-sm-10">
-                        <p ng-bind-html="$ctrl.question.QuestionBody"></p>
+                        <p class="text-question" ng-bind-html="$ctrl.question.QuestionBody"></p>
                     </div>
                 </div>
             </div>
@@ -89,24 +54,24 @@
                     </div>
 
                     <div class="media-body col-lg-10 col-sm-10">
-                        <h4 class="media-heading">
-                            {{ans.AspNetUser.UserName}} | <span>{{ans.Added | date}}</span>
+                        <h4 class="media-heading">                            
                         </h4>
-                        <p ng-bind-html="ans.AnswerBody"></p>
-                        <a ng-show="$ctrl.isAuth" data-toggle="modal" data-target="#myModal" ng-click="$ctrl.prepareComment(ans.ID)" href="#">Reply</a>
+                        <p class="text-answer" ng-bind-html="ans.AnswerBody"></p>
+                        <a class="pull-left" ng-show="$ctrl.isAuth" data-toggle="modal" data-target="#myModal" ng-click="$ctrl.prepareComment(ans.ID)" href="#">Reply</a>
+                        <div class="pull-right"><a href="#">{{ans.AspNetUser.UserName}}</a> | <span>{{ans.Added | date}}</span></div>
                         <small ng-hide="$ctrl.isAuth"><a href="#" ng-click="$ctrl.navigateWithReturn(['Login'], 'Answer-'+ans.ID)">Login</a> or <a href="#" ng-click="$ctrl.navigateWithReturn(['Register'], 'Answer-'+ans.ID)">Register</a> to add comment</small>
-                        <div class="media comment" style="margin-left:50px;">
+                        <div class="media comment" style="margin-left:50px;margin-top:30px;">
                             <hr />
-                            <div class="media-body" ng-repeat="com in ans.Comments">
+                            <div class="media-body row" ng-repeat="com in ans.Comments">
                                 <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
-                                    <i class="fa fa-chevron-up score-control up-vote" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
-                                    <div class="score-number">{{com.Score || 0}}</div>
-                                    <i class="fa fa-chevron-down score-control down-vote" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
+                                    <i class="fa fa-chevron-up score-control up-vote" style="float:left;" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
+                                    <div class="score-number" style="float:left;margin-left:3px;margin-top:2px; margin-right:3px;" >{{com.Score || 0}}</div>
+                                    <i class="fa fa-chevron-down score-control down-vote" style="float:left;" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
                                 </div>
 
                                 <div class="comment-body col-lg-11 col-sm-11">
                                     <p>
-                                        <b>{{com.AspNetUser.UserName}}:</b> <span ng-bind="com.CommentBody | plainText"></span>
+                                        <span ng-bind="com.CommentBody | plainText"></span> - <a href="#">{{com.AspNetUser.UserName}}</a>
                                     </p>
                                 </div>
                             </div>
@@ -150,6 +115,22 @@
                                 <i class="fa fa-tags pr-5"></i>
                                 {{tag.Name}}
                             </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Info:</h3>
+                    <ul class="list-unstyled">
+                        <li>
+                            <em>
+                                <b>Last Modified:</b> {{$ctrl.question.Modified | date}}
+                            </em>
+                        </li>
+                        <li>
+                            <em>
+                                <b>By:</b> <a href="#" style="display:inline">{{$ctrl.question.AspNetUser.UserName}}</a>
+                            </em>
                         </li>
                     </ul>
                 </div>

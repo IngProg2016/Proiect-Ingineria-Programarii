@@ -4,7 +4,7 @@
     var OutOfRangeApp = angular.module('OutOfRangeApp')
     .service('routeChangeService', ['$rootRouter', 'authService', RouteChangeService])
     .service('authService', ['$q', '$resource', 'storageService', AuthService])
-    .service('userServices', ['$resource','$routeParams',UserService])
+    .service('userService', ['$resource', '$routeParams', UserService])
     .service('adminService', ['$q', '$resource', AdminService])
     .service('storageService', ['$localStorage', '$sessionStorage', StorageService])
     .service('authInterceptorService', ['$q', '$rootRouter', 'storageService', AuthInterceptorService])
@@ -212,7 +212,7 @@
         }
     }
 
-    function UserService($resources,$routeParams) {
+    function UserService($resource, $routeParams) {
         var Profile = $resource('/api/users/profile/:id');
 
         this.getProfileInfo = function () {

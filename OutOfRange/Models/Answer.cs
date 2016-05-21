@@ -27,6 +27,7 @@ namespace OutOfRange.Models
         public string AnswerBody { get; set; }
         public Nullable<int> Score { get; set; }
         public System.DateTime Added { get; set; }
+        public bool Accepted { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Question Question { get; set; }

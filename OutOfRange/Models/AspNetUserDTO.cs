@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Ajax.Utilities;
 
 namespace OutOfRange.Models
 {
@@ -15,11 +16,21 @@ namespace OutOfRange.Models
         {
             
         }
+
         public AspNetUserDTO(AspNetUser aspNetUser)
         {
             Id = aspNetUser.Id;
             Email = aspNetUser.Email;
             UserName = aspNetUser.UserName;
+            foreach (var level in aspNetUser.UserLevels)
+            {
+
+            }
+        }
+
+        public static AspNetUserDTO FromEntity(AspNetUser user)
+        {
+            return new AspNetUserDTO(user);
         }
     }
 }

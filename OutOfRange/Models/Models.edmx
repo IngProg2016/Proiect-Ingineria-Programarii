@@ -15,6 +15,7 @@
           <Property Name="AnswerBody" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
           <Property Name="Added" Type="datetime" Nullable="false" />
+          <Property Name="Accepted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
@@ -77,6 +78,7 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="Reward" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -640,6 +642,7 @@
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Answer" ToRole="Question" />
           <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.AnswerComment" FromRole="Answer" ToRole="Comment" />
           <NavigationProperty Name="ScoreItems" Relationship="OutOfRangeModel.AnswerScoreItem" FromRole="Answer" ToRole="ScoreItem" />
+          <Property Name="Accepted" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetRole">
           <Key>
@@ -709,6 +712,7 @@
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_Badges_Category" FromRole="Badge" ToRole="Category" />
           <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="Badge" ToRole="UserBadge" />
+          <Property Name="Reward" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -1094,6 +1098,7 @@
           <EntitySetMapping Name="Answers">
             <EntityTypeMapping TypeName="OutOfRangeModel.Answer">
               <MappingFragment StoreEntitySet="Answers">
+                <ScalarProperty Name="Accepted" ColumnName="Accepted" />
                 <ScalarProperty Name="Added" ColumnName="Added" />
                 <ScalarProperty Name="Score" ColumnName="Score" />
                 <ScalarProperty Name="AnswerBody" ColumnName="AnswerBody" />
@@ -1152,6 +1157,7 @@
           <EntitySetMapping Name="Badges">
             <EntityTypeMapping TypeName="OutOfRangeModel.Badge">
               <MappingFragment StoreEntitySet="Badges">
+                <ScalarProperty Name="Reward" ColumnName="Reward" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Name" ColumnName="Name" />

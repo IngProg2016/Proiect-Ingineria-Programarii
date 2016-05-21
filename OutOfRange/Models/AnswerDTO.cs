@@ -21,6 +21,7 @@ namespace OutOfRange.Models
             Added = answer.Added;
             AspNetUser = new AspNetUserDTO(answer.AspNetUser);
             Comments = answer.Comments.Select(CommentDTO.FromEntity).ToList();
+            Accepted = answer.Accepted;
             //Comments = (from com in answer.Comments select new CommentDTO(com)).ToList();
         }
 
@@ -29,7 +30,7 @@ namespace OutOfRange.Models
         public Guid QuestionID { get; set; }
         public string AnswerBody { get; set; }
         public int? Score { get; set; }
-        public bool Validated { get; set; }
+        public bool Accepted { get; set; }
         public DateTime Added { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }
         public QuestionDTO Question { get; set; }

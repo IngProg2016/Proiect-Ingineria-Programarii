@@ -26,7 +26,7 @@ namespace OutOfRange.Controllers
             return Json(db.Answers.ToList().Select(AnswerDTO.FromEntity));
         }
         //GET: api/AnswersQuestion/{GUID}
-        [Route("api/AnswersQuestion/{id}")]
+        [Route("AnswersQuestion/{id}")]
         public JsonResult<IEnumerable<AnswerDTO>> GetAnswersQuestion(Guid id)
         {
             return Json(db.Answers.Where(x=>x.QuestionID==id).ToList().Select(AnswerDTO.FromEntity));
@@ -80,14 +80,31 @@ namespace OutOfRange.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        //POST: api/answers/Accept/:id
         [ResponseType(typeof(AnswerDTO))]
         [HttpPost]
-        [Route("Accept")]
+        [Route("Accept/{id}")]
         public IHttpActionResult Accept(Guid id)
         {
             Answer answer = db.Answers.Find(id);
-            string userId = User.Identity.GetUserId();
-            
+            Question question = answer.Question;
+
+            if (answer.Accepted==false)
+            {
+                var questionHasAnwser = question.Answers.Any(x => x.Accepted);
+                if (!questionHasAnwser)
+                {
+                    string userId = User.Identity.GetUserId();
+                    if (question.UserID != userId)
+                        return Unauthorized();
+
+                    answer.AspNetUser.Credits += question.Bounty;
+                    answer.Accepted = true;
+                    db.Entry(answer.AspNetUser).State = EntityState.Modified;
+                    db.Entry(answer).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
 
             return Ok(new AnswerDTO(answer));
         }

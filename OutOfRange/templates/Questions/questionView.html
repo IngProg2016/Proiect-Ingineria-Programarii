@@ -60,16 +60,16 @@
                         <a class="pull-left" ng-show="$ctrl.isAuth" data-toggle="modal" data-target="#myModal" ng-click="$ctrl.prepareComment(ans.ID)" href="#">Reply</a>
                         <div class="pull-right"><a href="#">{{ans.AspNetUser.UserName}}</a> | <span>{{ans.Added | date}}</span></div>
                         <small ng-hide="$ctrl.isAuth"><a href="#" ng-click="$ctrl.navigateWithReturn(['Login'], 'Answer-'+ans.ID)">Login</a> or <a href="#" ng-click="$ctrl.navigateWithReturn(['Register'], 'Answer-'+ans.ID)">Register</a> to add comment</small>
-                        <div class="media comment" style="margin-left:50px;">
+                        <div class="media comment" style="margin-left:50px;margin-top:30px;">
                             <hr />
-                            <div class="media-body" ng-repeat="com in ans.Comments">
-                                <div class="score-controls col-lg-2 col-sm-2 text-center pull-left">
+                            <div class="media-body row" ng-repeat="com in ans.Comments">
+                                <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
                                     <i class="fa fa-chevron-up score-control up-vote" style="float:left;" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
                                     <div class="score-number" style="float:left;margin-left:3px;margin-top:2px; margin-right:3px;" >{{com.Score || 0}}</div>
                                     <i class="fa fa-chevron-down score-control down-vote" style="float:left;" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
                                 </div>
 
-                                <div class="comment-body col-lg-10 col-sm-10">
+                                <div class="comment-body col-lg-11 col-sm-11">
                                     <p>
                                         <span ng-bind="com.CommentBody | plainText"></span> - <a href="#">{{com.AspNetUser.UserName}}</a>
                                     </p>

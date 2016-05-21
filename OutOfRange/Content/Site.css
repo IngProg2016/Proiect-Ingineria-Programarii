@@ -119,11 +119,6 @@
         -webkit-text-stroke: black 3px;
     }
 
-        .score-controls .accept-control.state-checked:hover {
-            color: rgba(240, 250, 0, 0.60);
-            -webkit-text-stroke: rgba(0, 0, 0, 0.3) 3px;
-        }
-
 .text-question , .text-answer {
         font-size: 1.2em;
 }

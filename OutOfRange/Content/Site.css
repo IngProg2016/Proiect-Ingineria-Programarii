@@ -48,6 +48,13 @@
     color: black;
 }
 
+.error-text {
+  display: none;
+}
+.has-error .help-block.error-text {
+  display: block;
+}
+
 /* Question All*/
 
 

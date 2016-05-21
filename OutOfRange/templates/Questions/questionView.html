@@ -81,7 +81,7 @@
             </div>
             <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers">
                 <div class="row">
-                    <div class="score-controls col-lg-2 col-sm-2 text-center">
+                    <div class="score-controls col-lg-2 col-sm-2 text-center pull-left">
                         <i class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == 1 }"></i>
                         <div class="fa-2x score-number">{{ans.Score || 0}}</div>
                         <i class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == -1 }"></i>
@@ -98,7 +98,7 @@
                         <div class="media comment" style="margin-left:50px;">
                             <hr />
                             <div class="media-body" ng-repeat="com in ans.Comments">
-                                <div class="score-controls col-lg-1 col-sm-1 text-center">
+                                <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
                                     <i class="fa fa-chevron-up score-control up-vote" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
                                     <div class="score-number">{{com.Score || 0}}</div>
                                     <i class="fa fa-chevron-down score-control down-vote" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>

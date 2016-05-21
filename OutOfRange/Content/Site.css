@@ -110,7 +110,7 @@
     }
 
         .score-controls .accept-control.state-unchecked:hover {
-            color: rgba(240, 250, 0, 0.60);
+            color: rgba(0, 250, 120, 0.60);
             -webkit-text-stroke: rgba(0, 0, 0, 0.7) 3px;
         }
 
@@ -123,3 +123,4 @@
             color: rgba(240, 250, 0, 0.60);
             -webkit-text-stroke: rgba(0, 0, 0, 0.3) 3px;
         }
+

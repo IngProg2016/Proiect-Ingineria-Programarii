@@ -69,7 +69,7 @@
     })
     .component('addQuestionCmp', {
         templateUrl: '/templates/questions/questionAdd.html',
-        controller: ['qaService', 'routeChangeService', AddQuestionCtrl],
+        controller: ['$scope', 'qaService', 'routeChangeService', AddQuestionCtrl],
         bindings: {
             $router: '<'
         }
@@ -239,7 +239,7 @@
         }
     }
 
-    function AddQuestionCtrl(qaService, routeChangeService) {
+    function AddQuestionCtrl($scope, qaService, routeChangeService) {
         var $ctrl = this;
 
         (function () {
@@ -257,7 +257,11 @@
             TagString: ''
         };
 
-        this.addQuestion = function () {
+        this.addQuestion = function (isValid) {
+            if (!isValid) {
+                $scope.$broadcast('show-errors-check-validity');
+                return;
+            }
             var taglist = $ctrl.question.TagString.split(/ |,/);
             $ctrl.question.Tags = []
             for (var tag of taglist) {
@@ -349,6 +353,10 @@
         this.answer = {};
 
         this.addAnswer = function () {
+            if (!$ctrl.answer.AnswerBody) {
+                error = 'Cannot post a question without a body.';
+                return;
+            }
             $ctrl.answer.QuestionID = $ctrl.question.ID;
             $ctrl.answer.AnswerBody = $ctrl.answer.AnswerBody.replace('\r', '').replace('\n', '</br>');
             qaService.addAnswer($ctrl.answer).then(function (_data) {

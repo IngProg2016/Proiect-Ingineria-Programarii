@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('OutOfRangeApp', ['ngRoute', 'ngComponentRouter', 'ngResource', 'ngStorage', 'ngSanitize'])
+    angular.module('OutOfRangeApp', ['ngRoute', 'ngComponentRouter', 'ngResource', 'ngStorage', 'ngSanitize', 'ngMessages'])
     .config(['$locationProvider', function ($locationProvider) {
         $locationProvider.html5Mode(true);
     }])

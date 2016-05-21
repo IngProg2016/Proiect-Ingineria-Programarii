@@ -80,8 +80,21 @@ namespace OutOfRange.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
+        [ResponseType(typeof(AnswerDTO))]
+        [HttpPost]
+        [Route("Accept")]
+        public IHttpActionResult Accept(Guid id)
+        {
+            Answer answer = db.Answers.Find(id);
+            string userId = User.Identity.GetUserId();
+            
+
+            return Ok(new AnswerDTO(answer));
+        }
+
+
         //POST: api/answers/AddScore
-        [ResponseType(typeof(CommentDTO))]
+        [ResponseType(typeof(AnswerDTO))]
         [HttpPost]
         [Route("AddScore")]
         public IHttpActionResult AddScore(ItemScore score)

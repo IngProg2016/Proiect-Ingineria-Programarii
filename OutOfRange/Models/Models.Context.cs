@@ -35,9 +35,9 @@ namespace OutOfRange.Models
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<Question> Questions { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
-        public virtual DbSet<UserBadge> UserBadges { get; set; }
-        public virtual DbSet<UserLevel> UserLevels { get; set; }
         public virtual DbSet<QuestionView> QuestionViews { get; set; }
         public virtual DbSet<ScoreItem> ScoreItems { get; set; }
+        public virtual DbSet<UserBadge> UserBadges { get; set; }
+        public virtual DbSet<UserLevel> UserLevels { get; set; }
     }
 }

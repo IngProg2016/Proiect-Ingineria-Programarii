@@ -14,13 +14,22 @@ namespace OutOfRange.Models
     
     public partial class UserLevel
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserLevel()
+        {
+            this.UserBadges = new HashSet<UserBadge>();
+        }
+    
         public string UserID { get; set; }
         public System.Guid CategoryID { get; set; }
+        public System.Guid UserLevelID { get; set; }
         public int Level { get; set; }
         public System.DateTime Obtained { get; set; }
         public Nullable<decimal> XP { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Category Category { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserBadge> UserBadges { get; set; }
     }
 }

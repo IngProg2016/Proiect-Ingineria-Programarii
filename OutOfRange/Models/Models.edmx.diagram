@@ -4,31 +4,24 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8cf328bc274f4d8091b08a59aac149eb" Name="Diagram1" ZoomLevel="81">
+      <Diagram DiagramId="8cf328bc274f4d8091b08a59aac149eb" Name="Diagram1" ZoomLevel="65">
         <EntityTypeShape EntityType="OutOfRangeModel.Answer" Width="1.5" PointX="8.25" PointY="10.875" />
         <EntityTypeShape EntityType="OutOfRangeModel.AspNetRole" Width="1.5" PointX="0.75" PointY="11.375" />
         <EntityTypeShape EntityType="OutOfRangeModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="11.25" />
         <EntityTypeShape EntityType="OutOfRangeModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="27.25" />
         <EntityTypeShape EntityType="OutOfRangeModel.AspNetUser" Width="1.5" PointX="3" PointY="9.625" />
-        <EntityTypeShape EntityType="OutOfRangeModel.Badge" Width="1.5" PointX="7.125" PointY="4" />
+        <EntityTypeShape EntityType="OutOfRangeModel.Badge" Width="1.5" PointX="10.75" PointY="1.25" />
         <EntityTypeShape EntityType="OutOfRangeModel.Category" Width="1.5" PointX="3.875" PointY="4.25" />
         <EntityTypeShape EntityType="OutOfRangeModel.Comment" Width="1.5" PointX="11" PointY="13" />
         <EntityTypeShape EntityType="OutOfRangeModel.Question" Width="1.5" PointX="5.25" PointY="14.5" />
         <EntityTypeShape EntityType="OutOfRangeModel.Tag" Width="1.5" PointX="7.5" PointY="15.25" />
-        <EntityTypeShape EntityType="OutOfRangeModel.UserBadge" Width="1.5" PointX="8.75" PointY="1.25" />
-        <EntityTypeShape EntityType="OutOfRangeModel.UserLevel" Width="1.5" PointX="5.25" PointY="1.125" />
         <AssociationConnector Association="OutOfRangeModel.FK_Answers_AspNetUsers" />
         <AssociationConnector Association="OutOfRangeModel.FK_Answers_Questions" />
         <AssociationConnector Association="OutOfRangeModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="OutOfRangeModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="OutOfRangeModel.FK_Comments_AspNetUsers" />
         <AssociationConnector Association="OutOfRangeModel.FK_Questions_AspNetUsers" />
-        <AssociationConnector Association="OutOfRangeModel.FK_UserBadges_AspNetUsers" />
-        <AssociationConnector Association="OutOfRangeModel.FK_UserLevel_AspNetUsers" />
-        <AssociationConnector Association="OutOfRangeModel.FK_Badges_Category" />
-        <AssociationConnector Association="OutOfRangeModel.FK_UserBadges_Badges" />
         <AssociationConnector Association="OutOfRangeModel.FK_Questions_Category" />
-        <AssociationConnector Association="OutOfRangeModel.FK_UserLevel_Category" />
         <AssociationConnector Association="OutOfRangeModel.AspNetUserRoles" />
         <AssociationConnector Association="OutOfRangeModel.QuestionTags" />
         <AssociationConnector Association="OutOfRangeModel.QuestionComment" />
@@ -41,7 +34,13 @@
         <AssociationConnector Association="OutOfRangeModel.QuestionScoreItem" />
         <AssociationConnector Association="OutOfRangeModel.CommentScoreItem" />
         <AssociationConnector Association="OutOfRangeModel.AnswerScoreItem" />
-      </Diagram>
+        <EntityTypeShape EntityType="OutOfRangeModel.UserBadge" Width="1.5" PointX="7.875" PointY="1.375" />
+        <EntityTypeShape EntityType="OutOfRangeModel.UserLevel" Width="1.5" PointX="4.875" PointY="0.875" />
+        <AssociationConnector Association="OutOfRangeModel.FK_UserLevel_AspNetUsers" />
+        <AssociationConnector Association="OutOfRangeModel.FK_UserBadges_Badges" />
+        <AssociationConnector Association="OutOfRangeModel.FK_UserLevel_Category" />
+        <AssociationConnector Association="OutOfRangeModel.FK_UserBadges_UserLevel" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

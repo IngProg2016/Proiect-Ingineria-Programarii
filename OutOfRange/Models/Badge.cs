@@ -21,13 +21,13 @@ namespace OutOfRange.Models
         }
     
         public System.Guid ID { get; set; }
-        public System.Guid CategoryID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public byte[] Image { get; set; }
         public Nullable<decimal> Reward { get; set; }
+        public string ImageLoc { get; set; }
+        public string IdentifierName { get; set; }
     
-        public virtual Category Category { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserBadge> UserBadges { get; set; }
     }

@@ -28,6 +28,7 @@ namespace OutOfRange.Controllers
         public IHttpActionResult GetAspNetUser(string id)
         {
             AspNetUser aspNetUser = db.AspNetUsers.Find(id);
+            
             if (aspNetUser == null)
             {
                 return NotFound();

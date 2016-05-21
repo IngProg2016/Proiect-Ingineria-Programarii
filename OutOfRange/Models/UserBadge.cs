@@ -14,11 +14,11 @@ namespace OutOfRange.Models
     
     public partial class UserBadge
     {
-        public string UserID { get; set; }
+        public System.Guid UserLevelID { get; set; }
         public System.Guid BadgeID { get; set; }
         public Nullable<System.DateTime> Obtained { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Badge Badge { get; set; }
+        public virtual UserLevel UserLevel { get; set; }
     }
 }

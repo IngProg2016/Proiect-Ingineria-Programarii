@@ -22,11 +22,10 @@ namespace OutOfRange.Models
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
             this.Comments = new HashSet<Comment>();
             this.Questions = new HashSet<Question>();
-            this.UserBadges = new HashSet<UserBadge>();
-            this.UserLevels = new HashSet<UserLevel>();
             this.AspNetRoles = new HashSet<AspNetRole>();
             this.QuestionViews = new HashSet<QuestionView>();
             this.ScoreItems = new HashSet<ScoreItem>();
+            this.UserLevels = new HashSet<UserLevel>();
         }
     
         public string Id { get; set; }
@@ -54,14 +53,12 @@ namespace OutOfRange.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Question> Questions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserBadge> UserBadges { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<UserLevel> UserLevels { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuestionView> QuestionViews { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ScoreItem> ScoreItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserLevel> UserLevels { get; set; }
     }
 }

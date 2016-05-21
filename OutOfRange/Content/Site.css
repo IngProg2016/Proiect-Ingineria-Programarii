@@ -124,3 +124,6 @@
             -webkit-text-stroke: rgba(0, 0, 0, 0.3) 3px;
         }
 
+.text-question , .text-answer {
+        font-size: 1.2em;
+}

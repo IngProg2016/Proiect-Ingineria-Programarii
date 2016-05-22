@@ -14,14 +14,14 @@
         <div class="col-lg-9 ">
             <div id="question" class="blog-item">
                 <div class="row">
-                    <div class="col-lg-10 col-sm-10 col-lg-offset-2">
+                    <div class="col-lg-offset-2 col-xs-10">
                         <h1>
                             <a href="#">{{$ctrl.question.Title}}</a>
                         </h1>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-2 col-sm-2 text-center score-controls">
+                    <div class="col-lg-2 col-sm-2 text-center score-controls pull-left">
                         <i class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusQuestionVote()" ng-class="{ 'score-given': $ctrl.question.ScoreGiven == 1 }"></i>
                         <div class="fa-2x score-number">{{$ctrl.question.Score || 0}}</div>
                         <i class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusQuestionVote()" ng-class="{ 'score-given': $ctrl.question.ScoreGiven == -1 }"></i>

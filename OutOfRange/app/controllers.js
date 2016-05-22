@@ -247,7 +247,13 @@
             .then(function (categories) {
                 $ctrl.categories = categories;
             });
+
         })();
+
+        $scope.tinymceOptions = {
+            plugins: 'link image code',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+        };
 
         this.question = {
             Category: '',

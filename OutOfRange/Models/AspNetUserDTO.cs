@@ -16,7 +16,7 @@ namespace OutOfRange.Models
         public int CommentScore { get; set; }
         public int Credits { get; set; }
         public int TotalScore { get; set; }
-        public ICollection<UserLevelDTO> UserLevels { get; set; }
+        public List<UserLevelDTO> UserLevels { get; set; }
 
         public AspNetUserDTO()
         {
@@ -44,6 +44,7 @@ namespace OutOfRange.Models
                 UserLevelDTO ulDto=new UserLevelDTO(level);
                 UserLevels.Add(ulDto);
             }
+            UserLevels.Sort((dto, levelDto) => levelDto.XP-dto.XP);
         }
 
         public static AspNetUserDTO FromEntity(AspNetUser user)

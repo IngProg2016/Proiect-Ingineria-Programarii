@@ -290,6 +290,7 @@
     <Compile Include="Models\Badge.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\BadgeDTO.cs" />
     <Compile Include="Models\Category.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>

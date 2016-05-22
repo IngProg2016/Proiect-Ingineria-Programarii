@@ -253,7 +253,7 @@
 
         })();
 
-        $scope.tinymceOptions = {
+        this.tinymceOptions = {
             plugins: 'link image code',
             toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
         };
@@ -265,6 +265,22 @@
             Tags: '',
             TagString: ''
         };
+
+        this.descriptionValidation = function (value, control, minlength) {
+            debugger;
+            var text = angular.element(value).text();
+            text && (text = text.replace(' ', ''));
+
+            if (text && text.length > 0)
+                control.$setValidity('required', true, control);
+            else
+                control.$setValidity('required', false, control);
+
+            if (text && text.length >= minlength)
+                control.$setValidity('minlength', true, control);
+            else
+                control.$setValidity('minlength', false, control);
+        }
 
         this.addQuestion = function (isValid) {
             if (!isValid) {

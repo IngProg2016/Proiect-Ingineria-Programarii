@@ -25,8 +25,7 @@
         <div class="col-lg-6 col-lg-offset-1">
             <div>
                 <h2>Account info:</h2>
-                <p><b>Email:</b> radu.niculcea@gmail.com</p>
-                <p><b>Member from</b> [date] </p>
+                <p><b>Email:</b> {{$ctrl.userProfile.UserName}}</p>
                 <h2>Gamification info:</h2>
                 <!--<div class="skill_bar">
                     <div class="skill_bar_progress skill_one" style="width: 59.98%; overflow: hidden;">
@@ -35,9 +34,11 @@
                         </p>
                     </div>
                 </div>-->
-                <p><b>Border:</b>[name]</p>
-                <p><b>Questions Posted:</b>[int]</p>
-                <p><b>Comments Posted:</b>[int]</p>
+                <p><b>Questions Posted:</b> {{$ctrl.userProfile.QuestionNumber}}</p>
+                <p><b>Questions Viewed</b> {{$ctrl.userProfile.QuestionViews}}</p>
+                <p><b>Question Score:</b> {{$ctrl.userProfile.QuestionScore}}</p>
+                <p><b>Answer Score:</b> {{$ctrl.userProfile.AnswerScore}}</p>
+                <p><b>Comments Score:</b> {{$ctrl.userProfile.CommentScore}}</p>
             </div>
         </div>
         <div class="col-lg-3 clearfix">

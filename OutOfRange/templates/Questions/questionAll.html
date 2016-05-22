@@ -22,7 +22,7 @@
                                     <p>
                                         <i class="fa fa-user"></i>
                                         by
-                                        <a href="#">{{item.AspNetUser.Email}}</a>
+                                        <a ng-link="['User', {userId: item.AspNetUser.Id}]">{{item.AspNetUser.Email}}</a>
                                         |
                                         <i class="fa fa-calendar"></i>
                                         {{item.Added | date}}

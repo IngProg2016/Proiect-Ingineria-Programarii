@@ -50,16 +50,19 @@
 </head>
 
 <body>
-    
+
     <app>
         <div style="text-align:center;width:100%;">
             <h2><i class="fa fa-spin fa-spinner"></i> Loading...</h2>
-            
+
         </div>
     </app>
+    <!--TinyMCE-->
+    <script type="text/javascript" src="/Scripts/tinymce/tinymce.min.js"></script>
+
     <!--Gular js-->
     <script src="/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="/Scripts/angular/angular.min.js"></script>
+    <script src="/Scripts/angular/angular.js"></script>
     <script src="/Scripts/angular/angular_1_router.js"></script>
     <script src="/Scripts/angular/angular-route.js"></script>
     <script src="/Scripts/angular/angular-resource.js"></script>
@@ -67,8 +70,6 @@
     <script src="/Scripts/angular/angular-sanitize.js"></script>
     <script src="/Scripts/angular/angular-messages.min.js"></script>
 
-    <!--TinyMCE-->
-    <script type="text/javascript" src="/Scripts/tinymce/tinymce.min.js"></script>
     <script type="text/javascript" src="/Scripts/tinymce/tinymce-angular-ui/tinymce.js"></script>
 
     <script src="/app/app.js"></script>
@@ -147,11 +148,12 @@
             if (mainHeight < 250) {
                 mainHeight = 250;
             }
-                $("#main-container").css("min-height", mainHeight);
+            $("#main-container").css("min-height", mainHeight);
         };
 
         init();
 
     </script>
 </body>
+
 </html>

@@ -151,6 +151,47 @@ namespace OutOfRange.Controllers
             }
             db.Entry(answer).State = EntityState.Modified;
             db.SaveChanges();
+
+            if (answer.Score == 10)
+            {
+                UserLevel userLevel = answer.AspNetUser.UserLevels.Single(x => x.CategoryID == answer.Question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == answer.ID);
+                if (userBadge == null)
+                {
+                    PointsUtils.giveBadge(answer.AspNetUser.Id, answer.Question.CategoryID, "score", 0, answer.ID);
+                }
+            }
+            else if (answer.Score == 50)
+            {
+                UserLevel userLevel = answer.AspNetUser.UserLevels.Single(x => x.CategoryID == answer.Question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == answer.ID);
+                if (userBadge.Badge.Rarity == 0)
+                {
+                    PointsUtils.giveBadge(answer.AspNetUser.Id, answer.Question.CategoryID, "scores", 1, answer.ID);
+                    db.UserBadges.Remove(userBadge);
+                }
+            }
+            else if (answer.Score == 100)
+            {
+                UserLevel userLevel = answer.AspNetUser.UserLevels.Single(x => x.CategoryID == answer.Question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == answer.ID);
+                if (userBadge.Badge.Rarity == 1)
+                {
+                    PointsUtils.giveBadge(answer.AspNetUser.Id, answer.Question.CategoryID, "score", 2, answer.ID);
+                    db.UserBadges.Remove(userBadge);
+                }
+            }
+            else if (answer.Score == 500)
+            {
+                UserLevel userLevel = answer.AspNetUser.UserLevels.Single(x => x.CategoryID == answer.Question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == answer.ID);
+                if (userBadge.Badge.Rarity == 2)
+                {
+                    PointsUtils.giveBadge(answer.AspNetUser.Id, answer.Question.CategoryID, "score", 3, answer.ID);
+                    db.UserBadges.Remove(userBadge);
+                }
+            }
+            db.SaveChanges();
             return Ok(new AnswerDTO(answer));
         }
 

@@ -17,7 +17,7 @@ namespace OutOfRange.Models
         public System.Guid UserLevelID { get; set; }
         public System.Guid BadgeID { get; set; }
         public Nullable<System.DateTime> Obtained { get; set; }
-        public Nullable<System.Guid> ItemID { get; set; }
+        public System.Guid ItemID { get; set; }
     
         public virtual Badge Badge { get; set; }
         public virtual UserLevel UserLevel { get; set; }

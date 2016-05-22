@@ -156,11 +156,12 @@
           <Key>
             <PropertyRef Name="UserLevelID" />
             <PropertyRef Name="BadgeID" />
+            <PropertyRef Name="ItemID" />
           </Key>
           <Property Name="UserLevelID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BadgeID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Obtained" Type="datetime" />
-          <Property Name="ItemID" Type="uniqueidentifier" />
+          <Property Name="ItemID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="UserLevel">
           <Key>
@@ -588,19 +589,19 @@
             <End Role="Answer" EntitySet="Answers" />
             <End Role="ScoreItem" EntitySet="ScoreItems" />
           </AssociationSet>
-          <EntitySet Name="UserBadges" EntityType="OutOfRangeModel.UserBadge" />
           <EntitySet Name="UserLevels" EntityType="OutOfRangeModel.UserLevel" />
           <AssociationSet Name="FK_UserLevel_AspNetUsers" Association="OutOfRangeModel.FK_UserLevel_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="UserLevel" EntitySet="UserLevels" />
           </AssociationSet>
-          <AssociationSet Name="FK_UserBadges_Badges" Association="OutOfRangeModel.FK_UserBadges_Badges">
-            <End Role="Badge" EntitySet="Badges" />
-            <End Role="UserBadge" EntitySet="UserBadges" />
-          </AssociationSet>
           <AssociationSet Name="FK_UserLevel_Category" Association="OutOfRangeModel.FK_UserLevel_Category">
             <End Role="Category" EntitySet="Categories" />
             <End Role="UserLevel" EntitySet="UserLevels" />
+          </AssociationSet>
+          <EntitySet Name="UserBadges" EntityType="OutOfRangeModel.UserBadge" />
+          <AssociationSet Name="FK_UserBadges_Badges" Association="OutOfRangeModel.FK_UserBadges_Badges">
+            <End Role="Badge" EntitySet="Badges" />
+            <End Role="UserBadge" EntitySet="UserBadges" />
           </AssociationSet>
           <AssociationSet Name="FK_UserBadges_UserLevel" Association="OutOfRangeModel.FK_UserBadges_UserLevel">
             <End Role="UserLevel" EntitySet="UserLevels" />
@@ -690,8 +691,8 @@
           <Property Name="Reward" Type="Int32" Nullable="false" />
           <Property Name="ImageLoc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IdentifierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="Badge" ToRole="UserBadge" />
           <Property Name="Rarity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="Badge" ToRole="UserBadge" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -973,18 +974,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UserBadge">
-          <Key>
-            <PropertyRef Name="UserLevelID" />
-            <PropertyRef Name="BadgeID" />
-          </Key>
-          <Property Name="UserLevelID" Type="Guid" Nullable="false" />
-          <Property Name="BadgeID" Type="Guid" Nullable="false" />
-          <Property Name="Obtained" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Badge" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="UserBadge" ToRole="Badge" />
-          <NavigationProperty Name="UserLevel" Relationship="OutOfRangeModel.FK_UserBadges_UserLevel" FromRole="UserBadge" ToRole="UserLevel" />
-          <Property Name="ItemID" Type="Guid" />
-        </EntityType>
         <EntityType Name="UserLevel">
           <Key>
             <PropertyRef Name="UserLevelID" />
@@ -1013,20 +1002,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_UserBadges_Badges">
-          <End Type="OutOfRangeModel.Badge" Role="Badge" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="OutOfRangeModel.UserBadge" Role="UserBadge" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Badge">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="UserBadge">
-              <PropertyRef Name="BadgeID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_UserLevel_Category">
           <End Type="OutOfRangeModel.Category" Role="Category" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1038,6 +1013,33 @@
             </Principal>
             <Dependent Role="UserLevel">
               <PropertyRef Name="CategoryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="UserBadge">
+          <Key>
+            <PropertyRef Name="UserLevelID" />
+            <PropertyRef Name="BadgeID" />
+            <PropertyRef Name="ItemID" />
+          </Key>
+          <Property Name="UserLevelID" Type="Guid" Nullable="false" />
+          <Property Name="BadgeID" Type="Guid" Nullable="false" />
+          <Property Name="Obtained" Type="DateTime" Precision="3" />
+          <Property Name="ItemID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Badge" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="UserBadge" ToRole="Badge" />
+          <NavigationProperty Name="UserLevel" Relationship="OutOfRangeModel.FK_UserBadges_UserLevel" FromRole="UserBadge" ToRole="UserLevel" />
+        </EntityType>
+        <Association Name="FK_UserBadges_Badges">
+          <End Type="OutOfRangeModel.Badge" Role="Badge" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="OutOfRangeModel.UserBadge" Role="UserBadge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Badge">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserBadge">
+              <PropertyRef Name="BadgeID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1214,16 +1216,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="UserBadges">
-            <EntityTypeMapping TypeName="OutOfRangeModel.UserBadge">
-              <MappingFragment StoreEntitySet="UserBadges">
-                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
-                <ScalarProperty Name="Obtained" ColumnName="Obtained" />
-                <ScalarProperty Name="BadgeID" ColumnName="BadgeID" />
-                <ScalarProperty Name="UserLevelID" ColumnName="UserLevelID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserLevels">
             <EntityTypeMapping TypeName="OutOfRangeModel.UserLevel">
               <MappingFragment StoreEntitySet="UserLevel">
@@ -1233,6 +1225,16 @@
                 <ScalarProperty Name="UserLevelID" ColumnName="UserLevelID" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserBadges">
+            <EntityTypeMapping TypeName="OutOfRangeModel.UserBadge">
+              <MappingFragment StoreEntitySet="UserBadges">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
+                <ScalarProperty Name="Obtained" ColumnName="Obtained" />
+                <ScalarProperty Name="BadgeID" ColumnName="BadgeID" />
+                <ScalarProperty Name="UserLevelID" ColumnName="UserLevelID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

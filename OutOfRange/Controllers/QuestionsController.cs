@@ -100,6 +100,22 @@ namespace OutOfRange.Controllers
                     }
                 }
             }
+            int viewsNumber = question.QuestionViews.Count();
+            if (viewsNumber == 100)
+            {
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 0, question.ID);
+            } else if (viewsNumber == 300)
+            {
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 1, question.ID);
+            }
+            else if (viewsNumber == 500)
+            {
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 2, question.ID);
+            }
+            else if (viewsNumber == 1000)
+            {
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 3, question.ID);
+            }
 
             return Ok(jsonQuestion);
         }
@@ -194,6 +210,48 @@ namespace OutOfRange.Controllers
             db.Entry(question).State = EntityState.Modified;
             db.SaveChanges();
 
+            if (question.Score == 10)
+            {
+                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
+                if (userBadge == null)
+                {
+                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 0, question.ID);
+                    
+                }
+            }
+            else if (question.Score == 50)
+            {
+                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
+                if (userBadge.Badge.Rarity == 0)
+                {
+                    db.UserBadges.Remove(userBadge);
+                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "scores", 1, question.ID);
+                }
+            }
+            else if (question.Score == 100)
+            {
+                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
+                if (userBadge.Badge.Rarity == 1)
+                {
+                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 2, question.ID);
+                    db.UserBadges.Remove(userBadge);
+                }
+            }
+            else if (question.Score == 500)
+            {
+                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
+                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
+                if (userBadge.Badge.Rarity == 2)
+                {
+                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 3, question.ID);
+                    db.UserBadges.Remove(userBadge);
+                }
+            }
+
+            db.SaveChanges();
             return Ok(new QuestionDTO(question));
         }
         // POST: api/Questions
@@ -282,7 +340,25 @@ namespace OutOfRange.Controllers
             }
             PointsUtils.AddCreditsAndXP(userId, question.CategoryID, 10, 15);
 
-            db=new OutOfRangeEntities();
+            AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
+            int questionsNumber = user.Questions.Where(x => x.CategoryID == question.CategoryID).Count();
+            if (questionsNumber == 1)
+            {
+                PointsUtils.giveBadge(userId, question.CategoryID, "question", 0, question.ID);
+            } else if (questionsNumber == 10)
+            {
+                PointsUtils.giveBadge(userId, question.CategoryID, "question", 1, question.ID);
+            }
+            else if (questionsNumber == 100)
+            {
+                PointsUtils.giveBadge(userId, question.CategoryID, "question", 2, question.ID);
+            }
+            else if (questionsNumber == 500)
+            {
+                PointsUtils.giveBadge(userId, question.CategoryID, "question", 3, question.ID);
+            }
+
+            db =new OutOfRangeEntities();
             question = db.Questions.Find(question.ID);
             return CreatedAtRoute("DefaultApi", new { id = question.ID }, QuestionDTO.FromEntity(question));
         }

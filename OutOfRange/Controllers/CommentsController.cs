@@ -116,6 +116,98 @@ namespace OutOfRange.Controllers
             }
             db.Entry(comment).State = EntityState.Modified;
             db.SaveChanges();
+
+            if (comment.Score == 10)
+            {
+                if (comment.Question != null)
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge == null)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Question.CategoryID, "score", 0, comment.ID);
+                    }
+                }
+                else
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Answer.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge == null)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Answer.Question.CategoryID, "score", 0, comment.ID);
+                    }
+                }
+            }
+            else if (comment.Score == 50)
+            {
+                if (comment.Question != null)
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge.Badge.Rarity == 0)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Question.CategoryID, "scores", 1, comment.ID);
+                        db.UserBadges.Remove(userBadge);
+                    }
+                }
+                else
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Answer.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge.Badge.Rarity == 0)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Answer.Question.CategoryID, "scores", 1, comment.ID);
+                        db.UserBadges.Remove(userBadge);
+                    }
+                }
+            }
+            else if (comment.Score == 100)
+            {
+                if (comment.Question != null)
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge.Badge.Rarity == 1)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Question.CategoryID, "score", 2, comment.ID);
+                        db.UserBadges.Remove(userBadge);
+                    }
+                }
+                else
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Answer.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge.Badge.Rarity == 1)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Answer.Question.CategoryID, "score", 2, comment.ID);
+                        db.UserBadges.Remove(userBadge);
+                    }
+                }
+            }
+            else if (comment.Score == 500)
+            {
+                if (comment.Question != null)
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge.Badge.Rarity == 2)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Question.CategoryID, "score", 3, comment.ID);
+                        db.UserBadges.Remove(userBadge);
+                    }
+                }
+                else
+                {
+                    UserLevel userLevel = comment.AspNetUser.UserLevels.Single(x => x.CategoryID == comment.Answer.Question.CategoryID);
+                    UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
+                    if (userBadge.Badge.Rarity == 2)
+                    {
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Answer.Question.CategoryID, "score", 3, comment.ID);
+                        db.UserBadges.Remove(userBadge);
+                    }
+                }
+            }
+            db.SaveChanges();
             return Ok(new CommentDTO(comment));
         }
 

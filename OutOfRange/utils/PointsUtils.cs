@@ -56,6 +56,29 @@ namespace OutOfRange.Utils
             }
             db.SaveChanges();
         }
-        
+
+        public static void giveBadge(string userId, Guid categoryId, String identifierName, int rarity, Guid itemId)
+        {
+            OutOfRangeEntities db = new OutOfRangeEntities();
+            AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
+            Badge badge = db.Badges.Where(x => (x.IdentifierName == identifierName && x.Rarity == rarity)).FirstOrDefault();
+            if (user != null && badge != null)
+            {
+                UserLevel userLevel = user.UserLevels.Where(x => x.CategoryID == categoryId).FirstOrDefault();
+                if (userLevel != null)
+                {
+                    userLevel.UserBadges.Add(new UserBadge()
+                    {
+                        Badge = badge,
+                        Obtained = DateTime.Now,
+                        ItemID = itemId
+                    });
+                    user.Credits += badge.Reward;
+                    db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+            }
+        }
+
     }
 }

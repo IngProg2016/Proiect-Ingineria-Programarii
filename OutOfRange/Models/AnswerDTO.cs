@@ -29,7 +29,7 @@ namespace OutOfRange.Models
         public string UserID { get; set; }
         public Guid QuestionID { get; set; }
         public string AnswerBody { get; set; }
-        public int? Score { get; set; }
+        public int Score { get; set; }
         public bool Accepted { get; set; }
         public DateTime Added { get; set; }
         public AspNetUserDTO AspNetUser { get; set; }

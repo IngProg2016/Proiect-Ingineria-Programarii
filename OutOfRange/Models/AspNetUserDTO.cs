@@ -16,7 +16,6 @@ namespace OutOfRange.Models
         public int CommentScore { get; set; }
         public int Credits { get; set; }
         public int TotalScore { get; set; }
-        public ICollection<UserBadgeDTO> UserBadges { get; set; }
         public ICollection<UserLevelDTO> UserLevels { get; set; }
 
         public AspNetUserDTO()
@@ -26,6 +25,7 @@ namespace OutOfRange.Models
 
         public AspNetUserDTO(AspNetUser aspNetUser)
         {
+            UserLevels=new List<UserLevelDTO>();
             Id = aspNetUser.Id;
             Email = aspNetUser.Email;
             UserName = aspNetUser.UserName;
@@ -35,11 +35,14 @@ namespace OutOfRange.Models
                 Credits = 0;
             QuestionNumber = aspNetUser.Questions.Count;
             QuestionViews = aspNetUser.Questions.Sum(question => question.QuestionViews.Count);
-            QuestionScore = decimal.ToInt32(aspNetUser.Questions.Sum(question => question.Score));
-
+            QuestionScore = aspNetUser.Questions.Sum(question => question.Score);
+            AnswerScore = aspNetUser.Answers.Sum(answer => answer.Score);
+            CommentScore = aspNetUser.Comments.Sum(comment => comment.Score);
+            TotalScore = QuestionScore + AnswerScore + CommentScore;
             foreach (var level in aspNetUser.UserLevels)
             {
-
+                UserLevelDTO ulDto=new UserLevelDTO(level);
+                UserLevels.Add(ulDto);
             }
         }
 

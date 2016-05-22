@@ -40,9 +40,9 @@ namespace OutOfRange.Models
         public string UserID { get; set; }
         public Guid CategoryID { get; set; }
         public string Title { get; set; }
-        public decimal? Score { get; set; }
+        public int Score { get; set; }
         public int Views { get; set; }
-        public decimal? Bounty { get; set; }
+        public int Bounty { get; set; }
         public string QuestionBody { get; set; }
         public DateTime Added { get; set; }
         public DateTime? Modified { get; set; }

@@ -213,7 +213,7 @@
     }
 
     function UserService($resource, $routeParams) {
-        var Profile = $resource('/api/users/profile/:id');
+        var Profile = $resource('/api/user/profile/:id');
 
         this.getProfileInfo = function () {
             if ($routeParams.userId)

@@ -42,7 +42,7 @@
                     <span ng-hide="$ctrl.question.Answers.length">No answers yet</span>
                     <span ng-show="$ctrl.question.Answers.length">{{$ctrl.question.Answers.length + ($ctrl.question.Answers.length != 1 ? ' Answers' : ' Answer')}}</span>
                 </h3>
-                <hr>
+                <hr style="border-top: 1px solid #8E8E8E" />
             </div>
             <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers">
                 <div class="row">
@@ -64,20 +64,21 @@
                             <hr />
                             <div class="media-body row" ng-repeat="com in ans.Comments">
                                 <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
-                                    <i class="fa fa-chevron-up score-control up-vote" style="float:left;" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
-                                    <div class="score-number" style="float:left;margin-left:3px;margin-top:2px; margin-right:3px;" >{{com.Score || 0}}</div>
-                                    <i class="fa fa-chevron-down score-control down-vote" style="float:left;" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
+                                    <i class="fa fa-chevron-up score-control up-vote" style="float:left; margin-top: 3px;" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
+                                    <div class="score-number" style="float:left;margin-left:3px;margin-top:5px; margin-right:3px;" >{{com.Score || 0}}</div>
+                                    <i class="fa fa-chevron-down score-control down-vote" style="float:left; margin-top:3px;" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
                                 </div>
 
                                 <div class="comment-body col-lg-11 col-sm-11">
                                     <p>
-                                        <span ng-bind="com.CommentBody | plainText"></span> - <a href="#">{{com.AspNetUser.UserName}}</a>
+                                        <span ng-bind="com.CommentBody | plainText" style="padding-left:5px;"></span> - <a href="#">{{com.AspNetUser.UserName}}</a>
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <hr style="border-top: 1px solid #8E8E8E"/>
             </div>
             <div class="post-comment">
                 <h3 class="skills">Post Answer</h3>

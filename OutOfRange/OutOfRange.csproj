@@ -553,6 +553,7 @@
     <Content Include="Scripts\angular\angular-route.js" />
     <Content Include="Scripts\angular\angular-sanitize.js" />
     <Content Include="Scripts\angular\angular-smooth-scroll.min.js" />
+    <Content Include="Scripts\angular\angular.js" />
     <Content Include="Scripts\angular\angular.min.js" />
     <Content Include="Scripts\angular\angular_1_router.js" />
     <Content Include="app\app.js" />

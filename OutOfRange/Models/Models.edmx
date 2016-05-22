@@ -160,6 +160,7 @@
           <Property Name="UserLevelID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BadgeID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Obtained" Type="datetime" />
+          <Property Name="ItemID" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="UserLevel">
           <Key>
@@ -982,6 +983,7 @@
           <Property Name="Obtained" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Badge" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="UserBadge" ToRole="Badge" />
           <NavigationProperty Name="UserLevel" Relationship="OutOfRangeModel.FK_UserBadges_UserLevel" FromRole="UserBadge" ToRole="UserLevel" />
+          <Property Name="ItemID" Type="Guid" />
         </EntityType>
         <EntityType Name="UserLevel">
           <Key>
@@ -1215,6 +1217,7 @@
           <EntitySetMapping Name="UserBadges">
             <EntityTypeMapping TypeName="OutOfRangeModel.UserBadge">
               <MappingFragment StoreEntitySet="UserBadges">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="Obtained" ColumnName="Obtained" />
                 <ScalarProperty Name="BadgeID" ColumnName="BadgeID" />
                 <ScalarProperty Name="UserLevelID" ColumnName="UserLevelID" />

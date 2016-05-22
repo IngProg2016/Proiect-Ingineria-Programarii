@@ -216,7 +216,10 @@
     function UserCtrl(userService) {
         var $ctrl = this;
         (function () {
-            $ctrl.userProfile = userService.getProfileInfo();
+            userService.getProfileInfo()
+                .then(function (result) {
+                    $ctrl.userProfile = result;
+                });
         })();
     }
 

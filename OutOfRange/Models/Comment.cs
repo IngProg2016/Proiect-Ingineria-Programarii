@@ -26,7 +26,7 @@ namespace OutOfRange.Models
         public string CommentBody { get; set; }
         public System.DateTime Added { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
-        public Nullable<decimal> Score { get; set; }
+        public int Score { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Question Question { get; set; }

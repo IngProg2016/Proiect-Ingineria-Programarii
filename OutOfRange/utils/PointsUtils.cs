@@ -17,7 +17,7 @@ namespace OutOfRange.Utils
         /// <param name="categoryId"></param>
         /// <param name="credits"></param>
         /// <param name="xp"></param>
-        public static void AddCreditsAndXP(string userId, Guid categoryId, int credits, decimal xp)
+        public static void AddCreditsAndXP(string userId, Guid categoryId, int credits, int xp)
         {
             OutOfRangeEntities db = new OutOfRangeEntities();
             AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
@@ -32,6 +32,7 @@ namespace OutOfRange.Utils
                 userLevel.CategoryID = categoryId;
                 userLevel.XP = 0;
                 userLevel.Obtained = DateTime.Now;
+                userLevel.UserLevelID = Guid.NewGuid();
                 user.UserLevels.Add(userLevel);
                 db.SaveChanges();
             }

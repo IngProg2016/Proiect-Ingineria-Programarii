@@ -130,9 +130,6 @@ namespace OutOfRange.Controllers
                     ItemID = answer.ID,
                 });
 
-                if (answer.Score.HasValue == false)
-                    answer.Score = 0;
-
                 answer.Score += addedScore;
             }
             else
@@ -141,7 +138,7 @@ namespace OutOfRange.Controllers
                 var scoreItem = scoreitems.First();
                 if (scoreItem.Score != addedScore)
                 {
-                    answer.Score -= decimal.ToInt32(scoreItem.Score.Value);
+                    answer.Score -= decimal.ToInt32(scoreItem.Score);
                     scoreItem.Score = addedScore;
                     answer.Score += addedScore;
                     db.Entry(scoreItem).State = EntityState.Modified;

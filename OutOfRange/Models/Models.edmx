@@ -13,7 +13,7 @@
           <Property Name="UserID" Type="nvarchar" MaxLength="128" />
           <Property Name="QuestionID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AnswerBody" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Score" Type="int" Nullable="false" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Accepted" Type="bit" Nullable="false" />
         </EntityType>
@@ -77,9 +77,10 @@
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Image" Type="varbinary(max)" />
-          <Property Name="Reward" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Reward" Type="int" Nullable="false" />
           <Property Name="ImageLoc" Type="nvarchar(max)" />
           <Property Name="IdentifierName" Type="nvarchar(max)" />
+          <Property Name="Rarity" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -99,7 +100,7 @@
           <Property Name="CommentBody" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" />
-          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Score" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Questions">
           <Key>
@@ -112,8 +113,8 @@
           <Property Name="QuestionBody" Type="nvarchar(max)" />
           <Property Name="Added" Type="datetime" Nullable="false" />
           <Property Name="Modified" Type="datetime" />
-          <Property Name="Bounty" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Bounty" Type="int" Nullable="false" />
+          <Property Name="Score" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="QuestionTags">
           <Key>
@@ -140,7 +141,7 @@
           </Key>
           <Property Name="ItemID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="UserID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="Score" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Score" Type="int" Nullable="false" />
           <Property Name="Added" Type="datetime" />
         </EntityType>
         <EntityType Name="Tags">
@@ -159,6 +160,7 @@
           <Property Name="UserLevelID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BadgeID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Obtained" Type="datetime" />
+          <Property Name="ItemID" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="UserLevel">
           <Key>
@@ -169,7 +171,7 @@
           <Property Name="UserLevelID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Level" Type="int" Nullable="false" />
           <Property Name="Obtained" Type="datetime" Nullable="false" />
-          <Property Name="XP" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="XP" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Answers_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
@@ -613,7 +615,7 @@
           <Property Name="UserID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="QuestionID" Type="Guid" Nullable="false" />
           <Property Name="AnswerBody" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Score" Type="Int32" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Answers_AspNetUsers" FromRole="Answer" ToRole="AspNetUser" />
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Answer" ToRole="Question" />
@@ -685,10 +687,11 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <Property Name="Reward" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Reward" Type="Int32" Nullable="false" />
           <Property Name="ImageLoc" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="IdentifierName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="Badge" ToRole="UserBadge" />
+          <Property Name="Rarity" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -713,7 +716,7 @@
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Comments_AspNetUsers" FromRole="Comment" ToRole="AspNetUser" />
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.QuestionComment" FromRole="Comment" ToRole="Question" />
           <NavigationProperty Name="Answer" Relationship="OutOfRangeModel.AnswerComment" FromRole="Comment" ToRole="Answer" />
-          <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ScoreItems" Relationship="OutOfRangeModel.CommentScoreItem" FromRole="Comment" ToRole="ScoreItem" />
         </EntityType>
         <EntityType Name="Question">
@@ -727,13 +730,13 @@
           <Property Name="QuestionBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Added" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Modified" Type="DateTime" Precision="3" />
-          <Property Name="Bounty" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Bounty" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Answers" Relationship="OutOfRangeModel.FK_Answers_Questions" FromRole="Question" ToRole="Answer" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_Questions_AspNetUsers" FromRole="Question" ToRole="AspNetUser" />
           <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_Questions_Category" FromRole="Question" ToRole="Category" />
           <NavigationProperty Name="Tags" Relationship="OutOfRangeModel.QuestionTags" FromRole="Question" ToRole="Tag" />
           <NavigationProperty Name="Comments" Relationship="OutOfRangeModel.QuestionComment" FromRole="Question" ToRole="Comment" />
-          <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
           <NavigationProperty Name="QuestionViews" Relationship="OutOfRangeModel.FK_QuestionViews_Questions" FromRole="Question" ToRole="QuestionView" />
           <NavigationProperty Name="ScoreItems" Relationship="OutOfRangeModel.QuestionScoreItem" FromRole="Question" ToRole="ScoreItem" />
         </EntityType>
@@ -889,7 +892,7 @@
           </Key>
           <Property Name="ItemID" Type="Guid" Nullable="false" />
           <Property Name="UserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Score" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Score" Type="Int32" Nullable="false" />
           <Property Name="Added" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_ScoreItems_AspNetUsers" FromRole="ScoreItem" ToRole="AspNetUser" />
           <NavigationProperty Name="Question" Relationship="OutOfRangeModel.QuestionScoreItem" FromRole="ScoreItem" ToRole="Question" />
@@ -980,6 +983,7 @@
           <Property Name="Obtained" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Badge" Relationship="OutOfRangeModel.FK_UserBadges_Badges" FromRole="UserBadge" ToRole="Badge" />
           <NavigationProperty Name="UserLevel" Relationship="OutOfRangeModel.FK_UserBadges_UserLevel" FromRole="UserBadge" ToRole="UserLevel" />
+          <Property Name="ItemID" Type="Guid" />
         </EntityType>
         <EntityType Name="UserLevel">
           <Key>
@@ -990,7 +994,7 @@
           <Property Name="UserLevelID" Type="Guid" Nullable="false" />
           <Property Name="Level" Type="Int32" Nullable="false" />
           <Property Name="Obtained" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="XP" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="XP" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="OutOfRangeModel.FK_UserLevel_AspNetUsers" FromRole="UserLevel" ToRole="AspNetUser" />
           <NavigationProperty Name="Category" Relationship="OutOfRangeModel.FK_UserLevel_Category" FromRole="UserLevel" ToRole="Category" />
           <NavigationProperty Name="UserBadges" Relationship="OutOfRangeModel.FK_UserBadges_UserLevel" FromRole="UserLevel" ToRole="UserBadge" />
@@ -1117,6 +1121,7 @@
           <EntitySetMapping Name="Badges">
             <EntityTypeMapping TypeName="OutOfRangeModel.Badge">
               <MappingFragment StoreEntitySet="Badges">
+                <ScalarProperty Name="Rarity" ColumnName="Rarity" />
                 <ScalarProperty Name="IdentifierName" ColumnName="IdentifierName" />
                 <ScalarProperty Name="ImageLoc" ColumnName="ImageLoc" />
                 <ScalarProperty Name="Reward" ColumnName="Reward" />
@@ -1212,6 +1217,7 @@
           <EntitySetMapping Name="UserBadges">
             <EntityTypeMapping TypeName="OutOfRangeModel.UserBadge">
               <MappingFragment StoreEntitySet="UserBadges">
+                <ScalarProperty Name="ItemID" ColumnName="ItemID" />
                 <ScalarProperty Name="Obtained" ColumnName="Obtained" />
                 <ScalarProperty Name="BadgeID" ColumnName="BadgeID" />
                 <ScalarProperty Name="UserLevelID" ColumnName="UserLevelID" />

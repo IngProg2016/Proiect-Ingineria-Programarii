@@ -16,7 +16,7 @@ namespace OutOfRange.Models
     {
         public System.Guid ItemID { get; set; }
         public string UserID { get; set; }
-        public Nullable<decimal> Score { get; set; }
+        public int Score { get; set; }
         public Nullable<System.DateTime> Added { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }

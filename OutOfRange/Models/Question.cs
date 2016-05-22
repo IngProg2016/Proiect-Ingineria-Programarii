@@ -31,8 +31,8 @@ namespace OutOfRange.Models
         public string QuestionBody { get; set; }
         public System.DateTime Added { get; set; }
         public Nullable<System.DateTime> Modified { get; set; }
-        public Nullable<decimal> Bounty { get; set; }
-        public Nullable<decimal> Score { get; set; }
+        public int Bounty { get; set; }
+        public int Score { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Answer> Answers { get; set; }

@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.Identity;
 using OutOfRange.Models;
 
 namespace OutOfRange.Controllers
@@ -23,7 +24,23 @@ namespace OutOfRange.Controllers
             return db.AspNetUsers;
         }
 
+        [Route("profile/")]
+        [ResponseType(typeof(AspNetUserDTO))]
+        public IHttpActionResult GetAspNetUser()
+        {
+            var userId = User.Identity.GetUserId();
+            AspNetUser aspNetUser = db.AspNetUsers.FirstOrDefault(user => user.Id == userId);
+
+            if (aspNetUser == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(AspNetUserDTO.FromEntity(aspNetUser));
+        }
+
         // GET: api/Users/5
+        [Route("profile/{id}")]
         [ResponseType(typeof(AspNetUser))]
         public IHttpActionResult GetAspNetUser(string id)
         {

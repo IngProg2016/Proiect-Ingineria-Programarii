@@ -68,7 +68,7 @@ namespace OutOfRange.Controllers
             if (qScore.Count > 0)
             {
                 var score = qScore.First().Score;
-                if (score != null) jsonQuestion.ScoreGiven = decimal.ToInt32(score.Value);
+                jsonQuestion.ScoreGiven = decimal.ToInt32(score);
             }
             foreach (var comment in jsonQuestion.Comments)
             {
@@ -77,8 +77,7 @@ namespace OutOfRange.Controllers
                 if (qComScore.Count > 0)
                 {
                     var score = qComScore.First().Score;
-                    if (score != null)
-                        comment.ScoreGiven = decimal.ToInt32(score.Value);
+                    comment.ScoreGiven = decimal.ToInt32(score);
                 }
             }
             foreach (var answer in jsonQuestion.Answers)
@@ -88,8 +87,7 @@ namespace OutOfRange.Controllers
                 if (qAnswScore.Count > 0)
                 {
                     var score = qAnswScore.First().Score;
-                    if (score != null)
-                        answer.ScoreGiven = decimal.ToInt32(score.Value);
+                    answer.ScoreGiven = decimal.ToInt32(score);
                 }
                 foreach (var comment in answer.Comments)
                 {
@@ -98,8 +96,7 @@ namespace OutOfRange.Controllers
                     if (qComScore.Count > 0)
                     {
                         var score = qComScore.First().Score;
-                        if (score != null)
-                            comment.ScoreGiven = decimal.ToInt32(score.Value);
+                        comment.ScoreGiven = decimal.ToInt32(score);
                     }
                 }
             }
@@ -166,7 +163,7 @@ namespace OutOfRange.Controllers
             var scoreitems = question.ScoreItems.Where(x => x.UserID == userId).ToList();
             if (scoreitems.Count == 0)
             {
-                decimal addedScore = Math.Sign(score.score);
+                int addedScore = Math.Sign(score.score);
                 question.ScoreItems.Add(new ScoreItem()
                 {
                     Added = DateTime.Now,
@@ -175,14 +172,11 @@ namespace OutOfRange.Controllers
                     ItemID = question.ID,
                 });
 
-                if (question.Score.HasValue == false)
-                    question.Score = 0;
-
                 question.Score += addedScore;
             }
             else
             {
-                decimal addedScore = Math.Sign(score.score);
+                int addedScore = Math.Sign(score.score);
                 var scoreItem = scoreitems.First();
                 if (scoreItem.Score != addedScore)
                 {

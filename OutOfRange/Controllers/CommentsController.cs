@@ -85,7 +85,7 @@ namespace OutOfRange.Controllers
             var scoreitems = comment.ScoreItems.Where(x => x.UserID == userId).ToList();
             if (scoreitems.Count == 0)
             {
-                decimal addedScore = Math.Sign(score.score);
+                int addedScore = Math.Sign(score.score);
                 comment.ScoreItems.Add(new ScoreItem()
                 {
                     Added = DateTime.Now,
@@ -93,9 +93,6 @@ namespace OutOfRange.Controllers
                     UserID = userId,
                     ItemID = comment.ID,
                 });
-
-                if (comment.Score.HasValue == false)
-                    comment.Score = 0;
 
                 comment.Score += addedScore;
                 
@@ -106,7 +103,7 @@ namespace OutOfRange.Controllers
                 var scoreItem = scoreitems.First();
                 if (scoreItem.Score != addedScore)
                 {
-                    comment.Score -= decimal.ToInt32(scoreItem.Score.Value);
+                    comment.Score -= decimal.ToInt32(scoreItem.Score);
                     scoreItem.Score = addedScore;
                     comment.Score += addedScore;
                     db.Entry(scoreItem).State = EntityState.Modified;

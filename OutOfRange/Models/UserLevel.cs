@@ -25,7 +25,7 @@ namespace OutOfRange.Models
         public System.Guid UserLevelID { get; set; }
         public int Level { get; set; }
         public System.DateTime Obtained { get; set; }
-        public Nullable<decimal> XP { get; set; }
+        public int XP { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Category Category { get; set; }

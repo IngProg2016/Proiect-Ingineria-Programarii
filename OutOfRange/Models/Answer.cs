@@ -25,7 +25,7 @@ namespace OutOfRange.Models
         public string UserID { get; set; }
         public System.Guid QuestionID { get; set; }
         public string AnswerBody { get; set; }
-        public Nullable<int> Score { get; set; }
+        public int Score { get; set; }
         public System.DateTime Added { get; set; }
         public bool Accepted { get; set; }
     

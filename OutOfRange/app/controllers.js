@@ -292,7 +292,7 @@
             for (var tag of taglist) {
                 $ctrl.question.Tags.push({ name: tag });
             }
-            $ctrl.question.QuestionBody = $ctrl.question.QuestionBody.replace('\r', '').replace('\n', '</br>');
+            //$ctrl.question.QuestionBody = $ctrl.question.QuestionBody.replace('\r', '').replace('\n', '</br>');
 
             qaService.addQuestion($ctrl.question)
             .then(function (result) {
@@ -316,6 +316,11 @@
         this.prepareComment = function (parentID) {
             this.replyCommentID = parentID;
         }
+
+        this.tinymceOptions = {
+            plugins: 'link image code',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+        };
 
         this.addComment = function () {
             $ctrl.comment.parentID = $ctrl.replyCommentID;
@@ -383,7 +388,7 @@
                 return;
             }
             $ctrl.answer.QuestionID = $ctrl.question.ID;
-            $ctrl.answer.AnswerBody = $ctrl.answer.AnswerBody.replace('\r', '').replace('\n', '</br>');
+            //$ctrl.answer.AnswerBody = $ctrl.answer.AnswerBody.replace('\r', '').replace('\n', '</br>');
             qaService.addAnswer($ctrl.answer).then(function (_data) {
                 _getQuestion($ctrl.question.ID);
 

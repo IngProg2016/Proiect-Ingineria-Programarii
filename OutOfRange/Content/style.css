@@ -1048,7 +1048,6 @@ section.contact-infos {
 .btn-row { margin-bottom: 30px }
 /*blog*/
 .blog-item {
-    margin-bottom: 40px;
     padding-bottom: 40px;
     border-bottom: 1px dashed #ddd;
 }

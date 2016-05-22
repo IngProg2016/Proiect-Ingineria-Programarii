@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.Results;
 using Microsoft.AspNet.Identity;
 using OutOfRange.Models;
 
@@ -19,9 +20,9 @@ namespace OutOfRange.Controllers
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
         // GET: api/Users
-        public IQueryable<AspNetUser> GetAspNetUsers()
+        public JsonResult<IEnumerable<AspNetUserDTO>> GetAspNetUsers()
         {
-            return db.AspNetUsers;
+            return Json(db.AspNetUsers.ToList().Select(AspNetUserDTO.FromEntity));
         }
 
         [Route("profile/")]
@@ -35,13 +36,12 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
-
             return Ok(AspNetUserDTO.FromEntity(aspNetUser));
         }
 
         // GET: api/Users/5
         [Route("profile/{id}")]
-        [ResponseType(typeof(AspNetUser))]
+        [ResponseType(typeof(AspNetUserDTO))]
         public IHttpActionResult GetAspNetUser(string id)
         {
             AspNetUser aspNetUser = db.AspNetUsers.Find(id);
@@ -51,7 +51,7 @@ namespace OutOfRange.Controllers
                 return NotFound();
             }
 
-            return Ok(aspNetUser);
+            return Ok(AspNetUserDTO.FromEntity(aspNetUser));
         }
 
         // PUT: api/Users/5

@@ -343,6 +343,7 @@
     <Compile Include="Utils\PointsUtils.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\directives.js" />
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="assets\bxslider\images\bx_loader.gif" />
     <Content Include="assets\bxslider\images\left-hover.png" />
@@ -545,6 +546,7 @@
     </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
+    <Content Include="Scripts\angular\angular-messages.min.js" />
     <Content Include="Scripts\angular\angular-ngStorage.js" />
     <Content Include="Scripts\angular\angular-resource.js" />
     <Content Include="Scripts\angular\angular-route.js" />

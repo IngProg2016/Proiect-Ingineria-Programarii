@@ -16,13 +16,16 @@
                 <img id="profilepicture" src="/Content/images/borders/slav.jpg" style="width:200px;height:200px;position:absolute;left:0px;top:0px;z-index:-1;" />
                 <img id="border" src="/Content/images/borders/hue.gif" style="width:200px;height:200px;position:absolute;left:0px;top:0px;z-index:-1;" />
             </div>
+            <div style="text-align:center;">
+                <h2>Credits: {{$ctrl.userProfile.Credits}}</h2>
+            </div>
             <div class="btn-group-vertical" style="margin-top:30px;padding-left:15px;">
                 <button class="btn btn-default" type="button">Change Picture</button>
                 <button class="btn btn-default" type="button">Change Password</button>
                 <button class="btn btn-default" type="button">Other Function</button>
             </div>
         </div>
-        <div class="col-lg-6 col-lg-offset-1">
+        <div class="col-lg-9 col-lg-offset-1">
             <div>
                 <h2>Account info:</h2>
                 <p><b>Email:</b> {{$ctrl.userProfile.UserName}}</p>
@@ -40,18 +43,24 @@
                 <p><b>Answer Score:</b> {{$ctrl.userProfile.AnswerScore}}</p>
                 <p><b>Comments Score:</b> {{$ctrl.userProfile.CommentScore}}</p>
             </div>
-        </div>
-        <div class="col-lg-3 clearfix">
-            <div class="clearfix">
-                    <h2>Progress:</h2>
-                <div class="c100 p45 big">
-                    <span>45%</span>
-                    <div class="slice">
-                        <div class="bar"></div>
-                        <div class="fill"></div>
+
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default" ng-repeat="cat in $ctrl.userProfile.UserLevels">
+                    <div class="panel-heading">
+                        <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse{{cat.$id}}">
+                            <a>
+                                {{cat.Category.Name}} <div class="pull-right"> XP:{{cat.XP}} | Level: {{cat.Level}} </div>
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse{{cat.$id}}" class="panel-collapse collapse ">
+                        <div class="panel-body">
+                            <img class="pull-left" ng-repeat="badge in cat.Badges" ng-src="/content/images/badges/{{badge.Badge.ImageLoc}}" width="50" height="50" title="{{badge.Badge.Name}} | {{badge.Badge.Description}}"/>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
     <br />

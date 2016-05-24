@@ -33,8 +33,22 @@ namespace OutOfRange.Controllers
             return Json(db.Questions.ToList().Select(QuestionDTO.FromEntity));
         }
 
+        // GET: api/Questions
+        [Route("category/{id}")]
+        public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsCategory(Guid id)
+        {
+            return Json(db.Questions.Where(question => question.CategoryID==id).ToList().Select(QuestionDTO.FromEntity));
+        }
+
+        // GET: api/Questions
+        [Route("tag/{tag}")]
+        public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsTag(string tag)
+        {
+            return Json(db.Questions.Where(question => question.Tags.Select(x => x.Name).Contains(tag)).ToList().Select(QuestionDTO.FromEntity));
+        }
+
         // GET: api/Questions/5
-        [ResponseType(typeof(QuestionDTO))]
+        [ResponseType(typeof (QuestionDTO))]
         public IHttpActionResult GetQuestion(Guid id)
         {
             Question question = db.Questions.Find(id);
@@ -42,54 +56,42 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
-            string userId = User.Identity.GetUserId();
-            var view = question.QuestionViews.Where(x => x.UserID == userId).ToList();
-            if (view.Count == 0)
-            {
-                question.QuestionViews.Add(new QuestionView()
-                {
-                    UserID = userId,
-                    Added = DateTime.Now,
-                    LastVisit = DateTime.Now,
-                });
-                db.Entry(question).State=EntityState.Modified;
-            }
-            else
-            {
-                view.First().LastVisit = DateTime.Now;
-                db.Entry(view.First()).State=EntityState.Modified;
-            }
-            db.SaveChanges();
-            db=new OutOfRangeEntities();
-            question = db.Questions.Find(id);
 
-            QuestionDTO jsonQuestion=new QuestionDTO(question);
-            var qScore = question.ScoreItems.Where(x => x.UserID == userId).ToList();
-            if (qScore.Count > 0)
+            string userId="";
+            if (User.Identity.IsAuthenticated)
             {
-                var score = qScore.First().Score;
-                jsonQuestion.ScoreGiven = decimal.ToInt32(score);
-            }
-            foreach (var comment in jsonQuestion.Comments)
-            {
-                var comm = db.Comments.Find(comment.ID);
-                var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
-                if (qComScore.Count > 0)
+                userId = User.Identity.GetUserId();
+                var view = question.QuestionViews.Where(x => x.UserID == userId).ToList();
+                if (view.Count == 0)
                 {
-                    var score = qComScore.First().Score;
-                    comment.ScoreGiven = decimal.ToInt32(score);
+                    question.QuestionViews.Add(new QuestionView()
+                    {
+                        UserID = userId,
+                        Added = DateTime.Now,
+                        LastVisit = DateTime.Now,
+                    });
+                    db.Entry(question).State = EntityState.Modified;
+                }
+                else
+                {
+                    view.First().LastVisit = DateTime.Now;
+                    db.Entry(view.First()).State = EntityState.Modified;
                 }
             }
-            foreach (var answer in jsonQuestion.Answers)
+            
+            db.SaveChanges();
+            db = new OutOfRangeEntities();
+            question = db.Questions.Find(id);
+            QuestionDTO jsonQuestion = new QuestionDTO(question);
+            if (User.Identity.IsAuthenticated)
             {
-                var answ = db.Answers.Find(answer.ID);
-                var qAnswScore = answ.ScoreItems.Where(x => x.UserID == userId).ToList();
-                if (qAnswScore.Count > 0)
+                var qScore = question.ScoreItems.Where(x => x.UserID == userId).ToList();
+                if (qScore.Count > 0)
                 {
-                    var score = qAnswScore.First().Score;
-                    answer.ScoreGiven = decimal.ToInt32(score);
+                    var score = qScore.First().Score;
+                    jsonQuestion.ScoreGiven = decimal.ToInt32(score);
                 }
-                foreach (var comment in answer.Comments)
+                foreach (var comment in jsonQuestion.Comments)
                 {
                     var comm = db.Comments.Find(comment.ID);
                     var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
@@ -99,12 +101,33 @@ namespace OutOfRange.Controllers
                         comment.ScoreGiven = decimal.ToInt32(score);
                     }
                 }
+                foreach (var answer in jsonQuestion.Answers)
+                {
+                    var answ = db.Answers.Find(answer.ID);
+                    var qAnswScore = answ.ScoreItems.Where(x => x.UserID == userId).ToList();
+                    if (qAnswScore.Count > 0)
+                    {
+                        var score = qAnswScore.First().Score;
+                        answer.ScoreGiven = decimal.ToInt32(score);
+                    }
+                    foreach (var comment in answer.Comments)
+                    {
+                        var comm = db.Comments.Find(comment.ID);
+                        var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
+                        if (qComScore.Count > 0)
+                        {
+                            var score = qComScore.First().Score;
+                            comment.ScoreGiven = decimal.ToInt32(score);
+                        }
+                    }
+                }
             }
             int viewsNumber = question.QuestionViews.Count();
             if (viewsNumber == 100)
             {
                 PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 0, question.ID);
-            } else if (viewsNumber == 300)
+            }
+            else if (viewsNumber == 300)
             {
                 PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 1, question.ID);
             }
@@ -272,7 +295,15 @@ namespace OutOfRange.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
+            string userId = User.Identity.GetUserId();
+            AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
+            if (question.Bounty > user.Credits)
+            {
+                return BadRequest("Cannot add a bounty with more points than you have");
+            }
+            user.Credits -= question.Bounty;
+            db.Entry(user).State = EntityState.Modified;
             List<Tag> removingTags=new List<Tag>();
             List<Tag> addingTags=new List<Tag>();
             
@@ -308,7 +339,7 @@ namespace OutOfRange.Controllers
                 question.Tags.Add(addingTag);
             }
 
-            string userId = User.Identity.GetUserId();
+            
 
             question.ID=Guid.NewGuid();
 
@@ -340,7 +371,6 @@ namespace OutOfRange.Controllers
             }
             PointsUtils.AddCreditsAndXP(userId, question.CategoryID, 10, 15);
 
-            AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
             int questionsNumber = user.Questions.Where(x => x.CategoryID == question.CategoryID).Count();
             if (questionsNumber == 1)
             {

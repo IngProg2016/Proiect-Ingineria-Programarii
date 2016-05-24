@@ -15,7 +15,10 @@
             Image=badge.Image;
             Rarity=badge.Rarity;
             Reward=badge.Reward;
+            BadgeCode = badge.IdentifierName;
         }
+
+        public string BadgeCode { get; set; }
 
         public int Reward { get; set; }
 

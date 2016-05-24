@@ -32,6 +32,12 @@ namespace OutOfRange.Models
         public int XP { get; set; }
 
         public int Level { get; set; }
+        public int QuestionNumber { get; set; }
+        public int QuestionViews { get; set; }
+        public int QuestionScore { get; set; }
+        public int AnswerScore { get; set; }
+        public int CommentScore { get; set; }
+        public int TotalScore { get; set; }
 
         public static UserLevelDTO FromEntity(UserLevel level)
         {

@@ -39,6 +39,31 @@ namespace OutOfRange.Models
             foreach (var level in aspNetUser.UserLevels)
             {
                 UserLevelDTO ulDto=new UserLevelDTO(level);
+                ulDto.QuestionNumber = aspNetUser.Questions.Count(question => question.CategoryID == level.CategoryID);
+                ulDto.QuestionViews =
+                    aspNetUser.Questions.Where(question => question.CategoryID == level.CategoryID)
+                        .Sum(question => question.QuestionViews.Count);
+                ulDto.QuestionScore =
+                    aspNetUser.Questions.Where(question => question.CategoryID == level.CategoryID)
+                        .Sum(question => question.Score);
+                ulDto.AnswerScore = aspNetUser.Answers.Where(answer => answer.Question.CategoryID == level.CategoryID)
+                    .Sum(answer => answer.Score);
+                int commScore = 0;
+                foreach (var comment in aspNetUser.Comments.ToList())
+                {
+                    if (comment.Question != null)
+                    {
+                        if (comment.Question.CategoryID == level.CategoryID)
+                            commScore += comment.Score;
+                    }
+                    else if (comment.Answer != null)
+                    {
+                        if (comment.Answer.Question.CategoryID == level.CategoryID)
+                            commScore += comment.Score;
+                    }
+                }
+                ulDto.CommentScore = commScore;
+                ulDto.TotalScore = ulDto.QuestionScore + ulDto.AnswerScore + ulDto.CommentScore;
                 UserLevels.Add(ulDto);
             }
             UserLevels.Sort((dto, levelDto) => levelDto.XP-dto.XP);

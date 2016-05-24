@@ -56,54 +56,42 @@ namespace OutOfRange.Controllers
             {
                 return NotFound();
             }
-            string userId = User.Identity.GetUserId();
-            var view = question.QuestionViews.Where(x => x.UserID == userId).ToList();
-            if (view.Count == 0)
-            {
-                question.QuestionViews.Add(new QuestionView()
-                {
-                    UserID = userId,
-                    Added = DateTime.Now,
-                    LastVisit = DateTime.Now,
-                });
-                db.Entry(question).State = EntityState.Modified;
-            }
-            else
-            {
-                view.First().LastVisit = DateTime.Now;
-                db.Entry(view.First()).State = EntityState.Modified;
-            }
 
+            string userId="";
+            if (User.Identity.IsAuthenticated)
+            {
+                userId = User.Identity.GetUserId();
+                var view = question.QuestionViews.Where(x => x.UserID == userId).ToList();
+                if (view.Count == 0)
+                {
+                    question.QuestionViews.Add(new QuestionView()
+                    {
+                        UserID = userId,
+                        Added = DateTime.Now,
+                        LastVisit = DateTime.Now,
+                    });
+                    db.Entry(question).State = EntityState.Modified;
+                }
+                else
+                {
+                    view.First().LastVisit = DateTime.Now;
+                    db.Entry(view.First()).State = EntityState.Modified;
+                }
+            }
+            
             db.SaveChanges();
             db = new OutOfRangeEntities();
             question = db.Questions.Find(id);
             QuestionDTO jsonQuestion = new QuestionDTO(question);
-            var qScore = question.ScoreItems.Where(x => x.UserID == userId).ToList();
-            if (qScore.Count > 0)
+            if (User.Identity.IsAuthenticated)
             {
-                var score = qScore.First().Score;
-                jsonQuestion.ScoreGiven = decimal.ToInt32(score);
-            }
-            foreach (var comment in jsonQuestion.Comments)
-            {
-                var comm = db.Comments.Find(comment.ID);
-                var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
-                if (qComScore.Count > 0)
+                var qScore = question.ScoreItems.Where(x => x.UserID == userId).ToList();
+                if (qScore.Count > 0)
                 {
-                    var score = qComScore.First().Score;
-                    comment.ScoreGiven = decimal.ToInt32(score);
+                    var score = qScore.First().Score;
+                    jsonQuestion.ScoreGiven = decimal.ToInt32(score);
                 }
-            }
-            foreach (var answer in jsonQuestion.Answers)
-            {
-                var answ = db.Answers.Find(answer.ID);
-                var qAnswScore = answ.ScoreItems.Where(x => x.UserID == userId).ToList();
-                if (qAnswScore.Count > 0)
-                {
-                    var score = qAnswScore.First().Score;
-                    answer.ScoreGiven = decimal.ToInt32(score);
-                }
-                foreach (var comment in answer.Comments)
+                foreach (var comment in jsonQuestion.Comments)
                 {
                     var comm = db.Comments.Find(comment.ID);
                     var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
@@ -111,6 +99,26 @@ namespace OutOfRange.Controllers
                     {
                         var score = qComScore.First().Score;
                         comment.ScoreGiven = decimal.ToInt32(score);
+                    }
+                }
+                foreach (var answer in jsonQuestion.Answers)
+                {
+                    var answ = db.Answers.Find(answer.ID);
+                    var qAnswScore = answ.ScoreItems.Where(x => x.UserID == userId).ToList();
+                    if (qAnswScore.Count > 0)
+                    {
+                        var score = qAnswScore.First().Score;
+                        answer.ScoreGiven = decimal.ToInt32(score);
+                    }
+                    foreach (var comment in answer.Comments)
+                    {
+                        var comm = db.Comments.Find(comment.ID);
+                        var qComScore = comm.ScoreItems.Where(x => x.UserID == userId).ToList();
+                        if (qComScore.Count > 0)
+                        {
+                            var score = qComScore.First().Score;
+                            comment.ScoreGiven = decimal.ToInt32(score);
+                        }
                     }
                 }
             }

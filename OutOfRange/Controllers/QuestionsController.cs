@@ -33,8 +33,22 @@ namespace OutOfRange.Controllers
             return Json(db.Questions.ToList().Select(QuestionDTO.FromEntity));
         }
 
+        // GET: api/Questions
+        [Route("category/{id}")]
+        public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsCategory(Guid id)
+        {
+            return Json(db.Questions.Where(question => question.CategoryID==id).ToList().Select(QuestionDTO.FromEntity));
+        }
+
+        // GET: api/Questions
+        [Route("tag/{tag}")]
+        public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsTag(string tag)
+        {
+            return Json(db.Questions.Where(question => question.Tags.Select(x => x.Name).Contains(tag)).ToList().Select(QuestionDTO.FromEntity));
+        }
+
         // GET: api/Questions/5
-        [ResponseType(typeof(QuestionDTO))]
+        [ResponseType(typeof (QuestionDTO))]
         public IHttpActionResult GetQuestion(Guid id)
         {
             Question question = db.Questions.Find(id);
@@ -52,18 +66,18 @@ namespace OutOfRange.Controllers
                     Added = DateTime.Now,
                     LastVisit = DateTime.Now,
                 });
-                db.Entry(question).State=EntityState.Modified;
+                db.Entry(question).State = EntityState.Modified;
             }
             else
             {
                 view.First().LastVisit = DateTime.Now;
-                db.Entry(view.First()).State=EntityState.Modified;
+                db.Entry(view.First()).State = EntityState.Modified;
             }
-            db.SaveChanges();
-            db=new OutOfRangeEntities();
-            question = db.Questions.Find(id);
 
-            QuestionDTO jsonQuestion=new QuestionDTO(question);
+            db.SaveChanges();
+            db = new OutOfRangeEntities();
+            question = db.Questions.Find(id);
+            QuestionDTO jsonQuestion = new QuestionDTO(question);
             var qScore = question.ScoreItems.Where(x => x.UserID == userId).ToList();
             if (qScore.Count > 0)
             {
@@ -104,7 +118,8 @@ namespace OutOfRange.Controllers
             if (viewsNumber == 100)
             {
                 PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 0, question.ID);
-            } else if (viewsNumber == 300)
+            }
+            else if (viewsNumber == 300)
             {
                 PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "views", 1, question.ID);
             }

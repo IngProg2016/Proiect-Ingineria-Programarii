@@ -36,6 +36,8 @@ namespace OutOfRange.Controllers
             return Ok(new CategoryDTO(category));
         }
 
+        
+
         // PUT: api/Categories/5
         [ResponseType(typeof(void))]
         public IHttpActionResult PutCategory(Guid id, Category category)

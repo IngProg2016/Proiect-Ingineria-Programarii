@@ -61,7 +61,7 @@
     })
     .component('userCmp', {
         templateUrl: 'templates/user/profile.html',
-        controller: ['userService', UserCtrl]
+        controller: ['$q', 'userService', UserCtrl]
     })
     .component('questionsCmp', {
         templateUrl: '/templates/questions/questionAll.html',
@@ -69,7 +69,7 @@
     })
     .component('addQuestionCmp', {
         templateUrl: '/templates/questions/questionAdd.html',
-        controller: ['$scope', 'qaService', 'routeChangeService', AddQuestionCtrl],
+        controller: ['$scope', 'qaService', 'userService', 'routeChangeService', AddQuestionCtrl],
         bindings: {
             $router: '<'
         }
@@ -213,14 +213,23 @@
         }
     }
 
-    function UserCtrl(userService) {
+    function UserCtrl($q, userService) {
         var $ctrl = this;
-        (function () {
-            userService.getProfileInfo()
+
+        this.$routerOnActivate = function (toRoute) {
+            return $q(function (resolve, reject) {
+                userService.getProfileInfo(toRoute.params.userId)
                 .then(function (result) {
                     $ctrl.userProfile = result;
+                    resolve();
+                })
+                .catch(function (err) {
+                    $ctrl.error = err;
+                    resolve();
                 });
-        })();
+            });
+        }
+
     }
 
     function QuestionsCtrl($q, qaService) {
@@ -242,13 +251,18 @@
         }
     }
 
-    function AddQuestionCtrl($scope, qaService, routeChangeService) {
+    function AddQuestionCtrl($scope, qaService, userService, routeChangeService) {
         var $ctrl = this;
 
         (function () {
             qaService.getCategories()
             .then(function (categories) {
                 $ctrl.categories = categories;
+            });
+
+            userService.getProfileInfo()
+            .then(function (userInfo) {
+                $ctrl.userInfo = userInfo;
             });
 
         })();
@@ -267,7 +281,6 @@
         };
 
         this.descriptionValidation = function (value, control, minlength) {
-            debugger;
             var text = angular.element(value).text();
             text && (text = text.replace(' ', ''));
 
@@ -280,6 +293,18 @@
                 control.$setValidity('minlength', true, control);
             else
                 control.$setValidity('minlength', false, control);
+        }
+
+        this.bountyValidation = function (value, control) {
+            var bountyValue = Number.parseInt(value);
+            if (bountyValue) {
+                if (bountyValue > $ctrl.userInfo.Credits) {
+                    control.$setValidity('maxvalue', false, control);
+                    $scope.$broadcast('show-errors-check-input-validity', control.$name);
+                } else
+                    control.$setValidity('maxvalue', true, control);
+            } else
+                control.$setValidity('maxvalue', true, control);
         }
 
         this.addQuestion = function (isValid) {
@@ -321,12 +346,13 @@
             toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
         };
 
-        this.addComment = function () {
-            $ctrl.comment.parentID = $ctrl.replyCommentID;
-            qaService.addComment($ctrl.comment).then(function (_data) {
+        this.addComment = function (parent) {
+            var comment = {
+                ParentID: parent.ID,
+                CommentBody: parent.$commentBody
+            };
+            qaService.addComment(comment).then(function (_data) {
                 _getQuestion($ctrl.question.ID);
-
-                $ctrl.comment.commentBody = "";
             });
         }
 

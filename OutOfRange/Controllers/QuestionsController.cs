@@ -272,7 +272,15 @@ namespace OutOfRange.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
+
+            string userId = User.Identity.GetUserId();
+            AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
+            if (question.Bounty > user.Credits)
+            {
+                return BadRequest("Cannot add a bounty with more points than you have");
+            }
+            user.Credits -= question.Bounty;
+            db.Entry(user).State = EntityState.Modified;
             List<Tag> removingTags=new List<Tag>();
             List<Tag> addingTags=new List<Tag>();
             
@@ -308,7 +316,7 @@ namespace OutOfRange.Controllers
                 question.Tags.Add(addingTag);
             }
 
-            string userId = User.Identity.GetUserId();
+            
 
             question.ID=Guid.NewGuid();
 
@@ -340,7 +348,6 @@ namespace OutOfRange.Controllers
             }
             PointsUtils.AddCreditsAndXP(userId, question.CategoryID, 10, 15);
 
-            AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
             int questionsNumber = user.Questions.Where(x => x.CategoryID == question.CategoryID).Count();
             if (questionsNumber == 1)
             {

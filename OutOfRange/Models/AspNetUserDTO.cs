@@ -29,10 +29,7 @@ namespace OutOfRange.Models
             Id = aspNetUser.Id;
             Email = aspNetUser.Email;
             UserName = aspNetUser.UserName;
-            if (aspNetUser.Credits != null)
-                Credits = decimal.ToInt32(aspNetUser.Credits.Value);
-            else
-                Credits = 0;
+            Credits = aspNetUser.Credits;
             QuestionNumber = aspNetUser.Questions.Count;
             QuestionViews = aspNetUser.Questions.Sum(question => question.QuestionViews.Count);
             QuestionScore = aspNetUser.Questions.Sum(question => question.Score);

@@ -82,7 +82,6 @@
 }
 
 .comment-body {
-    /*padding-left: 0;*/
     padding-top: 8px;
 }
 
@@ -159,3 +158,8 @@
     display:block;
     font-size:13px;
 }
+
+/* User Profile */
+/*#accordion.panel-group .panel {
+  overflow: visible;
+}*/

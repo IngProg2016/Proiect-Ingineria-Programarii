@@ -38,7 +38,7 @@
                     <div class="clearfix"></div>
                     <div class="media comment">
                         <hr />
-                        <div class="media-body row" ng-repeat="com in $ctrl.question.Comments">
+                        <div class="media-body row" ng-repeat="com in $ctrl.question.Comments | orderBy:'Added'">
                             <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
                                 <div class="score-number">{{com.Score || 0}}</div>
                                 <span>
@@ -74,7 +74,7 @@
                 </h3>
                 <hr style="border-top: 1px solid #8E8E8E" />
             </div>
-            <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers">
+            <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers | orderBy:$ctrl.orderAnswers">
                 <div class="row">
                     <div class="score-controls col-lg-2 col-sm-2 text-center pull-left">
                         <i class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == 1 }"></i>
@@ -92,7 +92,7 @@
                         <div class="clearfix"></div>
                         <div class="media comment">
                             <hr />
-                            <div class="media-body row" ng-repeat="com in ans.Comments">
+                            <div class="media-body row" ng-repeat="com in ans.Comments | orderBy:'Added'">
                                 <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
                                     <div class="score-number">{{com.Score || 0}}</div>
                                     <span>

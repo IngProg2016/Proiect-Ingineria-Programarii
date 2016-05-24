@@ -49,13 +49,15 @@
                     <div class="panel-heading">
                         <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse{{cat.$id}}">
                             <a>
-                                {{cat.Category.Name}} <div class="pull-right"> XP:{{cat.XP}} | Level: {{cat.Level}} </div>
+                                {{cat.Category.Name}} <span class="pull-right"> XP:{{cat.XP}} | Level: {{cat.Level}} </span>
                             </a>
                         </h4>
                     </div>
                     <div id="collapse{{cat.$id}}" class="panel-collapse collapse ">
                         <div class="panel-body">
-                            <img class="pull-left" ng-repeat="badge in cat.Badges" ng-src="/content/images/badges/{{badge.Badge.ImageLoc}}" width="50" height="50" title="{{badge.Badge.Name}} | {{badge.Badge.Description}}"/>
+                            <div style="display: inline-block;">
+                                <img id="badge-{{cat.$id}}-{{badge.$id}}" ng-repeat="badge in cat.Badges" ng-src="/content/images/badges/{{badge.Badge.ImageLoc}}" width="50" height="50" ng-init="$ctrl.initPopover(cat, badge)" title="{{badge.Badge.Name}}" />
+                            </div>
                         </div>
                     </div>
                 </div>

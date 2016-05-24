@@ -230,6 +230,17 @@
             });
         }
 
+        this.initPopover = function (cat, badge) {
+            setTimeout(function () {
+                var el = angular.element('#badge-' + cat.$id + '-' + badge.$id);
+                el.popover({
+                    trigger: 'hover',
+                    placement: 'top',
+                    content: badge.Badge.Description
+                });
+            }, 100);
+        }
+
     }
 
     function QuestionsCtrl($q, qaService) {
@@ -318,6 +329,8 @@
                 $ctrl.question.Tags.push({ name: tag });
             }
 
+            $ctrl.question.Bounty = $ctrl.question.Bounty || 0;
+
             qaService.addQuestion($ctrl.question)
             .then(function (result) {
                 $ctrl.$router.navigate(['ViewQuestion', { id: result.ID }]);
@@ -337,8 +350,10 @@
         this.error = null;
         this.scrollTo = null;
 
-        this.prepareComment = function (parentID) {
-            this.replyCommentID = parentID;
+        this.orderAnswers = function (answer) {
+            if (answer.Accepted)
+                return -Number.MAX_SAFE_INTEGER;
+            return -answer.Score;
         }
 
         this.tinymceOptions = {

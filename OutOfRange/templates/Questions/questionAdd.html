@@ -34,7 +34,20 @@
             </div>
         </div>
         <div class="form-group" show-errors>
-            <input ng-model="$ctrl.question.TagString" type="text" name="tags" class="form-control" placeholder="Tags" autofocus required>
+            <div class="input-group">
+                <span class="input-group-addon">PTS</span>
+                <input type="number" ng-model="$ctrl.question.Bounty" ng-change="$ctrl.bountyValidation($ctrl.question.Bounty, $ctrl.qForm.bounty)" name="bounty" class="form-control" placeholder="Add a bounty to this question" />
+            </div>
+            <div ng-messages="$ctrl.qForm.bounty.$error" role="alert">
+                <div class="help-block error-text" ng-message="number">This is not a number.</div>
+                <div class="help-block error-text" ng-message="maxvalue">You do not have sufficient credits to apply the bounty.</div>
+            </div>
+            <div ng-if="$ctrl.question.Bounty && !$ctrl.qForm.bounty.$error">
+                You will remain with <b>PTS {{$ctrl.userInfo.Credits - $ctrl.question.Bounty}}</b> if you apply this bounty to the question.
+            </div>
+        </div>
+        <div class="form-group" show-errors>
+            <input ng-model="$ctrl.question.TagString" type="text" name="tags" class="form-control" placeholder="Tags" required>
             <div ng-messages="$ctrl.qForm.tags.$error" role="alert">
                 <div class="help-block error-text" ng-message="required">Please write some tags for this question. It will be found in searches and answered faster this way.</div>
             </div>

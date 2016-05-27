@@ -93,9 +93,7 @@ namespace OutOfRange.Controllers
                     UserID = userId,
                     ItemID = comment.ID,
                 });
-
-                comment.Score += addedScore;
-                
+                comment.Score += addedScore;             
             }
             else
             {
@@ -146,7 +144,7 @@ namespace OutOfRange.Controllers
                     UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
                     if (userBadge.Badge.Rarity == 0)
                     {
-                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Question.CategoryID, "scores", 1, comment.ID);
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Question.CategoryID, "score", 1, comment.ID);
                         db.UserBadges.Remove(userBadge);
                     }
                 }
@@ -156,7 +154,7 @@ namespace OutOfRange.Controllers
                     UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == comment.ID);
                     if (userBadge.Badge.Rarity == 0)
                     {
-                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Answer.Question.CategoryID, "scores", 1, comment.ID);
+                        PointsUtils.giveBadge(comment.AspNetUser.Id, comment.Answer.Question.CategoryID, "score", 1, comment.ID);
                         db.UserBadges.Remove(userBadge);
                     }
                 }

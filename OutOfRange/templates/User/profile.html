@@ -9,6 +9,8 @@
     </div>
 </div>
 <!--breadcrumbs end-->
+
+{{$ctrl.userProfile}}
 <div class="container">
     <div class="row">
         <div class="col-lg-2">
@@ -29,7 +31,7 @@
             <div>
                 <h2>Account info:</h2>
                 <p><b>Email:</b> {{$ctrl.userProfile.UserName}}</p>
-                <h2>Gamification info:</h2>
+                <h2>Lifetime Stats:</h2>
                 <!--<div class="skill_bar">
                     <div class="skill_bar_progress skill_one" style="width: 59.98%; overflow: hidden;">
                         <p>
@@ -43,18 +45,27 @@
                 <p><b>Answer Score:</b> {{$ctrl.userProfile.AnswerScore}}</p>
                 <p><b>Comments Score:</b> {{$ctrl.userProfile.CommentScore}}</p>
             </div>
-
+            <h2>Category Stats:</h2>
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default" ng-repeat="cat in $ctrl.userProfile.UserLevels">
-                    <div class="panel-heading">
-                        <h4 class="panel-title" data-toggle="collapse" data-parent="#accordion" href="#collapse{{cat.$id}}">
-                            <a>
-                                {{cat.Category.Name}} <span class="pull-right"> XP:{{cat.XP}} | Level: {{cat.Level}} </span>
-                            </a>
-                        </h4>
+                    <div class="panel-heading lbar">
+                        <div class="skill_bar" style="border-radius:7px;">
+                            <div class="skill_bar_progress skill_one" style="width: {{$ctrl.pbPercentage(cat.Level,cat.XP)}}%;border-radius:7px;" data-toggle="collapse" data-parent="#accordion" href="#collapse{{cat.$id}}">
+                                <a class="lbar-text">
+                                   {{cat.Category.Name}} : {{cat.XP}}/{{$ctrl.levelXP(cat.Level)}} - Level: {{cat.Level}}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div id="collapse{{cat.$id}}" class="panel-collapse collapse ">
-                        <div class="panel-body">
+                        <div class="panel-body" style="border-radius: 0 0 5px 5px;">
+                            <p><b>Questions Posted:</b> {{cat.QuestionNumber}}</p>
+                            <p><b>Questions Viewed</b> {{cat.QuestionViews}}</p>
+                            <p><b>Question Score:</b> {{cat.QuestionScore}}</p>
+                            <p><b>Answer Score:</b> {{cat.AnswerScore}}</p>
+                            <p><b>Comments Score:</b> {{cat.CommentScore}}</p>
+                            <hr/>
+                            <h4>Badges:</h4>
                             <div style="display: inline-block;">
                                 <img id="badge-{{cat.$id}}-{{badge.$id}}" ng-repeat="badge in cat.Badges" ng-src="/content/images/badges/{{badge.Badge.ImageLoc}}" width="50" height="50" ng-init="$ctrl.initPopover(cat, badge)" title="{{badge.Badge.Name}}" />
                             </div>

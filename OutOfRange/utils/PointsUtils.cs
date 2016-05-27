@@ -42,7 +42,7 @@ namespace OutOfRange.Utils
             }
 
             userLevel.XP += xp;
-            
+
             db.Entry(userLevel).State = EntityState.Modified;
             db.Entry(user).State = EntityState.Modified;
 
@@ -80,5 +80,50 @@ namespace OutOfRange.Utils
             }
         }
 
+        public static int getCurrentScoreBadgeRarity(int score)
+        {
+            if (score < 10)
+            {
+                return -1;
+            }
+            else if (score >= 10 && score < 50)
+            {
+                return 0;
+            }
+            else if (score >= 50 && score < 100)
+            {
+                return 1;
+            }
+            else if (score >= 100 && score < 500)
+            {
+                return 2;
+            }
+            else
+            {
+                return 3;
+            }
+        }
+
+        public static int getQuestionBadgeRarity(int questionNumber)
+        {
+            if (questionNumber == 1)
+            {
+                return 0;
+            }
+            else if (questionNumber == 10)
+            {
+                return 1;
+            }
+            else if (questionNumber == 100)
+            {
+                return 2;
+            }
+            else if (questionNumber == 500)
+            {
+                return 3;
+            }
+            //otherwise no badge for you
+            return -1;
+        }
     }
 }

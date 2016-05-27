@@ -159,7 +159,21 @@
     font-size:13px;
 }
 
+
 /* User Profile */
 /*#accordion.panel-group .panel {
   overflow: visible;
 }*/
+
+.lbar{
+    height:50px;
+}
+
+.lbar-text{
+    color:black;
+}
+
+.lbar-text:hover{
+    color:#43796C;
+    cursor:help;
+}

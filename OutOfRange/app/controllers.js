@@ -241,6 +241,14 @@
             }, 100);
         }
 
+        this.pbPercentage = function (clevel, cXP) {
+            return parseInt(cXP / ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel))) * 100);
+        }
+
+        this.levelXP = function (clevel){
+            return ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel)));
+        }
+
     }
 
     function QuestionsCtrl($q, qaService) {

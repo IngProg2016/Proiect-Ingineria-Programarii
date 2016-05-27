@@ -19,6 +19,18 @@ namespace OutOfRange.Controllers
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
+        [Route("userdata")]
+        public object GetCurentUserId()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                string id = User.Identity.GetUserId();
+                AspNetUser user = db.AspNetUsers.Find(id);
+                return Json(new { id = id, roles = user.AspNetRoles.Select(x => x.Name) });
+            }
+            return null;
+        }
+
         // GET: api/Users
         public JsonResult<IEnumerable<AspNetUserDTO>> GetAspNetUsers()
         {

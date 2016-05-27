@@ -34,10 +34,14 @@
 
                     </div>
                     <div class="col-lg-10 col-sm-10">
-                        <p class="text-question" ng-bind-html="$ctrl.question.QuestionBody"></p>
+                        <p ng-if="$ctrl.question.IsEdit == undefined" class="text-question" ng-bind-html="$ctrl.question.QuestionBody"></p>
+                        <textarea ui-tinymce="$ctrl.tinymceOptions" ng-model="$ctrl.question.QuestionBody" ng-if="$ctrl.question.IsEdit != undefined" placeholder="Message" rows="8" class="form-control"></textarea>
                     </div>
                     <div class="clearfix"></div>
                     <div class="media comment">
+                        <hr ng-if="$ctrl.isAuth"/>
+                        <a ng-if="$ctrl.isAuth && $ctrl.question.IsEdit == undefined" ng-click="$ctrl.question.IsEdit=''" href="#">edit question</a>
+                        <a ng-if="$ctrl.isAuth && $ctrl.question.IsEdit != undefined" ng-click="$ctrl.question.IsEdit=undefined" href="#">repost question</a>
                         <hr />
                         <div class="media-body row" ng-repeat="com in $ctrl.question.Comments | orderBy:'Added'">
                             <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
@@ -86,7 +90,8 @@
 
                     <div class="media-body col-lg-10 col-sm-10">
                         <h4 class="media-heading"></h4>
-                        <p class="text-answer" ng-bind-html="ans.AnswerBody"></p>
+                        <p ng-if="ans.IsEdit == undefined" class="text-answer" ng-bind-html="ans.AnswerBody"></p>
+                        <textarea ui-tinymce="$ctrl.tinymceOptions" ng-model="ans.AnswerBody" ng-if="ans.IsEdit != undefined" placeholder="Message" rows="8" class="form-control"></textarea>
 
                         <div class="pull-right"><a ng-link="['User', {userId: ans.AspNetUser.Id}]">{{ans.AspNetUser.UserName}}</a> | <span>{{ans.Added | date}}</span></div>
                         <small ng-hide="$ctrl.isAuth"><a href="#" ng-click="$ctrl.navigateWithReturn(['Login'], 'Answer-'+ans.ID)">Login</a> or <a href="#" ng-click="$ctrl.navigateWithReturn(['Register'], 'Answer-'+ans.ID)">Register</a> to add comment</small>
@@ -108,7 +113,9 @@
                                     </p>
                                 </div>
                             </div>
-                            <a ng-if="$ctrl.isAuth && ans.$commentBody == undefined" ng-click="ans.$commentBody=''" href="#">add comment</a>
+                            <a ng-if="$ctrl.isAuth && ans.IsEdit == undefined" ng-click="ans.IsEdit=''" href="#">edit answer</a>
+                            <a ng-if="$ctrl.isAuth && ans.IsEdit != undefined" ng-click="ans.IsEdit=undefined" href="#">repost answer</a>
+                            <a ng-if="$ctrl.isAuth && ans.commentBody == undefined" ng-click="ans.IsEdit=''" href="#">add comment</a>
                             <div ng-if="ans.$commentBody != undefined">
 
                                 <div class="form-group">

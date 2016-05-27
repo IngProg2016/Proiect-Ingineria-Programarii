@@ -7,8 +7,6 @@ CREATE PROCEDURE Search
 AS
 
 BEGIN
-	DECLARE
-		@Terms nvarchar(512) = 'tiny'
 	DECLARE question_cursor CURSOR FOR 
 		SELECT q.ID, q.UserID, q.CategoryID, q.Title, q.QuestionBody, q.Added, q.Modified, q.Score, q.Bounty FROM Questions q;
 	DECLARE @temp_table TABLE 

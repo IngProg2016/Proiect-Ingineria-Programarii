@@ -167,8 +167,12 @@
     }
 
     function QaService($resource) {
-        var Questions = $resource('/api/questions/:id');
-        var Answer = $resource('/api/answers/:action/:id');
+        var Questions = $resource('/api/questions/:id', {}, {
+            update: { method: 'PUT' }
+        });
+        var Answer = $resource('/api/answers/:action/:id', {}, {
+            update: { method: 'PUT' }
+        });
         var Comment = $resource('/api/comments/:action');
         var Category = $resource('/api/categories');
 
@@ -210,6 +214,14 @@
 
         this.voteComment = function (vote, commentId) {
             return new Comment({ score: vote, id: commentId }).$save({ action: 'addscore' });
+        }
+
+        this.updateQuestion = function (question) {
+            return new Questions({ QuestionBody: question.QuestionBody }).$update({ id: question.ID });
+        }
+
+        this.updateAnswer = function (answer) {
+            return new Answer({ AnswerBody: answer.AnswerBody }).$update({ id: answer.ID });
         }
     }
 

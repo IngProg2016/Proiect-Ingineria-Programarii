@@ -355,7 +355,6 @@
 
         this.currentUser = userService.getCurrentUser().then(function (result) {
             $ctrl.currentUser = result;
-            resolve();
         })
 
         this.question = {};
@@ -475,6 +474,20 @@
             var loginInstruction = $ctrl.$router.generate(routeLink);
             loginInstruction.component.routeData.data.returnInstruction = $ctrl.$router.generate(_getReturnLink(scrollTo));
             $ctrl.$router.navigateByInstruction(loginInstruction);
+        }
+
+        this.saveCategory = function (category) {
+            adminService.saveCategory(category)
+            .then(function () { updateCategories(); })
+            .catch(function () { updateCategories(); });
+        };
+
+        this.updateQuestion = function (question) {
+            qaService.updateQuestion(question);
+        };
+
+        this.updateAnswer = function (answer) {
+            qaService.updateAnswer(answer);
         }
 
         function _getReturnLink(scrollTo) {

@@ -596,6 +596,10 @@
 
         this.error = null;
 
+        this.encodeTag = function (tagName) {
+            return tagName;
+        }
+
         this.$routerOnActivate = function (toRoute, fromRoute) {
             return $q(function (resolve, reject) {
                 var action = toRoute.params.action;

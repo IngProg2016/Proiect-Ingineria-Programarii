@@ -414,6 +414,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="Search" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Terms" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="OutOfRangeModelStoreContainer">
           <EntitySet Name="Answers" EntityType="Self.Answers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
@@ -607,6 +610,9 @@
             <End Role="UserLevel" EntitySet="UserLevels" />
             <End Role="UserBadge" EntitySet="UserBadges" />
           </AssociationSet>
+          <FunctionImport Name="Search" EntitySet="Questions" ReturnType="Collection(OutOfRangeModel.Question)">
+            <Parameter Name="Terms" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Answer">
           <Key>
@@ -1055,6 +1061,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="Search_Result">
+          <Property Type="Guid" Name="ID" Nullable="true" />
+          <Property Type="String" Name="UserID" Nullable="true" MaxLength="128" />
+          <Property Type="Guid" Name="CategoryID" Nullable="true" />
+          <Property Type="String" Name="Title" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="QuestionBody" Nullable="true" />
+          <Property Type="DateTime" Name="Added" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="Modified" Nullable="true" Precision="23" />
+          <Property Type="Decimal" Name="Score" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Decimal" Name="Bounty" Nullable="true" Precision="18" Scale="0" />
+          <Property Type="Int32" Name="Rank" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1238,6 +1256,8 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Search" FunctionName="OutOfRangeModel.Store.Search">
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

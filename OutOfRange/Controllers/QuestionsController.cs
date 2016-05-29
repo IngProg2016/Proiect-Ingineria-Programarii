@@ -145,19 +145,16 @@ namespace OutOfRange.Controllers
 
         // PUT: api/Questions/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutQuestion(Guid id, Question question)
+        public IHttpActionResult PutQuestion(Guid id, string questionBody)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != question.ID)
-            {
-                return BadRequest();
-            }
+            var question = db.Questions.Find(id);
 
-            
+            question.QuestionBody = questionBody;
             db.Entry(question).State = EntityState.Modified;
 
             try

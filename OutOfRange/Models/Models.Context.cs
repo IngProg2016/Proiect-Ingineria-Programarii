@@ -12,6 +12,8 @@ namespace OutOfRange.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class OutOfRangeEntities : DbContext
     {
@@ -39,5 +41,23 @@ namespace OutOfRange.Models
         public virtual DbSet<ScoreItem> ScoreItems { get; set; }
         public virtual DbSet<UserLevel> UserLevels { get; set; }
         public virtual DbSet<UserBadge> UserBadges { get; set; }
+    
+        public virtual ObjectResult<Question> Search(string terms)
+        {
+            var termsParameter = terms != null ?
+                new ObjectParameter("Terms", terms) :
+                new ObjectParameter("Terms", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Question>("Search", termsParameter);
+        }
+    
+        public virtual ObjectResult<Question> Search(string terms, MergeOption mergeOption)
+        {
+            var termsParameter = terms != null ?
+                new ObjectParameter("Terms", terms) :
+                new ObjectParameter("Terms", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Question>("Search", mergeOption, termsParameter);
+        }
     }
 }

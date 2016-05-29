@@ -95,6 +95,13 @@
                     Top 10
                 </h1>
                 <hr>
+                <ol>
+                    <li ng-repeat="ques in $ctrl.data | orderBy:'-Views' | limitTo:10 ">
+                        <h4>
+                            <a ng-link="['ViewQuestion', {id: ques.ID}]">{{ques.Title}}</a>
+                        </h4>
+                    </li>
+                </ol>
                 <a href="#" class="btn btn-primary">
                     View More
                 </a>
@@ -104,6 +111,13 @@
                     Latest 10
                 </h1>
                 <hr>
+                <ol>
+                    <li ng-repeat="ques in $ctrl.data | orderBy:'-Added' | limitTo:10 ">
+                        <h4>
+                            <a ng-link="['ViewQuestion', {id: ques.ID}]">{{ques.Title}}</a>
+                        </h4>
+                    </li>
+                </ol>
                 <a href="#" class="btn btn-primary">
                     View More
                 </a>
@@ -126,12 +140,15 @@
             <div class="feature-box">
                 <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
                     <h3>Users</h3>
+                    <h3>{{$ctrl.usersCount}}</h3>
                 </div>
                 <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
                     <h3>Questions</h3>
+                    <h3>{{$ctrl.questionsCount}}</h3>
                 </div>
                 <div class="col-md-4 col-sm-4 text-center wow fadeInUp">
                     <h3>Solved Questions</h3>
+                    <h3>{{$ctrl.validedQuestionsCount()}}</h3>
                 </div>
 
                 <!--feature end-->

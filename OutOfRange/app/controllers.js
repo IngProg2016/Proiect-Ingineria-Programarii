@@ -23,7 +23,7 @@
     })
     .component('headSection', {
         templateUrl: '/templates/masterpage/header.html',
-        controller: ['authService', 'searchService' ,'$rootRouter', HeadCtrl]
+        controller: ['authService', 'searchService', '$rootRouter', HeadCtrl]
     })
     .component('footerSection', {
         templateUrl: '/templates/masterpage/footer.html',
@@ -31,7 +31,7 @@
     })
     .component('homeCmp', {
         templateUrl: '/templates/front-page.html',
-        controller: [HomeCtrl]
+        controller: ['qaService', 'userService', HomeCtrl]
     })
     .component('notFoundCmp', {
         templateUrl: '/templates/404.html'
@@ -109,8 +109,7 @@
         }
 
         this.doSearch = function (event, keywords) {
-            if (event.keyCode == 13 && $ctrl.searchText)
-            {
+            if (event.keyCode == 13 && $ctrl.searchText) {
                 debugger;
                 $rootRouter.navigate(['Search', { keywords: $ctrl.searchText }])
             }
@@ -120,8 +119,32 @@
 
     function FooterCtrl() { }
 
-    function HomeCtrl() {
+    function HomeCtrl(qaService, userService) {
         var $ctrl = this;
+
+        (function () {
+            qaService.getQuestions().then(function (data) {
+                $ctrl.data = data || [];
+                $ctrl.questionsCount = data.length;
+            });
+
+            qaService.getAnswers().then(function (data) {
+                $ctrl.answers = data || [];
+            });
+        })();
+
+        $ctrl.usersCount = userService.getUsers.then(function (data) {
+            $ctrl.usersCount = data.length
+        });
+        $ctrl.questionsCount = $ctrl.length;
+        $ctrl.validedQuestionsCount = function () {
+            var count = 0;
+            debugger;
+            angular.forEach($ctrl.answers, function (answers) {
+                count += answers.Accepted ? 1 : 0;
+            });
+            return count;
+        }
     }
 
     function RegisterCtrl(authService, routeChangeService) {

@@ -230,6 +230,11 @@
         this.updateAnswer = function (answer) {
             return new Answer({ AnswerBody: answer.AnswerBody }).$update({ id: answer.ID });
         }
+
+        this.getAnswers = function () {
+            return new Answer.query().$promise;
+        }
+
     }
 
     function UserService($resource) {
@@ -245,6 +250,8 @@
         this.getCurrentUser = function () {
             return new CurrentUser.get().$promise;
         }
+
+        this.getUsers = $resource('api/users').query().$promise;
     }
 
     function SearchService($resource) {

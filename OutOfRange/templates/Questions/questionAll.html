@@ -18,7 +18,7 @@
             </div>
             <div dir-paginate="item in $ctrl.data | itemsPerPage: 10" class="col-md-6" data-wow-animation-name="fadeInLeft">
                 <div class="blog-left wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
-                    <div class="blog-content" style="height:250px;">
+                    <div class="blog-content" style="height:300px;">
                         <h3><span class="label label-info" style="font-size:0.6em;vertical-align: middle;" title="Bounty" ng-if="item.Bounty > 0">+{{item.Bounty}}</span> <a ng-link="['ViewQuestion', {id: item.ID}]">{{item.Title}}</a></h3>
                         <div class="row">
                             <div class="col-md-12">
@@ -30,15 +30,18 @@
                                         |
                                         <i class="fa fa-calendar"></i>
                                         {{item.Added | date}}
-                                        |
+                                        <br />
                                         <i class="fa fa-comment"></i>
                                         <a ng-link="['ViewQuestionScrollTo', {id: item.ID, scrollTo: 'Answers'}]">{{item.AnswersNumber}}</a>
+                                        |
+                                        <i class="fa fa-eye"></i>
+                                        {{item.Views}}
                                         |
                                         <i class="fa fa-thumbs-up"></i>
                                         {{item.Score}}
                                         |
                                         <i class="fa fa-bookmark"></i>
-                                        <a ng-link="['Search', {action: 'category', keywords: item.Category.Name}]" href="#">{{item.Category.Name}}</a>
+                                        <a ng-link="['Search', {action: 'category', keywords: item.Category.ID}]" href="#">{{item.Category.Name}}</a>
                                         <br>
                                         <i class="fa fa-tags"></i>
                                         Tags :

@@ -61,7 +61,7 @@
     })
     .component('userCmp', {
         templateUrl: 'templates/user/profile.html',
-        controller: ['userService', UserCtrl]
+        controller: ['$q', 'userService', UserCtrl]
     })
     .component('questionsCmp', {
         templateUrl: '/templates/questions/questionAll.html',
@@ -69,14 +69,14 @@
     })
     .component('addQuestionCmp', {
         templateUrl: '/templates/questions/questionAdd.html',
-        controller: ['$scope', 'qaService', 'routeChangeService', AddQuestionCtrl],
+        controller: ['$scope', 'qaService', 'userService', 'routeChangeService', AddQuestionCtrl],
         bindings: {
             $router: '<'
         }
     })
     .component('viewQuestionCmp', {
         templateUrl: '/templates/questions/questionView.html',
-        controller: ['$q', '$interval', 'smoothScroll', 'authService', 'qaService', ViewQuestionCtrl],
+        controller: ['$q', '$interval', 'smoothScroll', 'authService', 'qaService', 'userService' , ViewQuestionCtrl],
         bindings: {
             $router: '<'
         }
@@ -213,14 +213,42 @@
         }
     }
 
-    function UserCtrl(userService) {
+    function UserCtrl($q, userService) {
         var $ctrl = this;
-        (function () {
-            userService.getProfileInfo()
+
+        this.$routerOnActivate = function (toRoute) {
+            return $q(function (resolve, reject) {
+                userService.getProfileInfo(toRoute.params.userId)
                 .then(function (result) {
                     $ctrl.userProfile = result;
+                    resolve();
+                })
+                .catch(function (err) {
+                    $ctrl.error = err;
+                    resolve();
                 });
-        })();
+            });
+        }
+
+        this.initPopover = function (cat, badge) {
+            setTimeout(function () {
+                var el = angular.element('#badge-' + cat.$id + '-' + badge.$id);
+                el.popover({
+                    trigger: 'hover',
+                    placement: 'top',
+                    content: badge.Badge.Description
+                });
+            }, 100);
+        }
+
+        this.pbPercentage = function (clevel, cXP) {
+            return parseInt(cXP / ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel))) * 100);
+        }
+
+        this.levelXP = function (clevel){
+            return ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel)));
+        }
+
     }
 
     function QuestionsCtrl($q, qaService) {
@@ -242,13 +270,18 @@
         }
     }
 
-    function AddQuestionCtrl($scope, qaService, routeChangeService) {
+    function AddQuestionCtrl($scope, qaService, userService, routeChangeService) {
         var $ctrl = this;
 
         (function () {
             qaService.getCategories()
             .then(function (categories) {
                 $ctrl.categories = categories;
+            });
+
+            userService.getProfileInfo()
+            .then(function (userInfo) {
+                $ctrl.userInfo = userInfo;
             });
 
         })();
@@ -267,7 +300,6 @@
         };
 
         this.descriptionValidation = function (value, control, minlength) {
-            debugger;
             var text = angular.element(value).text();
             text && (text = text.replace(' ', ''));
 
@@ -282,6 +314,18 @@
                 control.$setValidity('minlength', false, control);
         }
 
+        this.bountyValidation = function (value, control) {
+            var bountyValue = Number.parseInt(value);
+            if (bountyValue) {
+                if (bountyValue > $ctrl.userInfo.Credits) {
+                    control.$setValidity('maxvalue', false, control);
+                    $scope.$broadcast('show-errors-check-input-validity', control.$name);
+                } else
+                    control.$setValidity('maxvalue', true, control);
+            } else
+                control.$setValidity('maxvalue', true, control);
+        }
+
         this.addQuestion = function (isValid) {
             if (!isValid) {
                 $scope.$broadcast('show-errors-check-validity');
@@ -293,6 +337,8 @@
                 $ctrl.question.Tags.push({ name: tag });
             }
 
+            $ctrl.question.Bounty = $ctrl.question.Bounty || 0;
+
             qaService.addQuestion($ctrl.question)
             .then(function (result) {
                 $ctrl.$router.navigate(['ViewQuestion', { id: result.ID }]);
@@ -303,17 +349,24 @@
         this.$routerOnActivate = function (toRoute, fromRoute) { routeChangeService.onChange(toRoute, fromRoute); }
     }
 
-    function ViewQuestionCtrl($q, $interval, smoothScroll, authService, qaService) {
+    function ViewQuestionCtrl($q, $interval, smoothScroll, authService, qaService, userService) {
         var $ctrl = this;
         this.isAuth = authService.getAuthentificationInfo().isAuth;
+
+        this.currentUser = userService.getCurrentUser().then(function (result) {
+            $ctrl.currentUser = result;
+            resolve();
+        })
 
         this.question = {};
         this.comment = {};
         this.error = null;
         this.scrollTo = null;
 
-        this.prepareComment = function (parentID) {
-            this.replyCommentID = parentID;
+        this.orderAnswers = function (answer) {
+            if (answer.Accepted)
+                return -Number.MAX_SAFE_INTEGER;
+            return -answer.Score;
         }
 
         this.tinymceOptions = {
@@ -321,12 +374,13 @@
             toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
         };
 
-        this.addComment = function () {
-            $ctrl.comment.parentID = $ctrl.replyCommentID;
-            qaService.addComment($ctrl.comment).then(function (_data) {
+        this.addComment = function (parent) {
+            var comment = {
+                ParentID: parent.ID,
+                CommentBody: parent.$commentBody
+            };
+            qaService.addComment(comment).then(function (_data) {
                 _getQuestion($ctrl.question.ID);
-
-                $ctrl.comment.commentBody = "";
             });
         }
 

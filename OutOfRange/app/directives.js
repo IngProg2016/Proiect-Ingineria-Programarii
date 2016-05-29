@@ -42,6 +42,15 @@
                   }
               });
 
+              scope.$on('show-errors-check-input-validity', function (event, name) {
+                  if (inputName === name) {
+                      initCheck = true;
+                      showValidationMessages = true;
+
+                      return toggleClasses(formCtrl[inputName].$invalid);
+                  }
+              });
+
               scope.$on('show-errors-reset', function (event, name) {
                   if (angular.isUndefined(name) || formCtrl.$name === name) {
                       return reset();

@@ -153,6 +153,7 @@ namespace OutOfRange.Controllers
             db.Entry(answer).State = EntityState.Modified;
             db.SaveChanges();
 
+
             if (answer.Score == 10)
             {
                 UserLevel userLevel = answer.AspNetUser.UserLevels.Single(x => x.CategoryID == answer.Question.CategoryID);
@@ -168,7 +169,7 @@ namespace OutOfRange.Controllers
                 UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == answer.ID);
                 if (userBadge.Badge.Rarity == 0)
                 {
-                    PointsUtils.giveBadge(answer.AspNetUser.Id, answer.Question.CategoryID, "scores", 1, answer.ID);
+                    PointsUtils.giveBadge(answer.AspNetUser.Id, answer.Question.CategoryID, "score", 1, answer.ID);
                     db.UserBadges.Remove(userBadge);
                 }
             }

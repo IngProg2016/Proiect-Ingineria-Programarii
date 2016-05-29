@@ -227,51 +227,25 @@ namespace OutOfRange.Controllers
                 else
                 {
                     question.Score -= scoreItem.Score;
-                    db.Entry(scoreItem).State=EntityState.Deleted;
+                    db.Entry(scoreItem).State = EntityState.Deleted;
                 }
             }
             db.Entry(question).State = EntityState.Modified;
             db.SaveChanges();
 
-            if (question.Score == 10)
+            int currentScore = question.Score;
+            int currentBadgeRarity = PointsUtils.getCurrentScoreBadgeRarity(currentScore);
+
+            UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
+            UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
+            if (userBadge == null)
             {
-                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
-                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
-                if (userBadge == null)
-                {
-                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 0, question.ID);
-                    
-                }
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 0, question.ID);
             }
-            else if (question.Score == 50)
+            else if (userBadge.Badge.Rarity == currentBadgeRarity)
             {
-                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
-                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
-                if (userBadge.Badge.Rarity == 0)
-                {
-                    db.UserBadges.Remove(userBadge);
-                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "scores", 1, question.ID);
-                }
-            }
-            else if (question.Score == 100)
-            {
-                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
-                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
-                if (userBadge.Badge.Rarity == 1)
-                {
-                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 2, question.ID);
-                    db.UserBadges.Remove(userBadge);
-                }
-            }
-            else if (question.Score == 500)
-            {
-                UserLevel userLevel = question.AspNetUser.UserLevels.Single(x => x.CategoryID == question.CategoryID);
-                UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
-                if (userBadge.Badge.Rarity == 2)
-                {
-                    PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 3, question.ID);
-                    db.UserBadges.Remove(userBadge);
-                }
+                db.UserBadges.Remove(userBadge);
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", currentBadgeRarity + 1, question.ID);
             }
 
             db.SaveChanges();
@@ -372,21 +346,12 @@ namespace OutOfRange.Controllers
             PointsUtils.AddCreditsAndXP(userId, question.CategoryID, 10, 15);
 
             int questionsNumber = user.Questions.Where(x => x.CategoryID == question.CategoryID).Count();
-            if (questionsNumber == 1)
+            int badgeRarity = PointsUtils.getQuestionBadgeRarity(questionsNumber);
+
+            if (badgeRarity != -1)
             {
-                PointsUtils.giveBadge(userId, question.CategoryID, "question", 0, question.ID);
-            } else if (questionsNumber == 10)
-            {
-                PointsUtils.giveBadge(userId, question.CategoryID, "question", 1, question.ID);
-            }
-            else if (questionsNumber == 100)
-            {
-                PointsUtils.giveBadge(userId, question.CategoryID, "question", 2, question.ID);
-            }
-            else if (questionsNumber == 500)
-            {
-                PointsUtils.giveBadge(userId, question.CategoryID, "question", 3, question.ID);
-            }
+                PointsUtils.giveBadge(userId, question.CategoryID, "question", badgeRarity, question.ID);
+            } 
 
             db =new OutOfRangeEntities();
             question = db.Questions.Find(question.ID);
@@ -422,5 +387,6 @@ namespace OutOfRange.Controllers
         {
             return db.Questions.Count(e => e.ID == id) > 0;
         }
+
     }
 }

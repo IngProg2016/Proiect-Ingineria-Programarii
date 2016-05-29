@@ -183,7 +183,7 @@
                     <h3>Category</h3>
                     <ul class="list-unstyled">
                         <li>
-                            <a ng-link="['Search', {action: 'category', keywords: $ctrl.question.Category.Name}]" href="#">
+                            <a ng-link="['Search', {action: 'category', keywords: $ctrl.question.Category.ID}]" href="#">
                                 <i class="fa fa-angle-right pr-10"></i>
                                 {{$ctrl.question.Category.Name}}
                             </a>
@@ -194,7 +194,7 @@
                     <h3>Tags</h3>
                     <ul class="tag">
                         <li ng-repeat="tag in $ctrl.question.Tags">
-                            <a ng-link="['Search', {action: 'tag', keywords: tag.Name}]" href="#">
+                            <a ng-link="['Search', {action: 'tag', keywords: $ctrl.encodeTag(tag.Name)}]" href="#">
                                 <i class="fa fa-tags pr-5"></i>
                                 {{tag.Name}}
                             </a>

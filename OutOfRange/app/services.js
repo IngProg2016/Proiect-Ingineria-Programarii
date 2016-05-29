@@ -2,8 +2,8 @@
     'use strict';
 
     var OutOfRangeApp = angular.module('OutOfRangeApp')
-    .service('routeChangeService', ['$rootRouter', 'authService', 'userService', RouteChangeService])
-    .service('authService', ['$q', '$resource', 'storageService', AuthService])
+    .service('routeChangeService', ['$rootRouter', 'authService', RouteChangeService])
+    .service('authService', ['$q', '$resource', '$timeout', 'storageService', 'userService', AuthService])
     .service('userService', ['$resource', UserService])
     .service('adminService', ['$q', '$resource', AdminService])
     .service('storageService', ['$localStorage', '$sessionStorage', StorageService])
@@ -15,7 +15,7 @@
     }])
     ;
 
-    function RouteChangeService($rootRouter, authService, userService) {
+    function RouteChangeService($rootRouter, authService) {
         var $svc = this;
 
         this.onChange = function (toRoute, fromRoute) {
@@ -33,14 +33,9 @@
             }
 
             if (toRoute.routeData.data.roles) {
-                userService.getCurrentUser()
-                .then(function (cUser) {
-                    if (cUser.roles.indexOf('Moderator') == -1)
-                        $rootRouter.navigate(['Home']);
-                })
-                .catch(function () {
+                var authInfo = authService.getAuthentificationInfo();
+                if (!authInfo.isAuth || !authInfo.roles || authInfo.roles.indexOf('Moderator') == -1)
                     $rootRouter.navigate(['Home']);
-                });
             }
         }
 
@@ -55,7 +50,7 @@
         }
     }
 
-    function AuthService($q, $resource, storageService) {
+    function AuthService($q, $resource, $timeout, storageService, userService) {
         var Register = $resource('/api/account/register');
         var Login = $resource('/token', null, {
             save: {
@@ -94,6 +89,19 @@
                         token: data.access_token,
                         _expiration: new Date(data['.expires'])
                     });
+
+                    $timeout(function () {
+                        userService.getCurrentUser()
+                            .then(function (cUser) {
+                                storageService.auth.update({
+                                    isAuth: true,
+                                    userName: data.userName,
+                                    token: data.access_token,
+                                    _expiration: new Date(data['.expires']),
+                                    roles: cUser.roles
+                                });
+                            });
+                    }, 500);
 
                     return $q.resolve({
                         isAuth: storageService.auth.get().isAuth,
@@ -164,6 +172,13 @@
             if (rememberMe)
                 $localStorage.authData = data;
             else
+                $sessionStorage.authData = data;
+        }
+
+        this.auth.update = function (data) {
+            if ($localStorage.authData)
+                $localStorage.authData = data;
+            if ($sessionStorage.authData)
                 $sessionStorage.authData = data;
         }
 

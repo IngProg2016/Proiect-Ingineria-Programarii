@@ -252,7 +252,7 @@ namespace OutOfRange.Controllers
         }
 
         // DELETE: api/Answers/5
-        [ResponseType(typeof(AnswerDTO))]
+        [ResponseType(typeof(Answer))]
         public IHttpActionResult DeleteAnswer(Guid id)
         {
             Answer answer = db.Answers.Find(id);
@@ -266,7 +266,7 @@ namespace OutOfRange.Controllers
             db.Answers.Remove(answer);
             db.SaveChanges();
 
-            return Ok(new AnswerDTO(answer));
+            return Ok(answer);
         }
 
         protected override void Dispose(bool disposing)

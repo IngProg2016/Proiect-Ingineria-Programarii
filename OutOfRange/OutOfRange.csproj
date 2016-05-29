@@ -660,6 +660,8 @@
     <Content Include="Scripts\link-hover.js" />
     <Content Include="Scripts\mixitup.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\parallax-slider\jquery.cslider.js" />
+    <Content Include="Scripts\parallax-slider\modernizr.custom.28468.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\superfish.js" />
@@ -783,7 +785,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\images\banner\" />
-    <Folder Include="Scripts\parallax-slider\" />
     <Folder Include="Scripts\seq-slider\" />
   </ItemGroup>
   <ItemGroup>

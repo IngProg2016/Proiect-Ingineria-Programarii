@@ -246,8 +246,8 @@
             return new Answer({ AnswerBody: answer.AnswerBody }).$update({ id: answer.ID });
         }
 
-        this.getAnswers = function () {
-            return new Answer.query().$promise;
+        this.getValidAnswers = function () {
+            return $resource('/api/answers/acceptedanswers').get().$promise;
         }
 
     }

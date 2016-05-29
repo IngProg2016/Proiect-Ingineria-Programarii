@@ -12,7 +12,8 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <div ng-repeat="item in $ctrl.data" class="col-md-6" data-wow-animation-name="fadeInLeft">
+            <!--<input ng-model="q" id="search" class="form-control" placeholder="Filter text">-->
+            <div dir-paginate="item in $ctrl.data | itemsPerPage: 10" class="col-md-6" data-wow-animation-name="fadeInLeft">
                 <div class="blog-left wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
                     <div class="blog-content" style="height:250px;">
                         <h3><a ng-link="['ViewQuestion', {id: item.ID}]">{{item.Title}}</a></h3>
@@ -31,7 +32,7 @@
                                         <a ng-link="['ViewQuestionScrollTo', {id: item.ID, scrollTo: 'Answers'}]">{{item.AnswersNumber}}</a>
                                         |
                                         <i class="fa fa-bookmark"></i>
-                                        <a  ng-link="['Search', {action: 'category', keywords: item.Category.Name}]" href="#">{{item.Category.Name}}</a>
+                                        <a ng-link="['Search', {action: 'category', keywords: item.Category.Name}]" href="#">{{item.Category.Name}}</a>
                                         <br>
                                         <i class="fa fa-tags"></i>
                                         Tags :
@@ -50,6 +51,8 @@
 
                 </div>
             </div>
+            <div class="row text-center"></div>
+            <dir-pagination-controls></dir-pagination-controls>
         </div>
     </div>
 </div>

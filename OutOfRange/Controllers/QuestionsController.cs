@@ -272,10 +272,10 @@ namespace OutOfRange.Controllers
             {
                 PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", currentBadgeRarity, question.ID);
             }
-            else if (userBadge.Badge.Rarity == currentBadgeRarity)
+            else if (userBadge.Badge.Rarity < currentBadgeRarity)
             {
                 db.UserBadges.Remove(userBadge);
-                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", currentBadgeRarity + 1, question.ID);
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", currentBadgeRarity, question.ID);
             }
 
             db.SaveChanges();

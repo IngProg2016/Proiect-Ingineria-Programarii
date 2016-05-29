@@ -36,7 +36,7 @@
                                         <br>
                                         <i class="fa fa-tags"></i>
                                         Tags :
-                                        <a ng-link="['Search', {action: 'tag', keywords: tag.Name}]" ng-repeat="tag in item.Tags">
+                                        <a ng-link="['Search', {action: 'tag', keywords: $ctrl.encodeTag(tag.Name)}]" ng-repeat="tag in item.Tags">
                                             <span class="label label-info">{{tag.Name}}</span>
                                         </a>
                                     </p>

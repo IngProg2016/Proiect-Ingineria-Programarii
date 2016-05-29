@@ -17,7 +17,7 @@
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
             { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
             { path: '/question/:id/:scrollTo', name: 'ViewQuestionScrollTo', component: 'viewQuestionCmp' },
-            { path: '/search/:keywords', name: 'Search', component: 'searchCmp' },
+            { path: '/search/:action/:keywords', name: 'Search', component: 'searchCmp' },
             { path: '/*any', name: 'NotFound', component: 'notFoundCmp' }
         ]
     })
@@ -119,7 +119,7 @@
 
         this.doSearch = function (event, keywords) {
             if (event.keyCode == 13 && $ctrl.searchText) {
-                $rootRouter.navigate(['Search', { keywords: $ctrl.searchText }])
+                $rootRouter.navigate(['Search', { action: 'query', keywords: $ctrl.searchText }])
             }
         }
 
@@ -589,7 +589,10 @@
 
         this.$routerOnActivate = function (toRoute, fromRoute) {
             return $q(function (resolve, reject) {
-                searchService.query({ keywords: toRoute.params.keywords }).$promise.then(function (data) {
+                var action = toRoute.params.action;
+                if (action == 'query')
+                    action = 'search';
+                searchService.query({ action: action, keywords: toRoute.params.keywords }).$promise.then(function (data) {
                     $ctrl.data = data || [];
                     resolve();
                 }).catch(function (err) {

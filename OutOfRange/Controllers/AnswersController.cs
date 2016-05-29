@@ -23,13 +23,19 @@ namespace OutOfRange.Controllers
         // GET: api/Answers
         public JsonResult<IEnumerable<AnswerDTO>> GetAnswers()
         {
-            return Json(db.Answers.ToList().Select(AnswerDTO.FromEntity));
+            return Json(db.Answers.ToList().Select(answer => AnswerDTO.FromEntity(answer)));
+        }
+
+        [Route("AcceptedAnswers")]
+        public int GetAcceptedAnswersNumber()
+        {
+            return db.Answers.Count(answer => answer.Accepted);
         }
         //GET: api/AnswersQuestion/{GUID}
         [Route("AnswersQuestion/{id}")]
         public JsonResult<IEnumerable<AnswerDTO>> GetAnswersQuestion(Guid id)
         {
-            return Json(db.Answers.Where(x=>x.QuestionID==id).ToList().Select(AnswerDTO.FromEntity));
+            return Json(db.Answers.Where(x=>x.QuestionID==id).ToList().Select(answer => AnswerDTO.FromEntity(answer)));
         }
 
         // GET: api/Answers/5

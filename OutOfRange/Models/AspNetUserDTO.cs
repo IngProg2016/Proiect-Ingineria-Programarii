@@ -23,55 +23,60 @@ namespace OutOfRange.Models
             
         }
 
-        public AspNetUserDTO(AspNetUser aspNetUser)
+        public AspNetUserDTO(AspNetUser aspNetUser,int dtolevel=0)
         {
             UserLevels=new List<UserLevelDTO>();
             Id = aspNetUser.Id;
             Email = aspNetUser.Email;
             UserName = aspNetUser.UserName;
             Credits = aspNetUser.Credits;
-            QuestionNumber = aspNetUser.Questions.Count;
-            QuestionViews = aspNetUser.Questions.Sum(question => question.QuestionViews.Count);
-            QuestionScore = aspNetUser.Questions.Sum(question => question.Score);
-            AnswerScore = aspNetUser.Answers.Sum(answer => answer.Score);
-            CommentScore = aspNetUser.Comments.Sum(comment => comment.Score);
-            TotalScore = QuestionScore + AnswerScore + CommentScore;
-            foreach (var level in aspNetUser.UserLevels)
+            if (dtolevel == 0)
             {
-                UserLevelDTO ulDto=new UserLevelDTO(level);
-                ulDto.QuestionNumber = aspNetUser.Questions.Count(question => question.CategoryID == level.CategoryID);
-                ulDto.QuestionViews =
-                    aspNetUser.Questions.Where(question => question.CategoryID == level.CategoryID)
-                        .Sum(question => question.QuestionViews.Count);
-                ulDto.QuestionScore =
-                    aspNetUser.Questions.Where(question => question.CategoryID == level.CategoryID)
-                        .Sum(question => question.Score);
-                ulDto.AnswerScore = aspNetUser.Answers.Where(answer => answer.Question.CategoryID == level.CategoryID)
-                    .Sum(answer => answer.Score);
-                int commScore = 0;
-                foreach (var comment in aspNetUser.Comments.ToList())
+                QuestionNumber = aspNetUser.Questions.Count;
+                QuestionViews = aspNetUser.Questions.Sum(question => question.QuestionViews.Count);
+                QuestionScore = aspNetUser.Questions.Sum(question => question.Score);
+                AnswerScore = aspNetUser.Answers.Sum(answer => answer.Score);
+                CommentScore = aspNetUser.Comments.Sum(comment => comment.Score);
+                TotalScore = QuestionScore + AnswerScore + CommentScore;
+                foreach (var level in aspNetUser.UserLevels)
                 {
-                    if (comment.Question != null)
+                    UserLevelDTO ulDto = new UserLevelDTO(level);
+                    ulDto.QuestionNumber =
+                        aspNetUser.Questions.Count(question => question.CategoryID == level.CategoryID);
+                    ulDto.QuestionViews =
+                        aspNetUser.Questions.Where(question => question.CategoryID == level.CategoryID)
+                            .Sum(question => question.QuestionViews.Count);
+                    ulDto.QuestionScore =
+                        aspNetUser.Questions.Where(question => question.CategoryID == level.CategoryID)
+                            .Sum(question => question.Score);
+                    ulDto.AnswerScore = aspNetUser.Answers.Where(
+                        answer => answer.Question.CategoryID == level.CategoryID)
+                        .Sum(answer => answer.Score);
+                    int commScore = 0;
+                    foreach (var comment in aspNetUser.Comments.ToList())
                     {
-                        if (comment.Question.CategoryID == level.CategoryID)
-                            commScore += comment.Score;
+                        if (comment.Question != null)
+                        {
+                            if (comment.Question.CategoryID == level.CategoryID)
+                                commScore += comment.Score;
+                        }
+                        else if (comment.Answer != null)
+                        {
+                            if (comment.Answer.Question.CategoryID == level.CategoryID)
+                                commScore += comment.Score;
+                        }
                     }
-                    else if (comment.Answer != null)
-                    {
-                        if (comment.Answer.Question.CategoryID == level.CategoryID)
-                            commScore += comment.Score;
-                    }
+                    ulDto.CommentScore = commScore;
+                    ulDto.TotalScore = ulDto.QuestionScore + ulDto.AnswerScore + ulDto.CommentScore;
+                    UserLevels.Add(ulDto);
                 }
-                ulDto.CommentScore = commScore;
-                ulDto.TotalScore = ulDto.QuestionScore + ulDto.AnswerScore + ulDto.CommentScore;
-                UserLevels.Add(ulDto);
+                UserLevels.Sort((dto, levelDto) => levelDto.XP - dto.XP);
             }
-            UserLevels.Sort((dto, levelDto) => levelDto.XP-dto.XP);
         }
 
-        public static AspNetUserDTO FromEntity(AspNetUser user)
+        public static AspNetUserDTO FromEntity(AspNetUser user, int dtoLevel=0)
         {
-            return new AspNetUserDTO(user);
+            return new AspNetUserDTO(user,dtoLevel);
         }
     }
 }

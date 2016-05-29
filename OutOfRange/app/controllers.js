@@ -125,7 +125,19 @@
 
     }
 
-    function FooterCtrl() { }
+    function FooterCtrl() {
+        var $ctrl = this
+
+        //angular.element(document).ready(function () {
+        //    debugger;
+        //    if (window.innerHeight > $('html').height()) {
+        //        var pusher = window.innerHeight - $('html').height()
+        //        if (pusher > 0) {
+        //            return pusher;
+        //        }
+        //    }
+        //});
+    }
 
     function HomeCtrl(qaService, userService) {
         var $ctrl = this;
@@ -147,7 +159,6 @@
         $ctrl.questionsCount = $ctrl.length;
         $ctrl.validedQuestionsCount = function () {
             var count = 0;
-            debugger;
             angular.forEach($ctrl.answers, function (answers) {
                 count += answers.Accepted ? 1 : 0;
             });
@@ -293,11 +304,11 @@
         }
 
         this.pbPercentage = function (clevel, cXP) {
-            return parseInt(cXP / ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel))) * 100);
+            return parseInt(cXP / ((25 * (clevel + 1) * (clevel + 1))) * 100);
         }
 
         this.levelXP = function (clevel) {
-            return ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel)));
+            return ((25 * (clevel + 1) * (clevel + 1)));
         }
 
     }

@@ -325,6 +325,9 @@
     <Compile Include="Models\ScoreItem.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Search_Result.cs">
+      <DependentUpon>Models.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Tag.cs">
       <DependentUpon>Models.tt</DependentUpon>
     </Compile>

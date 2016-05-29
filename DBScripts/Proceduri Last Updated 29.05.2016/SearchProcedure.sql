@@ -18,8 +18,8 @@ BEGIN
 			[QuestionBody] [nvarchar](max),
 			[Added] [datetime],
 			[Modified] [datetime],
-			[Score] [decimal](18, 0),
-			[Bounty] [decimal](18, 0),
+			[Score] [int],
+			[Bounty] [int],
 			[Rank] [int]
 		)
 	DECLARE
@@ -30,8 +30,8 @@ BEGIN
 		@QuestionBody nvarchar(max),
 		@Added datetime,
 		@Modified datetime,
-		@Score decimal(18, 0),
-		@Bounty decimal(18, 0),
+		@Score int,
+		@Bounty int,
 		@Rank int,
 		@Term nvarchar(128)
 

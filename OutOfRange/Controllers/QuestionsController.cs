@@ -32,7 +32,7 @@ namespace OutOfRange.Controllers
         {
             return Json(db.Questions.ToList().Select(QuestionDTO.FromEntity));
         }
-
+        
         // GET: api/Questions
         [Route("category/{id}")]
         public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsCategory(Guid id)
@@ -45,6 +45,19 @@ namespace OutOfRange.Controllers
         public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsTag(string tag)
         {
             return Json(db.Questions.Where(question => question.Tags.Select(x => x.Name).Contains(tag)).ToList().Select(QuestionDTO.FromEntity));
+        }
+
+        [Route("search/{q}")]
+        public JsonResult<IEnumerable<QuestionDTO>> GetSearch(string q)
+        {
+            var searchResult = db.Search(q);
+            var en=searchResult.GetEnumerator();
+            List<QuestionDTO> results=new List<QuestionDTO>();
+            while (en.MoveNext())
+            {
+                results.Add(QuestionDTO.FromEntity(en.Current));    
+            }
+            return Json(results.AsEnumerable());
         }
 
         // GET: api/Questions/5
@@ -143,21 +156,23 @@ namespace OutOfRange.Controllers
             return Ok(jsonQuestion);
         }
 
+        public class UpdateQuestion
+        {
+            public string QuestionBody { get; set; }
+        }
         // PUT: api/Questions/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutQuestion(Guid id, Question question)
+        [HttpPut]
+        public IHttpActionResult PutQuestion(Guid id, UpdateQuestion newQuestion)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != question.ID)
-            {
-                return BadRequest();
-            }
+            var question = db.Questions.Find(id);
 
-            
+            question.QuestionBody = newQuestion.QuestionBody;
             db.Entry(question).State = EntityState.Modified;
 
             try

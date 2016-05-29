@@ -25,6 +25,8 @@ namespace OutOfRange.Models
 
         public AspNetUserDTO(AspNetUser aspNetUser,int dtolevel=0)
         {
+            if (aspNetUser == null)
+                return;
             UserLevels=new List<UserLevelDTO>();
             Id = aspNetUser.Id;
             Email = aspNetUser.Email;

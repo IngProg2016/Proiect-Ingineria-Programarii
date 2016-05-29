@@ -17,7 +17,7 @@
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
             { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
             { path: '/question/:id/:scrollTo', name: 'ViewQuestionScrollTo', component: 'viewQuestionCmp' },
-            { path: '/search/:keywords', name: 'Search', component: 'searchCmp' },
+            { path: '/search/:action/:keywords', name: 'Search', component: 'searchCmp' },
             { path: '/*any', name: 'NotFound', component: 'notFoundCmp' }
         ]
     })
@@ -119,7 +119,7 @@
 
         this.doSearch = function (event, keywords) {
             if (event.keyCode == 13 && $ctrl.searchText) {
-                $rootRouter.navigate(['Search', { keywords: $ctrl.searchText }])
+                $rootRouter.navigate(['Search', { action: 'query', keywords: $ctrl.searchText }])
             }
         }
 
@@ -417,6 +417,12 @@
         this.error = null;
         this.scrollTo = null;
 
+        this.initTooltip = function (id) {
+            setTimeout(function () {
+                angular.element('#' + id).tooltip();
+            }, 0);
+        }
+
         this.orderAnswers = function (answer) {
             if (answer.Accepted)
                 return -Number.MAX_SAFE_INTEGER;
@@ -537,12 +543,33 @@
             .catch(function () { updateCategories(); });
         };
 
+        this.resetQuestion = function () {
+            _getQuestion($ctrl.question.ID);
+        }
+
         this.updateQuestion = function (question) {
-            qaService.updateQuestion(question);
+            qaService.updateQuestion(question)
+            .then(function () { _getQuestion($ctrl.question.ID); });
         };
 
         this.updateAnswer = function (answer) {
-            qaService.updateAnswer(answer);
+            qaService.updateAnswer(answer)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        }
+
+        this.deleteComment = function (comment) {
+            qaService.deleteComment(comment)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        }
+
+        this.deleteAnswer = function (answer) {
+            qaService.deleteAnswer(answer)
+            .then(function () { _getQuestion($ctrl.question.ID); });
+        }
+
+        this.deleteQuestion = function () {
+            qaService.deleteQuestion($ctrl.question)
+            .then(function () { $ctrl.$router.navigate(['Questions']); });
         }
 
         function _getReturnLink(scrollTo) {
@@ -562,7 +589,10 @@
 
         this.$routerOnActivate = function (toRoute, fromRoute) {
             return $q(function (resolve, reject) {
-                searchService.query({ keywords: toRoute.params.keywords }).$promise.then(function (data) {
+                var action = toRoute.params.action;
+                if (action == 'query')
+                    action = 'search';
+                searchService.query({ action: action, keywords: toRoute.params.keywords }).$promise.then(function (data) {
                     $ctrl.data = data || [];
                     resolve();
                 }).catch(function (err) {

@@ -102,6 +102,7 @@ namespace OutOfRange.Controllers
                     answer.Accepted = true;
                     db.Entry(answer.AspNetUser).State = EntityState.Modified;
                     db.Entry(answer).State = EntityState.Modified;
+                    PointsUtils.AddCreditsAndXP(answer.AspNetUser.Id,answer.Question.CategoryID,25,40);
                     db.SaveChanges();
                 }
             }

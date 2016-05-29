@@ -19,7 +19,7 @@ namespace OutOfRange.Models
             AnswerBody = answer.AnswerBody;
             Score = answer.Score;
             Added = answer.Added;
-            AspNetUser = new AspNetUserDTO(answer.AspNetUser);
+            AspNetUser = new AspNetUserDTO(answer.AspNetUser,1);
             if(dtolevel==0)
             Comments = answer.Comments.Select(CommentDTO.FromEntity).ToList();
             Accepted = answer.Accepted;

@@ -28,7 +28,7 @@ namespace OutOfRange.Models
             CommentBody = comment.CommentBody;
             Added = comment.Added;
             Modified = comment.Modified;
-            AspNetUser=new AspNetUserDTO(comment.AspNetUser);
+            AspNetUser=new AspNetUserDTO(comment.AspNetUser,1);
         }
 
         public static CommentDTO FromEntity(Comment comment)

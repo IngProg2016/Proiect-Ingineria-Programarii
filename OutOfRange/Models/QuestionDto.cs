@@ -34,7 +34,7 @@ namespace OutOfRange.Models
             //Anwsers = (from ans in question.Answers select new AnswerDTO(ans)).ToList();
             if(dtolevel == 0)
             Comments = question.Comments.Select(CommentDTO.FromEntity).ToList();
-            AspNetUser = new AspNetUserDTO(question.AspNetUser, dtolevel);
+            AspNetUser = new AspNetUserDTO(question.AspNetUser, 1);
             Category = new CategoryDTO(question.Category);
         }
 

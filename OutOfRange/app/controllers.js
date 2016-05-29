@@ -14,6 +14,7 @@
             { path: '/user/profile', name: 'CurrentUser', component: 'userCmp', data: { requiresLogin: true } },
             { path: '/admin/categories', name: 'AdminCategories', component: 'adminCatCmp', data: { requiresLogin: true, roles: ['admin'] } },
             { path: '/questions', name: 'Questions', component: 'questionsCmp' },
+            { path: '/questions/bounties', name: 'QuestionsBounties', component: 'questionsCmp', data: { bounty: true } },
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
             { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
             { path: '/question/:id/:scrollTo', name: 'ViewQuestionScrollTo', component: 'viewQuestionCmp' },
@@ -315,9 +316,9 @@
             return encodeURIComponent(tagName);
         }
 
-        this.$routerOnActivate = function () {
+        this.$routerOnActivate = function (toRoute) {
             return $q(function (resolve, reject) {
-                qaService.getQuestions().then(function (data) {
+                qaService.getQuestions(toRoute.routeData.data.bounty || false).then(function (data) {
                     $ctrl.data = data || [];
                     resolve();
                 }).catch(function (err) {

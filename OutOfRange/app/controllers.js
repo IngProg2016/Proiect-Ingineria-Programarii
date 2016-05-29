@@ -23,7 +23,7 @@
     })
     .component('headSection', {
         templateUrl: '/templates/masterpage/header.html',
-        controller: ['authService', 'searchService', HeadCtrl]
+        controller: ['authService', 'searchService' ,'$rootRouter', HeadCtrl]
     })
     .component('footerSection', {
         templateUrl: '/templates/masterpage/footer.html',
@@ -91,7 +91,7 @@
     })
     ;
 
-    function HeadCtrl(authService, searchService) {
+    function HeadCtrl(authService, searchService, $rootRouter) {
         var $ctrl = this;
 
         var authInfo = authService.getAuthentificationInfo;
@@ -108,10 +108,13 @@
             return authInfo().userName;
         }
 
-        //this.search = function (keywords) {
-        //    searchService.query({ keywords: keywords })
-        //    .then(function (result) {  })
-        //}
+        this.doSearch = function (event, keywords) {
+            if (event.keyCode == 13 && $ctrl.searchText)
+            {
+                debugger;
+                $rootRouter.navigate(['Search', { keywords: $ctrl.searchText }])
+            }
+        }
 
     }
 
@@ -524,7 +527,7 @@
 
         this.$routerOnActivate = function (toRoute, fromRoute) {
             return $q(function (resolve, reject) {
-                searchService.query({ keywrods: toRoute.params.keywords }).then(function (data) {
+                searchService.query({ keywords: toRoute.params.keywords }).$promise.then(function (data) {
                     $ctrl.data = data || [];
                     resolve();
                 }).catch(function (err) {

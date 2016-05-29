@@ -30,7 +30,12 @@ namespace OutOfRange.Controllers
         // GET: api/Questions
         public JsonResult<IEnumerable<QuestionDTO>> GetQuestions()
         {
-            return Json(db.Questions.ToList().Select(question => QuestionDTO.FromEntity(question,1)));
+            return
+                Json(
+                    db.Questions.OrderByDescending(question => question.Bounty)
+                        .ThenByDescending(question => question.Added)
+                        .ToList()
+                        .Select(question => QuestionDTO.FromEntity(question, 1)));
         }
         
         // GET: api/Questions
@@ -39,9 +44,10 @@ namespace OutOfRange.Controllers
         {
             return
                 Json(
-                    db.Questions.Where(question => question.CategoryID == id)
+                    db.Questions.OrderByDescending(question => question.Bounty)
+                        .ThenByDescending(question => question.Added).Where(question => question.CategoryID == id)
                         .ToList()
-                        .Select(question => QuestionDTO.FromEntity(question,1)));
+                        .Select(question => QuestionDTO.FromEntity(question, 1)));
         }
 
         // GET: api/Questions
@@ -51,7 +57,8 @@ namespace OutOfRange.Controllers
             return
                 Json(
                     db.Questions.Where(question => question.Tags.Select(x => x.Name).Contains(tag))
-                        .ToList()
+                        .OrderByDescending(question => question.Bounty)
+                        .ThenByDescending(question => question.Added).ToList()
                         .Select(question => QuestionDTO.FromEntity(question,1)));
         }
 

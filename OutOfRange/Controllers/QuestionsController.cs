@@ -295,7 +295,7 @@ namespace OutOfRange.Controllers
 
             string userId = User.Identity.GetUserId();
             AspNetUser user = db.AspNetUsers.Single(x => x.Id == userId);
-            if (question.Bounty > user.Credits)
+            if (question.Bounty > user.Credits && question.Bounty > 0)
             {
                 return BadRequest("Cannot add a bounty with more points than you have");
             }
@@ -382,7 +382,7 @@ namespace OutOfRange.Controllers
         }
         
         // DELETE: api/Questions/5
-        [ResponseType(typeof(QuestionDTO))]
+        [ResponseType(typeof(Question))]
         public IHttpActionResult DeleteQuestion(Guid id)
         {
             Question question = db.Questions.Find(id);
@@ -394,7 +394,7 @@ namespace OutOfRange.Controllers
             db.Questions.Remove(question);
             db.SaveChanges();
 
-            return Ok(new QuestionDTO(question));
+            return Ok(question);
         }
 
         protected override void Dispose(bool disposing)

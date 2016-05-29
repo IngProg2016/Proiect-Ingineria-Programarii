@@ -118,7 +118,7 @@
                             <div ng-if="$ctrl.isAuth" >
                                 <a ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && ans.IsEdit == undefined" ng-click="ans.IsEdit=''" href="#">edit answer</a>
                                 <a ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && ans.IsEdit != undefined" ng-click="ans.IsEdit=undefined; $ctrl.updateAnswer(ans)" href="#">repost answer</a>
-                                <a ng-if="ans.commentBody == undefined" ng-click="ans.IsEdit=''" href="#">add comment</a>
+                                <a ng-if="ans.commentBody == undefined" ng-click="ans.$commentBody = ''" href="#">add comment</a>
                             </div>
                             <div ng-if="ans.$commentBody != undefined">
 

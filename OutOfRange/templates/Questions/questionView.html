@@ -99,7 +99,7 @@
                         <i class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == 1 }"></i>
                         <div class="fa-2x score-number">{{ans.Score || 0}}</div>
                         <i class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == -1 }"></i>
-                        <div ng-click="$ctrl.acceptAnswer(ans)" class="fa fa-3x fa-check accept-control" ng-class="{ 'state-unchecked': !ans.Accepted, 'state-checked': ans.Accepted }"></div>
+                        <div ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1)" ng-click="$ctrl.acceptAnswer(ans)" class="fa fa-3x fa-check accept-control" ng-class="{ 'state-unchecked': !ans.Accepted, 'state-checked': ans.Accepted }"></div>
                     </div>
 
                     <div class="media-body col-lg-10 col-sm-10">

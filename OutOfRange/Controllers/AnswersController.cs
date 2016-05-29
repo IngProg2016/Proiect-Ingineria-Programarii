@@ -25,11 +25,15 @@ namespace OutOfRange.Controllers
         {
             return Json(db.Answers.ToList().Select(answer => AnswerDTO.FromEntity(answer)));
         }
-
-        [Route("AcceptedAnswers")]
-        public int GetAcceptedAnswersNumber()
+        public class AnswerNumber
         {
-            return db.Answers.Count(answer => answer.Accepted);
+            public int AnswersNumber { get; set; }
+        }
+        [Route("AcceptedAnswers")]
+        public JsonResult<AnswerNumber> GetAcceptedAnswersNumber()
+        {
+            var cnt = db.Answers.Count(answer => answer.Accepted);
+            return Json(new AnswerNumber() { AnswersNumber = cnt });
         }
         //GET: api/AnswersQuestion/{GUID}
         [Route("AnswersQuestion/{id}")]

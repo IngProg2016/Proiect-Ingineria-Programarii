@@ -148,8 +148,8 @@
                 $ctrl.questionsCount = data.length;
             });
 
-            qaService.getAnswers().then(function (data) {
-                $ctrl.answers = data || [];
+            qaService.getValidAnswers().then(function (data) {
+                $ctrl.validedQuestionsCount = data || [];
             });
         })();
 
@@ -157,13 +157,6 @@
             $ctrl.usersCount = data.length
         });
         $ctrl.questionsCount = $ctrl.length;
-        $ctrl.validedQuestionsCount = function () {
-            var count = 0;
-            angular.forEach($ctrl.answers, function (answers) {
-                count += answers.Accepted ? 1 : 0;
-            });
-            return count;
-        }
     }
 
     function RegisterCtrl(authService, routeChangeService) {

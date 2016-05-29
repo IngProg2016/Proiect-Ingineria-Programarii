@@ -2,7 +2,7 @@
     'use strict';
 
     var OutOfRangeApp = angular.module('OutOfRangeApp')
-    .service('routeChangeService', ['$rootRouter', 'authService', RouteChangeService])
+    .service('routeChangeService', ['$rootRouter', 'authService', 'userService', RouteChangeService])
     .service('authService', ['$q', '$resource', 'storageService', AuthService])
     .service('userService', ['$resource', UserService])
     .service('adminService', ['$q', '$resource', AdminService])
@@ -15,7 +15,7 @@
     }])
     ;
 
-    function RouteChangeService($rootRouter, authService) {
+    function RouteChangeService($rootRouter, authService, userService) {
         var $svc = this;
 
         this.onChange = function (toRoute, fromRoute) {
@@ -33,8 +33,14 @@
             }
 
             if (toRoute.routeData.data.roles) {
-                console.warn('roles not implemented! (RouteChangeService -> onChange)');
-                $svc.navigateToRedirectUrl(toRoute);
+                userService.getCurrentUser()
+                .then(function (cUser) {
+                    if (cUser.roles.indexOf('Moderator') == -1)
+                        $rootRouter.navigate(['Home']);
+                })
+                .catch(function () {
+                    $rootRouter.navigate(['Home']);
+                });
             }
         }
 

@@ -12,7 +12,7 @@
             { path: '/logout', name: 'Logout', component: 'logoutCmp' },
             { path: '/user/profile/:userId', name: 'User', component: 'userCmp', data: { requiresLogin: true } },
             { path: '/user/profile', name: 'CurrentUser', component: 'userCmp', data: { requiresLogin: true } },
-            { path: '/admin/categories', name: 'AdminCategories', component: 'adminCatCmp', data: { roles: ['admin'] } },
+            { path: '/admin/categories', name: 'AdminCategories', component: 'adminCatCmp', data: { requiresLogin: true, roles: ['admin'] } },
             { path: '/questions', name: 'Questions', component: 'questionsCmp' },
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
             { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
@@ -58,7 +58,7 @@
     })
     .component('adminCatCmp', {
         templateUrl: 'templates/admin/categories.html',
-        controller: ['adminService', AdminCatCmp]
+        controller: ['adminService', 'routeChangeService', AdminCatCtrl]
     })
     .component('userCmp', {
         templateUrl: 'templates/user/profile.html',
@@ -193,12 +193,16 @@
         }
     }
 
-    function AdminCatCmp(adminService) {
+    function AdminCatCtrl(adminService, routeChangeService) {
         var $ctrl = this;
 
         (function () {
             updateCategories();
         })();
+
+        this.$routerOnActivate = function (toRoute, fromRoute) {
+            routeChangeService.onChange(toRoute, fromRoute);
+        }
 
         function updateCategories() {
             adminService.getCategories()
@@ -520,7 +524,7 @@
 
         this.$routerOnActivate = function (toRoute, fromRoute) {
             return $q(function (resolve, reject) {
-                searchService.query({keywrods : toRoute.params.keywords }).then(function (data) {
+                searchService.query({ keywrods: toRoute.params.keywords }).then(function (data) {
                     $ctrl.data = data || [];
                     resolve();
                 }).catch(function (err) {

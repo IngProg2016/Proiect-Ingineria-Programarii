@@ -54,8 +54,8 @@
                             <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
                                 <div class="score-number">{{com.Score || 0}}</div>
                                 <span>
-                                    <i ng-if="$ctrl.currentUser.id != $ctrl.question.UserID" class="fa fa-plus score-control up-vote" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
-                                    <i ng-if="$ctrl.currentUser.id != $ctrl.question.UserID" class="fa fa-minus score-control down-vote" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
+                                    <i ng-if="$ctrl.currentUser.id != com.UserID" class="fa fa-plus score-control up-vote" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
+                                    <i ng-if="$ctrl.currentUser.id != com.UserID" class="fa fa-minus score-control down-vote" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
                                 </span>
                             </div>
 
@@ -96,9 +96,9 @@
             <div id="Answer-{{ans.ID}}" class="media answer" ng-repeat="ans in $ctrl.question.Answers | orderBy:$ctrl.orderAnswers">
                 <div class="row">
                     <div class="score-controls col-lg-2 col-sm-2 text-center pull-left">
-                        <i ng-if="$ctrl.currentUser.id != $ctrl.question.UserID" class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == 1 }"></i>
-                        <div class="fa-2x" ng-class="{'score-number': $ctrl.currentUser.id != $ctrl.question.UserID}">{{ans.Score || 0}}</div>
-                        <i ng-if="$ctrl.currentUser.id != $ctrl.question.UserID" class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == -1 }"></i>
+                        <i ng-if="$ctrl.currentUser.id != ans.UserID" class="fa fa-3x fa-chevron-up score-control up-vote" ng-click="$ctrl.plusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == 1 }"></i>
+                        <div class="fa-2x" ng-class="{'score-number': $ctrl.currentUser.id != ans.UserID}">{{ans.Score || 0}}</div>
+                        <i ng-if="$ctrl.currentUser.id != ans.UserID" class="fa fa-3x fa-chevron-down score-control down-vote" ng-click="$ctrl.minusAnswerVote(ans)" ng-class="{ 'score-given': ans.ScoreGiven == -1 }"></i>
                         <div ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1)" ng-click="$ctrl.acceptAnswer(ans)" class="fa fa-3x fa-check accept-control" ng-class="{ 'state-unchecked': !ans.Accepted, 'state-checked': ans.Accepted }"></div>
                     </div>
 
@@ -126,8 +126,8 @@
                                 <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
                                     <div class="score-number">{{com.Score || 0}}</div>
                                     <span>
-                                        <i ng-if="$ctrl.currentUser.id != $ctrl.question.UserID" class="fa fa-plus score-control up-vote" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
-                                        <i ng-if="$ctrl.currentUser.id != $ctrl.question.UserID" class="fa fa-minus score-control down-vote" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
+                                        <i ng-if="$ctrl.currentUser.id != com.UserID" class="fa fa-plus score-control up-vote" ng-click="$ctrl.plusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == 1 }"></i>
+                                        <i ng-if="$ctrl.currentUser.id != com.UserID" class="fa fa-minus score-control down-vote" ng-click="$ctrl.minusCommentVote(com)" ng-class="{ 'score-given': com.ScoreGiven == -1 }"></i>
                                     </span>
                                 </div>
 

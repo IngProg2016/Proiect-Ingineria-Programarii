@@ -159,6 +159,15 @@
     font-size:13px;
 }
 
+.comment-body .close-btn {
+    display:none;
+    margin-right: 10px;
+}
+
+.comment-body:hover .close-btn {
+    display:inline-block;
+}
+
 
 /* User Profile */
 /*#accordion.panel-group .panel {

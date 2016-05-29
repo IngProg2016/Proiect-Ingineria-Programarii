@@ -246,6 +246,18 @@
             return new Answer({ AnswerBody: answer.AnswerBody }).$update({ id: answer.ID });
         }
 
+        this.deleteComment = function (comment) {
+            return Comment.delete({ action: comment.ID }).$promise;
+        }
+
+        this.deleteAnswer = function (answer) {
+            return Answer.delete({ action: answer.ID }).$promise;
+        }
+
+        this.deleteQuestion = function (question) {
+            return Questions.delete({ id: question.ID }).$promise;
+        }
+
         this.getValidAnswers = function () {
             return $resource('/api/answers/acceptedanswers').get().$promise;
         }

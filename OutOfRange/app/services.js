@@ -9,6 +9,7 @@
     .service('storageService', ['$localStorage', '$sessionStorage', StorageService])
     .service('authInterceptorService', ['$q', '$rootRouter', 'storageService', AuthInterceptorService])
     .service('qaService', ['$resource', QaService])
+    .service('searchService', ['$resource', SearchService])
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('authInterceptorService');
     }])
@@ -238,6 +239,10 @@
         this.getCurrentUser = function () {
             return new CurrentUser.get().$promise;
         }
+    }
+
+    function SearchService($resource) {
+        return $resource('/api/question/search/:keywords');
     }
 
     function AuthInterceptorService($q, $rootRouter, storageService) {

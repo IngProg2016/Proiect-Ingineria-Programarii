@@ -17,12 +17,13 @@
             { path: '/questions/add', name: 'AddQuestion', component: 'addQuestionCmp', data: { requiresLogin: true } },
             { path: '/question/:id', name: 'ViewQuestion', component: 'viewQuestionCmp' },
             { path: '/question/:id/:scrollTo', name: 'ViewQuestionScrollTo', component: 'viewQuestionCmp' },
+            { path: '/search/:keywords', name: 'Search', component: 'searchCmp' },
             { path: '/*any', name: 'NotFound', component: 'notFoundCmp' }
         ]
     })
     .component('headSection', {
         templateUrl: '/templates/masterpage/header.html',
-        controller: ['authService', HeadCtrl]
+        controller: ['authService', 'searchService', HeadCtrl]
     })
     .component('footerSection', {
         templateUrl: '/templates/masterpage/footer.html',
@@ -76,14 +77,21 @@
     })
     .component('viewQuestionCmp', {
         templateUrl: '/templates/questions/questionView.html',
-        controller: ['$q', '$interval', 'smoothScroll', 'authService', 'qaService', 'userService' , ViewQuestionCtrl],
+        controller: ['$q', '$interval', 'smoothScroll', 'authService', 'qaService', 'userService', ViewQuestionCtrl],
+        bindings: {
+            $router: '<'
+        }
+    })
+    .component('searchCmp', {
+        templateUrl: '/templates/questions/questionAll.html',
+        controller: ['$q', 'authService', 'searchService', SearchCtrl],
         bindings: {
             $router: '<'
         }
     })
     ;
 
-    function HeadCtrl(authService) {
+    function HeadCtrl(authService, searchService) {
         var $ctrl = this;
 
         var authInfo = authService.getAuthentificationInfo;
@@ -99,6 +107,11 @@
         this.userName = function () {
             return authInfo().userName;
         }
+
+        //this.search = function (keywords) {
+        //    searchService.query({ keywords: keywords })
+        //    .then(function (result) {  })
+        //}
 
     }
 
@@ -245,7 +258,7 @@
             return parseInt(cXP / ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel))) * 100);
         }
 
-        this.levelXP = function (clevel){
+        this.levelXP = function (clevel) {
             return ((25 * (clevel + 1) * (clevel + 1)) - (25 * (clevel) * (clevel)));
         }
 
@@ -500,4 +513,22 @@
         }
     }
 
+    function SearchCtrl($q, authService, searchService) {
+        var $ctrl = this;
+
+        this.error = null;
+
+        this.$routerOnActivate = function (toRoute, fromRoute) {
+            return $q(function (resolve, reject) {
+                searchService.query({keywrods : toRoute.params.keywords }).then(function (data) {
+                    $ctrl.data = data || [];
+                    resolve();
+                }).catch(function (err) {
+                    // accept the route change but put an error on the page
+                    $ctrl.error = err;
+                    resolve();
+                });
+            });
+        }
+    }
 })();

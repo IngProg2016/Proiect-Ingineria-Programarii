@@ -311,6 +311,10 @@
 
         this.error = null;
 
+        this.encodeTag = function (tagName) {
+            return encodeURIComponent(tagName);
+        }
+
         this.$routerOnActivate = function () {
             return $q(function (resolve, reject) {
                 qaService.getQuestions().then(function (data) {
@@ -416,6 +420,10 @@
         this.comment = {};
         this.error = null;
         this.scrollTo = null;
+
+        this.encodeTag = function (tagName) {
+            return tagName;
+        }
 
         this.initTooltip = function (id) {
             setTimeout(function () {

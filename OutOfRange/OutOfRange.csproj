@@ -636,6 +636,7 @@
       <DependentUpon>Models.edmx</DependentUpon>
     </Content>
     <Content Include="package.json" />
+    <None Include="Properties\PublishProfiles\OutOfRangeLocal.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\common-scripts.js" />
     <Content Include="Scripts\dirPagination.js" />

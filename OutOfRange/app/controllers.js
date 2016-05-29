@@ -347,8 +347,8 @@
         })();
 
         this.tinymceOptions = {
-            plugins: 'link image code',
-            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+            plugins: 'link image code codesample',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code codesample'
         };
 
         this.question = {
@@ -439,8 +439,8 @@
         }
 
         this.tinymceOptions = {
-            plugins: 'link image code',
-            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code'
+            plugins: 'link image code codesample',
+            toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | code codesample'
         };
 
         this.addComment = function (parent) {

@@ -202,8 +202,10 @@
             return Category.query().$promise;
         }
 
-        this.getQuestions = function (filter) {
-            return Questions.query(filter).$promise;
+        this.getQuestions = function (onlyBounties) {
+            if (onlyBounties)
+                return Questions.query({ id: 'bounties' }).$promise;
+            return Questions.query().$promise;
         }
 
         this.addQuestion = function (question) {

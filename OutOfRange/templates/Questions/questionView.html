@@ -34,15 +34,20 @@
 
                     </div>
                     <div class="col-lg-10 col-sm-10">
-                        <p ng-if="$ctrl.question.IsEdit == undefined" class="text-question" ng-bind-html="$ctrl.question.QuestionBody"></p>
-                        <textarea ui-tinymce="$ctrl.tinymceOptions" ng-model="$ctrl.question.QuestionBody" ng-if="$ctrl.question.IsEdit != undefined" placeholder="Message" rows="8" class="form-control"></textarea>
+                        <p ng-if="!$ctrl.question.IsEdit" class="text-question" ng-bind-html="$ctrl.question.QuestionBody"></p>
+                        <textarea ui-tinymce="$ctrl.tinymceOptions" ng-model="$ctrl.question.QuestionBody" ng-if="$ctrl.question.IsEdit" placeholder="Message" rows="8" class="form-control"></textarea>
                     </div>
                     <div class="clearfix"></div>
                     <div class="media comment">
                         <div ng-if="$ctrl.isAuth">
-                            <hr />
-                            <a ng-if="(($ctrl.currentUser.id == $ctrl.question.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && $ctrl.question.IsEdit == undefined" ng-click="$ctrl.question.IsEdit=''" href="#">edit question</a>
-                            <a ng-if="(($ctrl.currentUser.id == $ctrl.question.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && $ctrl.question.IsEdit != undefined" ng-click="$ctrl.question.IsEdit=undefined; $ctrl.updateQuestion($ctrl.question)" href="#">repost question</a>
+                            <span ng-if="(($ctrl.currentUser.id == $ctrl.question.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && !$ctrl.question.IsEdit">
+                                <a ng-click="$ctrl.question.IsEdit=true" href="#">edit</a> |
+                                <a ng-click="$ctrl.deleteQuestion()" href="#">delete</a>
+                            </span>
+                            <span ng-if="(($ctrl.currentUser.id == $ctrl.question.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && $ctrl.question.IsEdit">
+                                <a ng-click="$ctrl.question.IsEdit=false; $ctrl.updateQuestion($ctrl.question)" href="#">save changes</a> |
+                                <a ng-click="$ctrl.question.IsEdit=false; $ctrl.resetQuestion()" href="#">cancel</a>
+                            </span>
                         </div>
                         <hr />
                         <div class="media-body row" ng-repeat="com in $ctrl.question.Comments | orderBy:'Added'">
@@ -57,6 +62,13 @@
                             <div class="comment-body col-lg-11 col-sm-11">
                                 <p>
                                     <span ng-bind="com.CommentBody | plainText" style="padding-left:5px;"></span> - <a ng-link="['User', {userId: com.AspNetUser.Id}]">{{com.AspNetUser.UserName}}</a>
+                                    <span ng-if="(($ctrl.currentUser.id == com.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1)"
+                                          id="question-close-tooltip-{{$index}}" class="pull-right close-btn text-muted"
+                                          data-toggle="tooltip" title="Delete" data-placement="left" data-trigger="hover"
+                                          ng-init="$ctrl.initTooltip('question-close-tooltip-' + $index)"
+                                          ng-click="$ctrl.deleteComment(com)">
+                                        <i class="fa fa-times"></i>
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -92,11 +104,21 @@
 
                     <div class="media-body col-lg-10 col-sm-10">
                         <h4 class="media-heading"></h4>
-                        <p ng-if="ans.IsEdit == undefined" class="text-answer" ng-bind-html="ans.AnswerBody"></p>
-                        <textarea ui-tinymce="$ctrl.tinymceOptions" ng-model="ans.AnswerBody" ng-if="ans.IsEdit != undefined" placeholder="Message" rows="8" class="form-control"></textarea>
+                        <p ng-if="!ans.IsEdit" class="text-answer" ng-bind-html="ans.AnswerBody"></p>
+                        <textarea ui-tinymce="$ctrl.tinymceOptions" ng-model="ans.AnswerBody" ng-if="ans.IsEdit" placeholder="Message" rows="8" class="form-control"></textarea>
 
                         <div class="pull-right"><a ng-link="['User', {userId: ans.AspNetUser.Id}]">{{ans.AspNetUser.UserName}}</a> | <span>{{ans.Added | date}}</span></div>
                         <small ng-hide="$ctrl.isAuth"><a href="#" ng-click="$ctrl.navigateWithReturn(['Login'], 'Answer-'+ans.ID)">Login</a> or <a href="#" ng-click="$ctrl.navigateWithReturn(['Register'], 'Answer-'+ans.ID)">Register</a> to add comment</small>
+                        <div ng-if="$ctrl.isAuth">
+                            <span ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && !ans.IsEdit">
+                                <a ng-click="ans.IsEdit=true" href="#">edit</a> |
+                                <a ng-click="$ctrl.deleteAnswer(ans)" href="#">delete</a>
+                            </span>
+                            <span ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && ans.IsEdit">
+                                <a ng-click="ans.IsEdit=false; $ctrl.updateAnswer(ans)" href="#">save changes</a> |
+                                <a ng-click="ans.IsEdit=false; $ctrl.resetQuestion()" href="#">cancel</a>
+                            </span>
+                        </div>
                         <div class="clearfix"></div>
                         <div class="media comment">
                             <hr />
@@ -112,13 +134,18 @@
                                 <div class="comment-body col-lg-11 col-sm-11">
                                     <p>
                                         <span ng-bind="com.CommentBody | plainText" style="padding-left:5px;"></span> - <a ng-link="['User', {userId: com.AspNetUser.Id}]">{{com.AspNetUser.UserName}}</a>
+                                        <span ng-if="(($ctrl.currentUser.id == com.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1)"
+                                              id="ans-{{ans.ID}}-close-tooltip-{{$index}}" class="pull-right close-btn text-muted"
+                                              data-toggle="tooltip" title="Delete" data-placement="left" data-trigger="hover"
+                                              ng-init="$ctrl.initTooltip('ans-' + ans.ID + '-close-tooltip-' + $index)"
+                                              ng-click="$ctrl.deleteComment(com)">
+                                            <i class="fa fa-times"></i>
+                                        </span>
                                     </p>
                                 </div>
                             </div>
-                            <div ng-if="$ctrl.isAuth" >
-                                <a ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && ans.IsEdit == undefined" ng-click="ans.IsEdit=''" href="#">edit answer</a>
-                                <a ng-if="(($ctrl.currentUser.id == ans.UserID) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && ans.IsEdit != undefined" ng-click="ans.IsEdit=undefined; $ctrl.updateAnswer(ans)" href="#">repost answer</a>
-                                <a ng-if="ans.commentBody == undefined" ng-click="ans.IsEdit=''" href="#">add comment</a>
+                            <div ng-if="$ctrl.isAuth">
+                                <a ng-if="ans.$commentBody == undefined" ng-click="ans.$commentBody=''" href="#">add comment</a>
                             </div>
                             <div ng-if="ans.$commentBody != undefined">
 
@@ -156,7 +183,7 @@
                     <h3>Category</h3>
                     <ul class="list-unstyled">
                         <li>
-                            <a href="javascript:;">
+                            <a ng-link="['Search', {action: 'category', keywords: $ctrl.question.Category.ID}]" href="#">
                                 <i class="fa fa-angle-right pr-10"></i>
                                 {{$ctrl.question.Category.Name}}
                             </a>
@@ -167,7 +194,7 @@
                     <h3>Tags</h3>
                     <ul class="tag">
                         <li ng-repeat="tag in $ctrl.question.Tags">
-                            <a href="#">
+                            <a ng-link="['Search', {action: 'tag', keywords: $ctrl.encodeTag(tag.Name)}]" href="#">
                                 <i class="fa fa-tags pr-5"></i>
                                 {{tag.Name}}
                             </a>

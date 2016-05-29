@@ -23,7 +23,7 @@
     })
     .component('headSection', {
         templateUrl: '/templates/masterpage/header.html',
-        controller: ['authService', 'searchService', '$rootRouter', HeadCtrl]
+        controller: ['authService', 'searchService', '$rootRouter', 'userService', 'storageService', HeadCtrl]
     })
     .component('footerSection', {
         templateUrl: '/templates/masterpage/footer.html',
@@ -91,8 +91,17 @@
     })
     ;
 
-    function HeadCtrl(authService, searchService, $rootRouter) {
+    function HeadCtrl(authService, searchService, $rootRouter, userService, storageService) {
         var $ctrl = this;
+
+        (function () {
+            var data = authService.getAuthentificationInfo();
+            userService.getCurrentUser()
+            .then(function (cUser) {
+                data.roles = cUser.roles;
+                storageService.auth.update(data);
+            });
+        })();
 
         var authInfo = authService.getAuthentificationInfo;
 
@@ -101,7 +110,7 @@
         };
 
         this.isAdmin = function () {
-            return true;
+            return authInfo().isAuth && authInfo().roles && authInfo().roles.indexOf('Moderator') != -1;
         };
 
         this.userName = function () {
@@ -110,7 +119,6 @@
 
         this.doSearch = function (event, keywords) {
             if (event.keyCode == 13 && $ctrl.searchText) {
-                debugger;
                 $rootRouter.navigate(['Search', { keywords: $ctrl.searchText }])
             }
         }
@@ -398,7 +406,7 @@
 
         this.currentUser = userService.getCurrentUser().then(function (result) {
             $ctrl.currentUser = result;
-        })
+        });
 
         this.question = {};
         this.comment = {};

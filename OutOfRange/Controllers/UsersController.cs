@@ -19,7 +19,7 @@ namespace OutOfRange.Controllers
     {
         private OutOfRangeEntities db = new OutOfRangeEntities();
 
-        [Route("userdata")]
+        [Route("userdata/")]
         public object GetCurentUserId()
         {
             if (User.Identity.IsAuthenticated)

@@ -132,6 +132,7 @@
             var _category = new Categories(category);
             return _category.$save();
         }
+
     }
 
     function StorageService($localStorage, $sessionStorage) {
@@ -214,11 +215,16 @@
 
     function UserService($resource) {
         var Profile = $resource('/api/user/profile/:id');
+        var CurrentUser = $resource('/api/user/userdata');
 
         this.getProfileInfo = function (userId) {
             if (userId)
                 return Profile.get({ id: userId }).$promise;
             return Profile.get().$promise;
+        }
+
+        this.getCurrentUser = function () {
+            return new CurrentUser.get().$promise;
         }
     }
 

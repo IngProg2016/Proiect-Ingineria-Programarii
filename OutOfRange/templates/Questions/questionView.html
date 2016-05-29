@@ -8,6 +8,7 @@
     </div>
 </div>
 <!--container start-->
+{{$ctrl.currentUser}}
 <div class="container">
     <div class="row">
         <!--blog start-->
@@ -39,9 +40,11 @@
                     </div>
                     <div class="clearfix"></div>
                     <div class="media comment">
-                        <hr ng-if="$ctrl.isAuth"/>
-                        <a ng-if="$ctrl.isAuth && $ctrl.question.IsEdit == undefined" ng-click="$ctrl.question.IsEdit=''" href="#">edit question</a>
-                        <a ng-if="$ctrl.isAuth && $ctrl.question.IsEdit != undefined" ng-click="$ctrl.question.IsEdit=undefined" href="#">repost question</a>
+                        <div ng-if="$ctrl.isAuth">
+                            <hr />
+                            <a ng-if="(($ctrl.currentUser.Id == $ctrl.question.UserId) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && $ctrl.question.IsEdit == undefined" ng-click="$ctrl.question.IsEdit=''" href="#">edit question</a>
+                            <a ng-if="(($ctrl.currentUser.Id == $ctrl.question.UserId) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && $ctrl.question.IsEdit != undefined" ng-click="$ctrl.question.IsEdit=undefined" href="#">repost question</a>
+                        </div>
                         <hr />
                         <div class="media-body row" ng-repeat="com in $ctrl.question.Comments | orderBy:'Added'">
                             <div class="score-controls col-lg-1 col-sm-1 text-center pull-left">
@@ -113,9 +116,11 @@
                                     </p>
                                 </div>
                             </div>
-                            <a ng-if="$ctrl.isAuth && ans.IsEdit == undefined" ng-click="ans.IsEdit=''" href="#">edit answer</a>
-                            <a ng-if="$ctrl.isAuth && ans.IsEdit != undefined" ng-click="ans.IsEdit=undefined" href="#">repost answer</a>
-                            <a ng-if="$ctrl.isAuth && ans.commentBody == undefined" ng-click="ans.IsEdit=''" href="#">add comment</a>
+                            <div ng-if="$ctrl.isAuth" >
+                                <a ng-if="(($ctrl.currentUser.Id == ans.UserId) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && ans.IsEdit == undefined" ng-click="ans.IsEdit=''" href="#">edit answer</a>
+                                <a ng-if="(($ctrl.currentUser.Id == ans.UserId) || $ctrl.currentUser.roles.indexOf('Moderator') != -1) && ans.IsEdit != undefined" ng-click="ans.IsEdit=undefined" href="#">repost answer</a>
+                                <a ng-if="ans.commentBody == undefined" ng-click="ans.IsEdit=''" href="#">add comment</a>
+                            </div>
                             <div ng-if="ans.$commentBody != undefined">
 
                                 <div class="form-group">

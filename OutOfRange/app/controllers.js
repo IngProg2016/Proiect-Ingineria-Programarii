@@ -76,7 +76,7 @@
     })
     .component('viewQuestionCmp', {
         templateUrl: '/templates/questions/questionView.html',
-        controller: ['$q', '$interval', 'smoothScroll', 'authService', 'qaService', ViewQuestionCtrl],
+        controller: ['$q', '$interval', 'smoothScroll', 'authService', 'qaService', 'userService' , ViewQuestionCtrl],
         bindings: {
             $router: '<'
         }
@@ -349,9 +349,14 @@
         this.$routerOnActivate = function (toRoute, fromRoute) { routeChangeService.onChange(toRoute, fromRoute); }
     }
 
-    function ViewQuestionCtrl($q, $interval, smoothScroll, authService, qaService) {
+    function ViewQuestionCtrl($q, $interval, smoothScroll, authService, qaService, userService) {
         var $ctrl = this;
         this.isAuth = authService.getAuthentificationInfo().isAuth;
+
+        this.currentUser = userService.getCurrentUser().then(function (result) {
+            $ctrl.currentUser = result;
+            resolve();
+        })
 
         this.question = {};
         this.comment = {};

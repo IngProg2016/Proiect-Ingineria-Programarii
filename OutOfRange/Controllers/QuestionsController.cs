@@ -263,7 +263,7 @@ namespace OutOfRange.Controllers
             UserBadge userBadge = userLevel.UserBadges.SingleOrDefault(x => x.ItemID == question.ID);
             if (userBadge == null)
             {
-                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", 0, question.ID);
+                PointsUtils.giveBadge(question.AspNetUser.Id, question.CategoryID, "score", currentBadgeRarity, question.ID);
             }
             else if (userBadge.Badge.Rarity == currentBadgeRarity)
             {

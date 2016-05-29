@@ -45,20 +45,23 @@ namespace OutOfRange.Controllers
             return Ok(new AnswerDTO(answer));
         }
 
+        public class UpdateAnwser
+        {
+            public string AnswerBody { get; set; }
+        }
         // PUT: api/Answers/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutAnswer(Guid id, Answer answer)
+        public IHttpActionResult PutAnswer(Guid id,UpdateAnwser newAnswer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != answer.ID)
-            {
-                return BadRequest();
-            }
+            var answer = db.Answers.Find(id);
 
+
+            answer.AnswerBody = newAnswer.AnswerBody;
             db.Entry(answer).State = EntityState.Modified;
 
             try

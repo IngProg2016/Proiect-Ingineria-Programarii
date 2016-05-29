@@ -242,7 +242,7 @@
     }
 
     function SearchService($resource) {
-        return $resource('/api/question/search/:keywords');
+        return $resource('/api/questions/search/:keywords');
     }
 
     function AuthInterceptorService($q, $rootRouter, storageService) {

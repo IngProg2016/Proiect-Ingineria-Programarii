@@ -26,7 +26,8 @@
                         <li><a ng-link="['Logout']">Logout</a></li>
                     </ul>
                 </li>
-                <li><input class="form-control search" placeholder="Search" type="text"></li>
+                <li>
+                <input ng-keypress="$ctrl.doSearch($event)" ng-model="$ctrl.searchText" class="form-control search" placeholder="Search" type="text"></li>
             </ul>
         </div>
     </div>

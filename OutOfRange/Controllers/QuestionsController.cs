@@ -41,7 +41,7 @@ namespace OutOfRange.Controllers
                 Json(
                     db.Questions.Where(question => question.CategoryID == id)
                         .ToList()
-                        .Select(question => QuestionDTO.FromEntity(question)));
+                        .Select(question => QuestionDTO.FromEntity(question,1)));
         }
 
         // GET: api/Questions
@@ -52,7 +52,7 @@ namespace OutOfRange.Controllers
                 Json(
                     db.Questions.Where(question => question.Tags.Select(x => x.Name).Contains(tag))
                         .ToList()
-                        .Select(question => QuestionDTO.FromEntity(question)));
+                        .Select(question => QuestionDTO.FromEntity(question,1)));
         }
 
         [Route("search/{q}")]

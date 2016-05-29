@@ -14,7 +14,7 @@
         <div class="col-md-12">
             <div ng-repeat="item in $ctrl.data" class="col-md-6" data-wow-animation-name="fadeInLeft">
                 <div class="blog-left wow fadeInLeft animated" style="visibility: visible; animation-name: fadeInLeft;">
-                    <div class="blog-content">
+                    <div class="blog-content" style="height:250px;">
                         <h3><a ng-link="['ViewQuestion', {id: item.ID}]">{{item.Title}}</a></h3>
                         <div class="row">
                             <div class="col-md-12">
@@ -43,7 +43,7 @@
                             </div>
                         </div>
                         <p>
-                            <span ng-bind="item.QuestionBody | plainText"></span>&hellip;
+                            <span ng-bind="item.QuestionBody | plainText | limitTo:200"></span>&hellip;
                             <a ng-link="['ViewQuestion', {id: item.ID}]" class="text-success">Read more</a>
                         </p>
                     </div>

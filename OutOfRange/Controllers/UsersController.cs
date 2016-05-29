@@ -34,7 +34,7 @@ namespace OutOfRange.Controllers
         // GET: api/Users
         public JsonResult<IEnumerable<AspNetUserDTO>> GetAspNetUsers()
         {
-            return Json(db.AspNetUsers.ToList().Select(AspNetUserDTO.FromEntity));
+            return Json(db.AspNetUsers.ToList().Select(user => AspNetUserDTO.FromEntity(user,1)));
         }
 
         [Route("profile/")]

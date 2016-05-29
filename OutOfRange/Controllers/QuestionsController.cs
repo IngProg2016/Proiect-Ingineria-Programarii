@@ -30,21 +30,29 @@ namespace OutOfRange.Controllers
         // GET: api/Questions
         public JsonResult<IEnumerable<QuestionDTO>> GetQuestions()
         {
-            return Json(db.Questions.ToList().Select(QuestionDTO.FromEntity));
+            return Json(db.Questions.ToList().Select(question => QuestionDTO.FromEntity(question,1)));
         }
         
         // GET: api/Questions
         [Route("category/{id}")]
         public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsCategory(Guid id)
         {
-            return Json(db.Questions.Where(question => question.CategoryID==id).ToList().Select(QuestionDTO.FromEntity));
+            return
+                Json(
+                    db.Questions.Where(question => question.CategoryID == id)
+                        .ToList()
+                        .Select(question => QuestionDTO.FromEntity(question)));
         }
 
         // GET: api/Questions
         [Route("tag/{tag}")]
         public JsonResult<IEnumerable<QuestionDTO>> GetQuestionsTag(string tag)
         {
-            return Json(db.Questions.Where(question => question.Tags.Select(x => x.Name).Contains(tag)).ToList().Select(QuestionDTO.FromEntity));
+            return
+                Json(
+                    db.Questions.Where(question => question.Tags.Select(x => x.Name).Contains(tag))
+                        .ToList()
+                        .Select(question => QuestionDTO.FromEntity(question)));
         }
 
         [Route("search/{q}")]
@@ -203,7 +211,7 @@ namespace OutOfRange.Controllers
                     db.Questions.Where(question => question.Bounty > 0)
                         .OrderByDescending(x => x.Bounty)
                         .ToList()
-                        .Select(QuestionDTO.FromEntity));
+                        .Select(question => QuestionDTO.FromEntity(question)));
         }
 
         //POST: api/questions/AddScore

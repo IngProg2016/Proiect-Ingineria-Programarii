@@ -14,7 +14,7 @@ namespace OutOfRange.Models
             Answers=new HashSet<AnswerDTO>();
         }
 
-        public QuestionDTO(Question question)
+        public QuestionDTO(Question question, int dtolevel=0)
         {
             ID = question.ID;
             UserID = question.UserID;
@@ -28,10 +28,13 @@ namespace OutOfRange.Models
             Views = question.QuestionViews.Count;
             Tags = question.Tags.Select(TagDTO.FromEntity).ToList();
             //Tags = (from tag in question.Tags select new TagDTO(tag)).ToList();
-            Answers = question.Answers.Select(AnswerDTO.FromEntity).ToList();
+            AnswersNumber = question.Answers.Count;
+            if(dtolevel == 0)
+            Answers = question.Answers.Select(answer => AnswerDTO.FromEntity(answer,dtolevel)).ToList();
             //Anwsers = (from ans in question.Answers select new AnswerDTO(ans)).ToList();
+            if(dtolevel == 0)
             Comments = question.Comments.Select(CommentDTO.FromEntity).ToList();
-            AspNetUser = new AspNetUserDTO(question.AspNetUser);
+            AspNetUser = new AspNetUserDTO(question.AspNetUser, dtolevel);
             Category = new CategoryDTO(question.Category);
         }
 
@@ -42,6 +45,7 @@ namespace OutOfRange.Models
         public string Title { get; set; }
         public int Score { get; set; }
         public int Views { get; set; }
+        public int AnswersNumber { get; set; }
         public int Bounty { get; set; }
         public string QuestionBody { get; set; }
         public DateTime Added { get; set; }
@@ -52,9 +56,9 @@ namespace OutOfRange.Models
         public AspNetUserDTO AspNetUser { get; set; }
         public CategoryDTO Category { get; set; }
 
-        public static QuestionDTO FromEntity(Question question)
+        public static QuestionDTO FromEntity(Question question,int level=0)
         {
-            QuestionDTO qdto = new QuestionDTO(question);
+            QuestionDTO qdto = new QuestionDTO(question,level);
 
             return qdto;
         }

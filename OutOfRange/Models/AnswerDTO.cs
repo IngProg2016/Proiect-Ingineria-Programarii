@@ -11,7 +11,7 @@ namespace OutOfRange.Models
             Comments = new HashSet<CommentDTO>();
         }
 
-        public AnswerDTO(Answer answer)
+        public AnswerDTO(Answer answer,int dtolevel=0)
         {
             ID = answer.ID;
             UserID = answer.UserID;
@@ -20,6 +20,7 @@ namespace OutOfRange.Models
             Score = answer.Score;
             Added = answer.Added;
             AspNetUser = new AspNetUserDTO(answer.AspNetUser);
+            if(dtolevel==0)
             Comments = answer.Comments.Select(CommentDTO.FromEntity).ToList();
             Accepted = answer.Accepted;
             //Comments = (from com in answer.Comments select new CommentDTO(com)).ToList();
@@ -37,9 +38,9 @@ namespace OutOfRange.Models
         public ICollection<CommentDTO> Comments { get; set; }
         public int ScoreGiven { get; set; }
 
-        public static AnswerDTO FromEntity(Answer answer)
+        public static AnswerDTO FromEntity(Answer answer,int dtolevel=0)
         {
-            return new AnswerDTO(answer);
+            return new AnswerDTO(answer,dtolevel);
         }
     }
 }
